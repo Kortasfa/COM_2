@@ -1,57 +1,58 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
-export const useDraggable = () => {
-    const [isDragging, setIsDragging] = useState(false)
-    const [position, setPosition] = useState({ x: 0, y: 0 })
-    const [offset, setOffset] = useState({ x: 0, y: 0 })
+export function useDraggable(ref: any) {
+  const [isDragging, setIsDragging] = useState(false)
+  const [position, setPosition] = useState({ x: 0, y: 0 })
+  const dragRef = useRef(null)
 
-    const onMouseDown = useCallback(
-        (e: { preventDefault: () => void; clientX: number; clientY: number; shiftKey: boolean }) => {
-            if (e.shiftKey) {
-                e.preventDefault()
-                setIsDragging(true)
-                setOffset({
-                    x: e.clientX - position.x,
-                    y: e.clientY - position.y,
-                })
-            }
-        },
-        [position],
-    )
+  useEffect(() => {
+    const draggableElement = ref.current
+    const dragElement = dragRef.current
 
-    const onMouseMove = useCallback(
-        (e: { clientX: number; clientY: number }) => {
-            if (!isDragging) return
-            requestAnimationFrame(() => {
-                setPosition({
-                    x: e.clientX - offset.x,
-                    y: e.clientY - offset.y,
-                })
-            })
-        },
-        [isDragging, offset],
-    )
+    let initialX: number
+    let initialY: number
+    let offsetX = 0
+    let offsetY = 0
 
-    const onMouseUp = useCallback(() => {
-        setIsDragging(false)
-    }, [])
+    function handleMouseDown(event: { clientX: number; clientY: number }) {
+      initialX = event.clientX - offsetX
+      initialY = event.clientY - offsetY
 
-    useEffect(() => {
-        if (isDragging) {
-            window.addEventListener('mousemove', onMouseMove)
-            window.addEventListener('mouseup', onMouseUp)
-        }
-
-        return () => {
-            window.removeEventListener('mousemove', onMouseMove)
-            window.removeEventListener('mouseup', onMouseUp)
-        }
-    }, [isDragging, onMouseMove, onMouseUp])
-
-    return {
-        position,
-        onMouseDown,
-        onMouseMove,
-        onMouseUp,
+      setIsDragging(true)
     }
+
+    function handleMouseUp() {
+      setIsDragging(false)
+    }
+
+    function handleMouseMove(event: { preventDefault: () => void; clientX: number; clientY: number }) {
+      if (isDragging) {
+        event.preventDefault()
+
+        offsetX = event.clientX - initialX
+        offsetY = event.clientY - initialY
+
+        setPosition({
+          x: offsetX,
+          y: offsetY,
+        })
+      }
+    }
+
+    if (draggableElement) {
+      draggableElement.addEventListener('mousedown', handleMouseDown)
+      draggableElement.addEventListener('mouseup', handleMouseUp)
+      draggableElement.addEventListener('mousemove', handleMouseMove)
+    }
+
+    return () => {
+      if (draggableElement) {
+        draggableElement.removeEventListener('mousedown', handleMouseDown)
+        draggableElement.removeEventListener('mouseup', handleMouseUp)
+        draggableElement.removeEventListener('mousemove', handleMouseMove)
+      }
+    }
+  }, [ref, isDragging])
+
+  return { dragRef, position }
 }

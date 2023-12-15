@@ -1,76 +1,76 @@
 enum Figures {
-    TRIANGLE = 'triangle',
-    RECTANGLE = 'rectangle',
-    CIRCLE = 'circle',
+  TRIANGLE = 'triangle',
+  RECTANGLE = 'rectangle',
+  CIRCLE = 'circle',
 }
 
 enum ObjectType {
-    IMAGE = 'image',
-    TEXTBLOCK = 'textBlock',
-    PRIMITIVE = 'primitive',
+  IMAGE = 'image',
+  TEXTBLOCK = 'textBlock',
+  PRIMITIVE = 'primitive',
 }
 
 type SlideObject = {
-    id: string
-    coordinates: {
-        x: number
-        y: number
-    }
-    width: number
-    height: number
+  id: string
+  coordinates: {
+    x: number
+    y: number
+  }
+  width: number
+  height: number
 }
 
 type Color = {
-    hex: string
-    opacity: number
+  hex: string
+  opacity: number
 }
 
 type Text = SlideObject & {
-    value: string
-    color: Color
-    fontSize: number
-    fontFamily: string
-    type: ObjectType.TEXTBLOCK
+  value: string
+  color: Color
+  fontSize: number
+  fontFamily: string
+  type: ObjectType.TEXTBLOCK
 }
 
 type Primitive = SlideObject & {
-    primitiveType: Figures
-    outlineColor?: Color
-    fillColor: Color
-    type: ObjectType.PRIMITIVE
+  primitiveType: Figures
+  outlineColor?: Color
+  fillColor: Color
+  type: ObjectType.PRIMITIVE
 }
 
 type Image = SlideObject & {
-    type: ObjectType.IMAGE
-    base64: string
+  type: ObjectType.IMAGE
+  base64: string
 }
 
 type Background = {
-    color: Color
-    base64?: string
+  color: Color
+  base64?: string
 }
 
 type Slide = {
-    id: string
-    objects: Array<Image | Text | Primitive>
-    background: Background
+  id: string
+  objects: Array<Image | Text | Primitive>
+  background: Background
 }
 
 type History = {
-    events: string[]
+  events: string[]
 }
 
 type Selection = {
-    slideId: string
-    objectId?: string
+  slideId: string
+  objectId?: string
 }
 
 type Presentation = {
-    id: string
-    name: string
-    history: History
-    slides: Array<Slide>
-    selection?: Selection
+  id: string
+  name: string
+  history: History
+  slides: Array<Slide>
+  selection?: Selection
 }
 
 export { Figures, ObjectType }
