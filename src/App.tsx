@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Menu } from './components/Menu/Menu'
 import { SideSlides } from './components/SideSlides'
 import { Presentation, Slide } from './types/types'
@@ -6,19 +6,14 @@ import InitializedPresentation from './components/InitializedPresentation'
 import styles from './styles/App.module.css'
 import { SlideView } from './components/SlideView'
 
-const App = () => {
+export const App = () => {
   const [presentation, setPresentation] = useState<Presentation>(InitializedPresentation)
-  const { name, slides } = presentation
-  const [selectedSlideId, setSelectedSlideId] = useState(presentation.selection?.slideId)
-  const [selectedObjectId, setSelectedObjectId] = useState(presentation.selection?.objectId)
-  const selectedSlide = slides.find((slide: { id: string }) => slide.id === selectedSlideId)
-
-  useEffect(() => {
-    document.title = name
-  }, [name])
+  const [selectedSlideId, setSelectedSlideId] = useState<string>()
+  const [selectedObjectId, setSelectedObjectId] = useState<string>()
+  const selectedSlide = presentation.slides.find((slide: { id: string }) => slide.id === selectedSlideId)
 
   const updateSlide = (updatedSlide: Slide) => {
-    const updatedSlides = slides.map((slide) => {
+    const updatedSlides = presentation.slides.map((slide) => {
       if (slide.id === updatedSlide.id) {
         return { ...slide, ...updatedSlide }
       }
@@ -33,7 +28,6 @@ const App = () => {
 
   return (
     <div>
-      <title>{name}</title>
       <Menu
         selectedObjectId={selectedObjectId}
         selectedSlideId={selectedSlideId}
@@ -42,11 +36,10 @@ const App = () => {
         updatePresentationData={setPresentation}
       />
       <div className={styles.workField}>
-        <SideSlides slides={slides} selectedSlideId={selectedSlideId} onSlideClick={setSelectedSlideId} />
+        <SideSlides slides={presentation.slides} selectedSlideId={selectedSlideId} onSlideClick={setSelectedSlideId} />
         {selectedSlide && (
           <SlideView
-            selectionSlideClass={styles.selectionSlide}
-            slideData={selectedSlide}
+            slide={selectedSlide}
             key={selectedSlide?.id}
             selectedObjectId={selectedObjectId}
             onObjectClick={setSelectedObjectId}
@@ -57,5 +50,3 @@ const App = () => {
     </div>
   )
 }
-
-export { App }

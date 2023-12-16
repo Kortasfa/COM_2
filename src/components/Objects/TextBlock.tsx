@@ -1,12 +1,12 @@
 import { Text } from '../../types/types'
 import React from 'react'
 
-export function TextBlock(props: {
+export const TextBlock = (props: {
   textBlockData: Text
   scale: number
   isSelected: boolean
   onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
-}) {
+}) => {
   const { value, color, fontSize, fontFamily, coordinates, width, height } = props.textBlockData
   const scalePercent = props.scale / 100
 

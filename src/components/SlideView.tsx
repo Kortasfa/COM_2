@@ -5,9 +5,8 @@ import { ImageBlock } from './Objects/ImageBlock'
 import styles from './SlideView.module.css'
 import { PrimitiveBlock } from './Objects/PrimitiveBlock'
 
-function SlideView(props: {
-  slideData: Slide
-  selectionSlideClass?: string
+interface SlideView {
+  slide: Slide
   scale?: number
   index?: number
   onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
@@ -15,13 +14,14 @@ function SlideView(props: {
   selectedObjectId?: string
   onObjectClick?: (objectId: string) => void
   updateSlide?: (data: Slide) => void
-}) {
-  const { objects, background } = props.slideData
+}
 
+export const SlideView = (props: SlideView) => {
+  const { objects, background } = props.slide
   return (
     <div>
       <div
-        className={props.selectionSlideClass || styles.sideSlide}
+        className={styles.selectionSlideClass || styles.sideSlide}
         style={{
           backgroundColor: background.color.hex,
           ...(props.isSlideSelected && {
@@ -71,5 +71,3 @@ function SlideView(props: {
     </div>
   )
 }
-
-export { SlideView }

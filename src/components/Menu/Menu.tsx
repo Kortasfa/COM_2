@@ -1,5 +1,5 @@
 import styles from './Menu.module.css'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Figures, Presentation } from '../../types/types'
 import { exportPresentation } from '../../hooks/menu/presentationManager/exportPresentation'
 import { useImportFileHandler } from '../../hooks/menu/presentationManager/useImportFileHandler'
@@ -10,19 +10,21 @@ import { useAddText } from '../../hooks/menu/objectsManager/useAddText'
 import { useDeleteObject } from '../../hooks/menu/objectsManager/useDeleteObject'
 import { useAddPrimitive } from '../../hooks/menu/objectsManager/useAddPrimitive'
 
+interface Menu {
+  selectedObjectId?: string
+  selectedSlideId?: string
+  setSelectedSlideId?: (data: string) => void
+  presentationData: Presentation
+  updatePresentationData: (data: Presentation) => void
+}
+
 const Menu = ({
   selectedObjectId,
   selectedSlideId,
   setSelectedSlideId,
   presentationData,
   updatePresentationData,
-}: {
-  selectedObjectId?: string
-  selectedSlideId?: string
-  setSelectedSlideId?: (data: string) => void
-  presentationData: Presentation
-  updatePresentationData: (data: Presentation) => void
-}) => {
+}: Menu) => {
   const deleteSlide = useDeleteSlide(presentationData, updatePresentationData, setSelectedSlideId, selectedSlideId)
   const addSlide = useAddSlide(presentationData, updatePresentationData)
   const addImage = useAddImage(presentationData, updatePresentationData, selectedSlideId)
@@ -30,14 +32,15 @@ const Menu = ({
   const addPrimitive = useAddPrimitive(presentationData, updatePresentationData, selectedSlideId)
   const deleteObject = useDeleteObject(presentationData, updatePresentationData, selectedObjectId)
   const { error, handleFileChange } = useImportFileHandler(updatePresentationData)
+  const { name } = presentationData
 
-  const handleImportButton = () => {
-    document.getElementById('fileInput')?.click()
-  }
+  useEffect(() => {
+    document.title = name
+  }, [name])
 
   return (
     <div className={styles.menu}>
-      <button onClick={handleImportButton}>Импорт</button>
+      <button onClick={() => document.getElementById('fileInput')?.click()}>Импорт</button>
       <button onClick={() => exportPresentation(presentationData)}>Экспорт</button>
       <button onClick={addSlide}>Добавить</button>
       <button onClick={deleteSlide}>Удалить</button>

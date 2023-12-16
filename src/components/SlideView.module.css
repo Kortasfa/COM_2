@@ -5,3 +5,11 @@
   outline: 1px solid gray;
   cursor: default;
 }
+
+.selectionSlide {
+  position: relative;
+  border: 1px solid black;
+  width: 80vw;
+  height: 40vw;
+  margin-left: 20px;
+}

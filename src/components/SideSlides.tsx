@@ -8,7 +8,7 @@ function SideSlides(props: { slides: Slide[]; selectedSlideId?: string; onSlideC
     <div className={styles.slides}>
       {props.slides.map((slide, index) => (
         <SlideView
-          slideData={slide}
+          slide={slide}
           key={slide.id}
           scale={20}
           index={index + 1}

@@ -1,12 +1,12 @@
 import React from 'react'
 import { Image } from '../../types/types'
 
-export function ImageBlock(props: {
+export const ImageBlock = (props: {
   imageBlockData: Image
   scale: number
   isSelected: boolean
   onClick?: React.MouseEventHandler<HTMLDivElement>
-}) {
+}) => {
   const { coordinates, width, height, base64 } = props.imageBlockData
   const scalePercent = props.scale / 100
 
@@ -28,6 +28,7 @@ export function ImageBlock(props: {
           width: width * scalePercent,
           height: height * scalePercent,
         }}
+        alt={'image'}
       />
     </div>
   )

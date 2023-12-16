@@ -56,22 +56,11 @@ type Slide = {
   background: Background
 }
 
-type History = {
-  events: string[]
-}
-
-type Selection = {
-  slideId: string
-  objectId?: string
-}
-
 type Presentation = {
   id: string
   name: string
-  history: History
   slides: Array<Slide>
-  selection?: Selection
 }
 
 export { Figures, ObjectType }
-export type { Text, Image, Primitive, SlideObject, Presentation, Background, Slide, Color, History }
+export type { Text, Image, Primitive, SlideObject, Presentation, Background, Slide, Color }
