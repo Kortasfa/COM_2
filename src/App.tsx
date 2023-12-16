@@ -39,6 +39,7 @@ export const App = () => {
         <SideSlides slides={presentation.slides} selectedSlideId={selectedSlideId} onSlideClick={setSelectedSlideId} />
         {selectedSlide && (
           <SlideView
+            selectionSlideClass={styles.selectionSlide}
             slide={selectedSlide}
             key={selectedSlide?.id}
             selectedObjectId={selectedObjectId}

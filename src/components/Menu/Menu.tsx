@@ -46,7 +46,7 @@ const Menu = ({
       <button onClick={deleteSlide}>Удалить</button>
       <button onClick={() => addImage('sad')}>Картинка</button>
       <button onClick={() => addText('text', { x: 10, y: 30 }, { width: 40, height: 40 })}>Текст</button>
-      <button onClick={() => addPrimitive(Figures.CIRCLE, { x: 30, y: 50 }, { width: 20, height: 40 })}>
+      <button onClick={() => addPrimitive(Figures.RECTANGLE, { x: 30, y: 50 }, { width: 20, height: 40 })}>
         Примитив
       </button>
       <button onClick={deleteObject}>Удалить объект</button>

@@ -14,6 +14,7 @@ interface SlideView {
   selectedObjectId?: string
   onObjectClick?: (objectId: string) => void
   updateSlide?: (data: Slide) => void
+  selectionSlideClass?: string
 }
 
 export const SlideView = (props: SlideView) => {
@@ -21,7 +22,7 @@ export const SlideView = (props: SlideView) => {
   return (
     <div>
       <div
-        className={styles.selectionSlideClass || styles.sideSlide}
+        className={props.selectionSlideClass || styles.sideSlide}
         style={{
           backgroundColor: background.color.hex,
           ...(props.isSlideSelected && {

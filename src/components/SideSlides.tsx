@@ -3,7 +3,13 @@ import { SlideView } from './SlideView'
 import { Slide } from '../types/types'
 import React from 'react'
 
-function SideSlides(props: { slides: Slide[]; selectedSlideId?: string; onSlideClick: (slideId: string) => void }) {
+interface SideSlides {
+  slides: Slide[]
+  selectedSlideId?: string
+  onSlideClick: (slideId: string) => void
+}
+
+export const SideSlides = (props: SideSlides) => {
   return (
     <div className={styles.slides}>
       {props.slides.map((slide, index) => (
@@ -19,5 +25,3 @@ function SideSlides(props: { slides: Slide[]; selectedSlideId?: string; onSlideC
     </div>
   )
 }
-
-export { SideSlides }
