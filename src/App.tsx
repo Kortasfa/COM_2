@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Menu } from './components/Menu/Menu'
 import { SideSlides } from './components/SideSlides'
-import { ObjectType, Presentation, Slide, SlideObject } from './types/types'
+import { Presentation, Slide, SlideObject } from './types/types'
 import InitializedPresentation from './components/InitializedPresentation'
 import styles from './styles/App.module.css'
 import { SlideView } from './components/SlideView'

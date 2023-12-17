@@ -1,50 +1,60 @@
-import React, { Ref, useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 export const useDragAndDrop = (
   ref: React.RefObject<HTMLElement>,
-  setCoords: (coords: { x: number; y: number }) => any,
-  initialCoords: {
-    x: number
-    y: number
-  },
+  setPos: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>,
+  initialPos: { x: number; y: number },
 ) => {
   const [isDragging, setIsDragging] = useState(false)
-  const [dragStartCoords, setDragStartCoords] = useState(initialCoords)
+  const startPos = useRef<{ x: number; y: number } | null>(null)
 
   useEffect(() => {
-    const handleMouseDown = (event: { button: number; clientX: number; clientY: number }) => {
-      if (ref.current && event.button === 0) {
-        setIsDragging(true)
-        setDragStartCoords({
-          x: event.clientX - dragStartCoords.x,
-          y: event.clientY - dragStartCoords.y,
-        })
-      }
-    }
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isDragging && startPos.current) {
+        const newSize = {
+          x: initialPos.x + e.pageX - startPos.current.x,
+          y: initialPos.y + e.pageY - startPos.current.y,
+        }
 
-    const handleMouseMove = (event: { clientX: number; clientY: number }) => {
-      if (isDragging) {
-        setCoords({
-          x: event.clientX - dragStartCoords.x,
-          y: event.clientY - dragStartCoords.y,
-        })
+        setPos(newSize)
       }
     }
 
     const handleMouseUp = () => {
-      setIsDragging(false)
+      if (isDragging) {
+        setIsDragging(false)
+      }
+      startPos.current = null
     }
 
-    document.addEventListener('mousedown', handleMouseDown)
-    document.addEventListener('mousemove', handleMouseMove)
-    document.addEventListener('mouseup', handleMouseUp)
-
-    return () => {
-      document.removeEventListener('mousedown', handleMouseDown)
-      document.removeEventListener('mousemove', handleMouseMove)
-      document.removeEventListener('mouseup', handleMouseUp)
+    const handleMouseDown = (e: MouseEvent) => {
+      e.preventDefault()
+      startPos.current = { x: e.pageX, y: e.pageY }
+      setIsDragging(true)
     }
-  }, [isDragging, ref, setCoords, dragStartCoords])
+
+    const handleEvents = (event: MouseEvent) => {
+      if (ref.current) {
+        if (event.type === 'mousedown') {
+          handleMouseDown(event)
+          document.addEventListener('mousemove', handleMouseMove)
+          document.addEventListener('mouseup', handleMouseUp)
+        } else if (event.type === 'mouseup') {
+          document.removeEventListener('mousemove', handleMouseMove)
+          document.removeEventListener('mouseup', handleMouseUp)
+        }
+      }
+    }
+
+    if (ref.current) {
+      ref.current.addEventListener('mousedown', handleEvents)
+      return () => {
+        ref.current?.removeEventListener('mousedown', handleEvents)
+        document.removeEventListener('mousemove', handleMouseMove)
+        document.removeEventListener('mouseup', handleMouseUp)
+      }
+    }
+  }, [ref, isDragging])
 
   return { isDragging }
 }

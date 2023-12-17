@@ -13,7 +13,7 @@ export function useAddPrimitive(
     outlineColor?: Color,
   ) => {
     const newPrimitive: Primitive = {
-      id: `primitive-${new Date().getTime()}`,
+      id: `primitive-${Math.random().toString(36).substr(2, 9)}}`,
       coordinates: {
         x: initialPosition.x,
         y: initialPosition.y,

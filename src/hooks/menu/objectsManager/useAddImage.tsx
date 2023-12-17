@@ -7,7 +7,7 @@ export function useAddImage(
 ) {
   return (base64Image: string) => {
     const newImage: Image = {
-      id: `image-${new Date().getTime()}`,
+      id: `image-${Math.random().toString(36).substr(2, 9)}`,
       coordinates: {
         x: 0,
         y: 0,

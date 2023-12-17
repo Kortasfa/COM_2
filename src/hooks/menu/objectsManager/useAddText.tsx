@@ -11,7 +11,7 @@ export function useAddText(
     initialSize: { width: number; height: number },
   ) => {
     const newTextBlock: Text = {
-      id: `text-${new Date().getTime()}`,
+      id: `text-${Math.random().toString(36).substr(2, 9)}`,
       coordinates: {
         x: initialPosition.x,
         y: initialPosition.y,
