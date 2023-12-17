@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Menu } from './components/Menu/Menu'
 import { SideSlides } from './components/SideSlides'
-import { Presentation, Slide } from './types/types'
+import { ObjectType, Presentation, Slide, SlideObject } from './types/types'
 import InitializedPresentation from './components/InitializedPresentation'
 import styles from './styles/App.module.css'
 import { SlideView } from './components/SlideView'
@@ -11,19 +11,32 @@ export const App = () => {
   const [selectedSlideId, setSelectedSlideId] = useState<string>()
   const [selectedObjectId, setSelectedObjectId] = useState<string>()
   const selectedSlide = presentation.slides.find((slide: { id: string }) => slide.id === selectedSlideId)
-
-  const updateSlide = (updatedSlide: Slide) => {
-    const updatedSlides = presentation.slides.map((slide) => {
-      if (slide.id === updatedSlide.id) {
-        return { ...slide, ...updatedSlide }
+  const updateObject = (updatedObject: SlideObject) => {
+    const updatedObjects = selectedSlide?.objects.map((obj) => {
+      if (obj.id === selectedObjectId) {
+        return {
+          ...obj,
+          ...updatedObject,
+        }
+      }
+      return obj
+    })
+    const updatedSlides = presentation.slides.map((slide: Slide) => {
+      if (slide.id === selectedSlideId) {
+        return {
+          ...slide,
+          objects: updatedObjects ? updatedObjects : slide.objects,
+        }
       }
       return slide
     })
 
-    setPresentation((prevPresentation) => ({
-      ...prevPresentation,
+    const updatedPresentationData = {
+      ...presentation,
       slides: updatedSlides,
-    }))
+    }
+
+    setPresentation(updatedPresentationData)
   }
 
   return (
@@ -44,7 +57,7 @@ export const App = () => {
             key={selectedSlide?.id}
             selectedObjectId={selectedObjectId}
             onObjectClick={setSelectedObjectId}
-            updateSlide={updateSlide}
+            updateObject={updateObject}
           ></SlideView>
         )}
       </div>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { ObjectType, Slide } from '../types/types'
+import { ObjectType, Slide, SlideObject } from '../types/types'
 import { TextBlock } from './Objects/TextBlock'
 import { ImageBlock } from './Objects/ImageBlock'
 import styles from './SlideView.module.css'
@@ -13,7 +13,7 @@ interface SlideView {
   isSlideSelected?: boolean
   selectedObjectId?: string
   onObjectClick?: (objectId: string) => void
-  updateSlide?: (data: Slide) => void
+  updateObject?: (data: SlideObject) => void
   selectionSlideClass?: string
 }
 
@@ -42,6 +42,7 @@ export const SlideView = (props: SlideView) => {
                   scale={props.scale || 100}
                   isSelected={object.id === props.selectedObjectId}
                   onClick={() => props.onObjectClick && props.onObjectClick(object.id)}
+                  updateObject={props.updateObject}
                 ></TextBlock>
               )
             case ObjectType.IMAGE:
@@ -52,6 +53,7 @@ export const SlideView = (props: SlideView) => {
                   scale={props.scale || 100}
                   isSelected={object.id === props.selectedObjectId}
                   onClick={() => props.onObjectClick && props.onObjectClick(object.id)}
+                  updateObject={props.updateObject}
                 ></ImageBlock>
               )
             case ObjectType.PRIMITIVE:
@@ -62,6 +64,7 @@ export const SlideView = (props: SlideView) => {
                   scale={props.scale || 100}
                   isSelected={object.id === props.selectedObjectId}
                   onClick={() => props.onObjectClick && props.onObjectClick(object.id)}
+                  updateObject={props.updateObject}
                 ></PrimitiveBlock>
               )
             default:

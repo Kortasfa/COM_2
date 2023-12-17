@@ -1,6 +1,6 @@
 import styles from './Menu.module.css'
 import React, { useEffect } from 'react'
-import { Figures, Presentation } from '../../types/types'
+import { Figures, Presentation, Slide } from '../../types/types'
 import { exportPresentation } from '../../hooks/menu/presentationManager/exportPresentation'
 import { useImportFileHandler } from '../../hooks/menu/presentationManager/useImportFileHandler'
 import useDeleteSlide from '../../hooks/menu/slideManager/useDeleteSlide'
