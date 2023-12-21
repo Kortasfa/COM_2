@@ -57,8 +57,8 @@ export const SlideView = (props: SlideView) => {
         style={{
           backgroundColor: selectedSlide.background.color.hex,
           ...(props.isSlideSelected && {
-            outlineColor: 'black',
-            outlineWidth: '1px',
+            outlineColor: '#3498db',
+            outlineWidth: '3px',
           }),
         }}
         onClick={props.onClick}

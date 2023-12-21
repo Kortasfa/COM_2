@@ -4,7 +4,6 @@ import InitializedPresentation from '../../../components/InitializedPresentation
 
 function useImportFileHandler(updatePresentationData: (data: Presentation) => void) {
   const [error, setError] = useState<string | null>(null)
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
 
@@ -19,7 +18,7 @@ function useImportFileHandler(updatePresentationData: (data: Presentation) => vo
           setError(null)
         } catch (error) {
           updatePresentationData(InitializedPresentation)
-          setError('Плохой файл')
+          setError('Check format of your file!')
         }
       }
 
