@@ -15,6 +15,7 @@ export const App = () => {
     <div>
       <Menu
         selectedObjectId={selectedObjectId}
+        setSelectedObjectId={setSelectedObjectId}
         selectedSlideId={selectedSlideId}
         setSelectedSlideId={setSelectedSlideId}
         presentationData={presentation}

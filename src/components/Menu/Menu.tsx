@@ -15,6 +15,7 @@ interface Menu {
   selectedObjectId?: string
   selectedSlideId?: string
   setSelectedSlideId?: (data: string) => void
+  setSelectedObjectId?: (data: string) => void
   presentationData: Presentation
   updatePresentationData: (data: Presentation) => void
 }
@@ -23,6 +24,7 @@ const Menu = ({
   selectedObjectId,
   selectedSlideId,
   setSelectedSlideId,
+  setSelectedObjectId,
   presentationData,
   updatePresentationData,
 }: Menu) => {
@@ -49,17 +51,27 @@ const Menu = ({
       </button>
       <button
         className={styles.menuButton}
-        onClick={() => addText('text', { x: 10, y: 30 }, { width: 40, height: 40 })}
+        onClick={() => {
+          if (setSelectedObjectId) {
+            setSelectedObjectId('')
+          }
+          addText('text', { x: 10, y: 30 }, { width: 40, height: 40 })
+        }}
       >
         Добавить текст
       </button>
       <button
         className={styles.menuButton}
-        onClick={() => addPrimitive(Figures.RECTANGLE, { x: 30, y: 50 }, { width: 20, height: 40 })}
+        onClick={() => {
+          if (setSelectedObjectId) {
+            setSelectedObjectId('')
+          }
+          addPrimitive(Figures.RECTANGLE, { x: 30, y: 50 }, { width: 20, height: 40 })
+        }}
       >
         Добавить примитив
       </button>
-      <LoaderImage addImage={addImage} />
+      <LoaderImage addImage={addImage} setSelectedObjectId={setSelectedObjectId}/>
       <button className={styles.menuButton} onClick={deleteObject}>
         Удалить объект
       </button>

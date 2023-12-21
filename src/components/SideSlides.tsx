@@ -1,5 +1,4 @@
 import styles from '../styles/App.module.css'
-import { SlideView } from './SlideView'
 import { Slide } from '../types/types'
 import React from 'react'
 import { SideSlide } from './SideSlide'

@@ -3,8 +3,10 @@ import React, { useRef } from 'react'
 
 interface LoaderImageProps {
   addImage: (base64Data: string) => void
+  setSelectedObjectId?: (data: string) => void
 }
-const LoaderImage = ({ addImage }: LoaderImageProps) => {
+
+const LoaderImage = ({ addImage, setSelectedObjectId }: LoaderImageProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const handleFileLoader = () => {
     if (fileInputRef.current) {
@@ -26,6 +28,9 @@ const LoaderImage = ({ addImage }: LoaderImageProps) => {
   const handleClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click()
+    }
+    if (setSelectedObjectId) {
+      setSelectedObjectId('')
     }
   }
   return (
