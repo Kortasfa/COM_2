@@ -10,34 +10,6 @@ export const App = () => {
   const [presentation, setPresentation] = useState<Presentation>(InitializedPresentation)
   const [selectedSlideId, setSelectedSlideId] = useState<string>()
   const [selectedObjectId, setSelectedObjectId] = useState<string>()
-  const selectedSlide = presentation.slides.find((slide: { id: string }) => slide.id === selectedSlideId)
-  const updateObject = (updatedObject: SlideObject) => {
-    const updatedObjects = selectedSlide?.objects.map((obj) => {
-      if (obj.id === selectedObjectId) {
-        return {
-          ...obj,
-          ...updatedObject,
-        }
-      }
-      return obj
-    })
-    const updatedSlides = presentation.slides.map((slide: Slide) => {
-      if (slide.id === selectedSlideId) {
-        return {
-          ...slide,
-          objects: updatedObjects ? updatedObjects : slide.objects,
-        }
-      }
-      return slide
-    })
-
-    const updatedPresentationData = {
-      ...presentation,
-      slides: updatedSlides,
-    }
-
-    setPresentation(updatedPresentationData)
-  }
 
   return (
     <div>
@@ -50,16 +22,14 @@ export const App = () => {
       />
       <div className={styles.workField}>
         <SideSlides slides={presentation.slides} selectedSlideId={selectedSlideId} onSlideClick={setSelectedSlideId} />
-        {selectedSlide && (
-          <SlideView
-            selectionSlideClass={styles.selectionSlide}
-            slide={selectedSlide}
-            key={selectedSlide?.id}
-            selectedObjectId={selectedObjectId}
-            onObjectClick={setSelectedObjectId}
-            updateObject={updateObject}
-          ></SlideView>
-        )}
+        <SlideView
+          selectionSlideClass={styles.selectionSlide}
+          selectedObjectId={selectedObjectId}
+          onObjectClick={setSelectedObjectId}
+          presentationData={presentation}
+          updatePresentationData={setPresentation}
+          selectedSlideId={selectedSlideId}
+        ></SlideView>
       </div>
     </div>
   )

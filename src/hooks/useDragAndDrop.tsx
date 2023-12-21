@@ -15,7 +15,6 @@ export const useDragAndDrop = (
           x: initialPos.x + e.pageX - startPos.current.x,
           y: initialPos.y + e.pageY - startPos.current.y,
         }
-
         setPos(newSize)
       }
     }
@@ -28,9 +27,11 @@ export const useDragAndDrop = (
     }
 
     const handleMouseDown = (e: MouseEvent) => {
-      e.preventDefault()
-      startPos.current = { x: e.pageX, y: e.pageY }
-      setIsDragging(true)
+      if (e.shiftKey) {
+        e.preventDefault()
+        startPos.current = { x: e.pageX, y: e.pageY }
+        setIsDragging(true)
+      }
     }
 
     const handleEvents = (event: MouseEvent) => {

@@ -7,7 +7,7 @@ interface ImageBlock {
   scale: number
   isSelected: boolean
   onClick?: React.MouseEventHandler<HTMLDivElement>
-  updateObject?: (data: SlideObject) => void
+  updateObject?: (data: Image) => void
 }
 
 export const ImageBlock = (props: ImageBlock) => {

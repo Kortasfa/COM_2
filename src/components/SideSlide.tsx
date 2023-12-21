@@ -1,61 +1,30 @@
 import React from 'react'
-import { Image, ObjectType, Presentation, Primitive, Slide, SlideObject } from '../types/types'
+import { ObjectType, Slide, SlideObject } from '../types/types'
 import { TextBlock } from './Objects/TextBlock'
 import { ImageBlock } from './Objects/ImageBlock'
 import styles from './SlideView.module.css'
 import { PrimitiveBlock } from './Objects/PrimitiveBlock'
 
-interface SlideView {
+interface SideSlide {
+  slide: Slide
   scale?: number
+  index?: number
   onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
   isSlideSelected?: boolean
   selectedObjectId?: string
   onObjectClick?: (objectId: string) => void
   updateObject?: (data: SlideObject) => void
   selectionSlideClass?: string
-  presentationData: Presentation
-  updatePresentationData: (data: Presentation) => void
-  selectedSlideId?: string
 }
 
-export const SlideView = (props: SlideView) => {
-  const selectedSlide = props.presentationData.slides.find(
-    (slide: { id: string }) => slide.id === props.selectedSlideId,
-  )
-  const updateObject = (updatedObject: SlideObject) => {
-    const updatedObjects = selectedSlide?.objects.map((obj) => {
-      if (obj.id === props.selectedObjectId) {
-        return {
-          ...obj,
-          ...updatedObject,
-        }
-      }
-      return obj
-    })
-    const updatedSlides = props.presentationData.slides.map((slide: Slide) => {
-      if (slide.id === props.selectedSlideId) {
-        return {
-          ...slide,
-          objects: updatedObjects ? updatedObjects : slide.objects,
-        }
-      }
-      return slide
-    })
-
-    const updatedPresentationData = {
-      ...props.presentationData,
-      slides: updatedSlides,
-    }
-
-    props.updatePresentationData(updatedPresentationData)
-  }
-
-  return selectedSlide ? (
+export const SideSlide = (props: SideSlide) => {
+  const { objects, background } = props.slide
+  return (
     <div>
       <div
         className={props.selectionSlideClass || styles.sideSlide}
         style={{
-          backgroundColor: selectedSlide.background.color.hex,
+          backgroundColor: background.color.hex,
           ...(props.isSlideSelected && {
             outlineColor: 'black',
             outlineWidth: '1px',
@@ -63,7 +32,7 @@ export const SlideView = (props: SlideView) => {
         }}
         onClick={props.onClick}
       >
-        {selectedSlide.objects.map((object) => {
+        {objects.map((object) => {
           switch (object.type) {
             case ObjectType.TEXTBLOCK:
               return (
@@ -73,7 +42,7 @@ export const SlideView = (props: SlideView) => {
                   scale={props.scale || 100}
                   isSelected={object.id === props.selectedObjectId}
                   onClick={() => props.onObjectClick && props.onObjectClick(object.id)}
-                  updateObject={updateObject}
+                  updateObject={props.updateObject}
                 ></TextBlock>
               )
             case ObjectType.IMAGE:
@@ -84,7 +53,7 @@ export const SlideView = (props: SlideView) => {
                   scale={props.scale || 100}
                   isSelected={object.id === props.selectedObjectId}
                   onClick={() => props.onObjectClick && props.onObjectClick(object.id)}
-                  updateObject={updateObject}
+                  updateObject={props.updateObject}
                 ></ImageBlock>
               )
             case ObjectType.PRIMITIVE:
@@ -95,7 +64,7 @@ export const SlideView = (props: SlideView) => {
                   scale={props.scale || 100}
                   isSelected={object.id === props.selectedObjectId}
                   onClick={() => props.onObjectClick && props.onObjectClick(object.id)}
-                  updateObject={updateObject}
+                  updateObject={props.updateObject}
                 ></PrimitiveBlock>
               )
             default:
@@ -104,7 +73,5 @@ export const SlideView = (props: SlideView) => {
         })}
       </div>
     </div>
-  ) : (
-    <div></div>
   )
 }

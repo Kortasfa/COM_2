@@ -7,7 +7,7 @@ interface PrimitiveBlock {
   scale: number
   isSelected: boolean
   onClick?: React.MouseEventHandler<SVGSVGElement> | undefined
-  updateObject?: (data: SlideObject) => void
+  updateObject?: (data: Primitive) => void
 }
 
 export const PrimitiveBlock = (props: PrimitiveBlock) => {
