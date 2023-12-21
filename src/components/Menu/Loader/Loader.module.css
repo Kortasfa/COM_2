@@ -1,0 +1,33 @@
+.loader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.button {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #3498db;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+}
+
+.importImage,
+.exportImage {
+    width: 100%;
+    height: 100%;
+    margin-right: 5px;
+}
+
+.fileLoader {
+    display: none;
+}
+
+.error {
+    position: absolute;
+    top: 2%;
+    font-size: 20px;
+    left: 70%;
+}

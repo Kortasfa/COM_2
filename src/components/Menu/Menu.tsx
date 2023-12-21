@@ -1,7 +1,6 @@
 import styles from './Menu.module.css'
 import React, { useEffect } from 'react'
-import { Figures, Presentation, Slide } from '../../types/types'
-import { exportPresentation } from '../../hooks/menu/presentationManager/exportPresentation'
+import { Figures, Presentation } from '../../types/types'
 import { useImportFileHandler } from '../../hooks/menu/presentationManager/useImportFileHandler'
 import useDeleteSlide from '../../hooks/menu/slideManager/useDeleteSlide'
 import { useAddSlide } from '../../hooks/menu/slideManager/useAddButton'
@@ -9,6 +8,8 @@ import { useAddImage } from '../../hooks/menu/objectsManager/useAddImage'
 import { useAddText } from '../../hooks/menu/objectsManager/useAddText'
 import { useDeleteObject } from '../../hooks/menu/objectsManager/useDeleteObject'
 import { useAddPrimitive } from '../../hooks/menu/objectsManager/useAddPrimitive'
+import { Loader } from './Loader/Loader'
+import { LoaderImage } from './LoaderImage/LoaderImage'
 
 interface Menu {
   selectedObjectId?: string
@@ -40,18 +41,29 @@ const Menu = ({
 
   return (
     <div className={styles.menu}>
-      <button onClick={() => document.getElementById('fileInput')?.click()}>Импорт</button>
-      <button onClick={() => exportPresentation(presentationData)}>Экспорт</button>
-      <button onClick={addSlide}>Добавить</button>
-      <button onClick={deleteSlide}>Удалить</button>
-      <button onClick={() => addImage('sad')}>Картинка</button>
-      <button onClick={() => addText('text', { x: 10, y: 30 }, { width: 40, height: 40 })}>Текст</button>
-      <button onClick={() => addPrimitive(Figures.RECTANGLE, { x: 30, y: 50 }, { width: 20, height: 40 })}>
-        Примитив
+      <button className={styles.menuButton} onClick={addSlide}>
+        Добавить слайд
       </button>
-      <button onClick={deleteObject}>Удалить объект</button>
-      <div>{error}</div>
-      <input id="fileInput" type="file" style={{ display: 'none' }} onChange={handleFileChange} />
+      <button className={styles.menuButton} onClick={deleteSlide}>
+        Удалить слайд
+      </button>
+      <button
+        className={styles.menuButton}
+        onClick={() => addText('text', { x: 10, y: 30 }, { width: 40, height: 40 })}
+      >
+        Добавить текст
+      </button>
+      <button
+        className={styles.menuButton}
+        onClick={() => addPrimitive(Figures.RECTANGLE, { x: 30, y: 50 }, { width: 20, height: 40 })}
+      >
+        Добавить примитив
+      </button>
+      <LoaderImage addImage={addImage} />
+      <button className={styles.menuButton} onClick={deleteObject}>
+        Удалить объект
+      </button>
+      <Loader handleFileChange={handleFileChange} error={error} presentationData={presentationData} />
     </div>
   )
 }

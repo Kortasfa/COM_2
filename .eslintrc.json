@@ -22,10 +22,10 @@
         "prettier"
     ],
     "rules": {
-        "prettier/prettier": "error",
-        "no-duplicate-imports": "error",
-        "no-self-compare": "error",
-        "no-use-before-define": "error",
-        "no-multi-spaces": "error"
+    "prettier/prettier": "error",
+    "no-duplicate-imports": "error",
+    "no-self-compare": "error",
+    "no-use-before-define": "error",
+    "no-multi-spaces": ["error", { "ignoreEOLComments": false, "exceptions": { "VariableDeclarator": true, "Property": true } }]
     }
 }
