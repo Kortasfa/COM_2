@@ -11,21 +11,21 @@ interface LoaderProps {
   presentationData: Presentation
 }
 const Loader = ({ handleFileChange, error, presentationData }: LoaderProps) => {
-    const handleImportButton = () => {
-        document.getElementById('fileInputImport')?.click()
-    }
-    return (
-        <div className={styles.loader}>
-            <input className={styles.fileLoader} id="fileInputImport" type="file" onChange={handleFileChange} />
-            <button className={styles.button} onClick={handleImportButton}>
-                <img src={importImage} alt="Import" className={styles.importImage} />
-            </button>
-            <button className={styles.button} onClick={() => exportPresentation(presentationData)}>
-                <img src={exportImage} alt="Export" className={styles.exportImage} />
-            </button>
-            <span className={styles.error}>{error}</span>
-        </div>
-    )
+  const handleImportButton = () => {
+    document.getElementById('fileInputImport')?.click()
+  }
+  return (
+    <div className={styles.loader}>
+      <input className={styles.fileLoader} id="fileInputImport" type="file" onChange={handleFileChange} />
+      <button className={styles.button} onClick={handleImportButton}>
+        <img src={importImage} alt="Import" className={styles.importImage} />
+      </button>
+      <button className={styles.button} onClick={() => exportPresentation(presentationData)}>
+        <img src={exportImage} alt="Export" className={styles.exportImage} />
+      </button>
+      <span className={styles.error}>{error}</span>
+    </div>
+  )
 }
 
 export { Loader }
