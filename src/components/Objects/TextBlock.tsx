@@ -20,21 +20,16 @@ export const TextBlock = (props: TextBlock) => {
     x: coordinates.x,
     y: coordinates.y,
   })
-  const [textValue, setTextValue] = useState(value)
+  //const [textValue, setTextValue] = useState(value)
 
   const { isDragging } = useDragAndDrop(refBlock, setCoords, coords)
   const { size, onMouseDownResize } = useResizable(width, height)
-
-  const handleTextChange = (event: any) => {
-    setTextValue(event.target.value)
-  }
 
   useEffect(() => {
     if (props.updateObject) {
       props.updateObject({
         ...props.textBlockData,
         coordinates: coords,
-        value: textValue,
         width: size.width,
         height: size.height,
       })
@@ -45,7 +40,6 @@ export const TextBlock = (props: TextBlock) => {
     <div
       ref={refBlock}
       onClick={props.onClick}
-      onInput={handleTextChange}
       style={{
         position: 'absolute',
         color: color.hex,

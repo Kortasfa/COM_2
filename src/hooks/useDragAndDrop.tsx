@@ -27,11 +27,9 @@ export const useDragAndDrop = (
     }
 
     const handleMouseDown = (e: MouseEvent) => {
-      if (e.shiftKey) {
-        e.preventDefault()
-        startPos.current = { x: e.pageX, y: e.pageY }
-        setIsDragging(true)
-      }
+      e.preventDefault()
+      startPos.current = { x: e.pageX, y: e.pageY }
+      setIsDragging(true)
     }
 
     const handleEvents = (event: MouseEvent) => {
