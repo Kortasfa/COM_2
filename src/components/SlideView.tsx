@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, ObjectType, Presentation, Primitive, Slide, SlideObject } from '../types/types'
+import { ObjectType, Presentation, Slide, SlideObject } from '../types/types'
 import { TextBlock } from './Objects/TextBlock'
 import { ImageBlock } from './Objects/ImageBlock'
 import styles from './SlideView.module.css'

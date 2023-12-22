@@ -16,18 +16,20 @@ export const TextBlock = (props: TextBlock) => {
   const scalePercent = props.scale / 100
 
   const refBlock = useRef<HTMLDivElement>(null)
+  const refSize = useRef<HTMLDivElement>(null)
+
   const [coords, setCoords] = useState({
     x: coordinates.x,
     y: coordinates.y,
   })
+
   const [size, setSize] = useState({
     width: coordinates.x,
     height: coordinates.y,
   })
-  //const [textValue, setTextValue] = useState(value)
 
   const { isDragging } = useDragAndDrop(refBlock, setCoords, coords)
-  const { isResizing } = useResizable(refBlock, size, setSize)
+  const { isResizing } = useResizable(refSize, size, setSize)
 
   useEffect(() => {
     if (props.updateObject) {
@@ -42,7 +44,7 @@ export const TextBlock = (props: TextBlock) => {
 
   return (
     <div
-      //ref={refBlock}
+      ref={refBlock}
       onClick={props.onClick}
       style={{
         position: 'absolute',
@@ -56,12 +58,13 @@ export const TextBlock = (props: TextBlock) => {
         left: coordinates.x * scalePercent,
         opacity: color.opacity,
         outline: props.isSelected ? '1px solid blue' : 'none',
-        //cursor: isDragging ? 'grabbing' : 'grab',
+        cursor: isDragging ? 'grabbing' : 'grab',
       }}
     >
       {value}
       {props.isSelected && (
         <div
+          ref={refSize}
           style={{
             width: 10 * scalePercent + 'px',
             height: 10 * scalePercent + 'px',

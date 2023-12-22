@@ -6,7 +6,7 @@ export const useDeleteSlide = (
   setSelectedSlideId?: (arg0: string) => void,
   selectedSlideId?: string,
 ) => {
-  const deleteSlide = () => {
+  return () => {
     if (!selectedSlideId) return
 
     const slideIndex = presentationData.slides.findIndex((slide) => slide.id === selectedSlideId)
@@ -30,8 +30,6 @@ export const useDeleteSlide = (
       setSelectedSlideId(previousSlideId)
     }
   }
-
-  return deleteSlide
 }
 
 export default useDeleteSlide

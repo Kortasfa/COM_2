@@ -11,6 +11,8 @@ import { useAddPrimitive } from '../../hooks/menu/objectsManager/useAddPrimitive
 import { Loader } from './Loader/Loader'
 import { LoaderImage } from './LoaderImage/LoaderImage'
 import { useChangeColor } from '../../hooks/menu/slideManager/useChangeColor'
+import { useChangeFont } from '../../hooks/menu/objectsManager/useChangeFontFamily'
+import { Fonts } from './Fonts/Fonts'
 
 interface Menu {
   selectedObjectId?: string
@@ -36,6 +38,7 @@ const Menu = ({
   const addPrimitive = useAddPrimitive(presentationData, updatePresentationData, selectedSlideId)
   const deleteObject = useDeleteObject(presentationData, updatePresentationData, selectedObjectId)
   const changeColor = useChangeColor(presentationData, updatePresentationData, selectedSlideId)
+  const changeFont = useChangeFont(presentationData, updatePresentationData, selectedObjectId, selectedSlideId)
   const { error, handleFileChange } = useImportFileHandler(updatePresentationData)
   const { name } = presentationData
 
@@ -77,6 +80,7 @@ const Menu = ({
       <button className={styles.menuButton} onClick={deleteObject}>
         Удалить объект
       </button>
+      <Fonts changeFont={changeFont} />
       <Loader handleFileChange={handleFileChange} error={error} presentationData={presentationData} />
       <button onClick={() => changeColor('green')}>🟢</button>
       <button onClick={() => changeColor('red')}>🔴</button>
