@@ -1,7 +1,7 @@
-import { Image, Primitive, Text } from '../../types/types'
+import { Text } from '../../types/types'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
-import useResizable from '../../hooks/useResizable'
+import { useResizable } from '../../hooks/useResizable'
 
 interface TextBlock {
   textBlockData: Text
@@ -20,10 +20,14 @@ export const TextBlock = (props: TextBlock) => {
     x: coordinates.x,
     y: coordinates.y,
   })
+  const [size, setSize] = useState({
+    width: coordinates.x,
+    height: coordinates.y,
+  })
   //const [textValue, setTextValue] = useState(value)
 
   const { isDragging } = useDragAndDrop(refBlock, setCoords, coords)
-  const { size, onMouseDownResize } = useResizable(width, height)
+  const { isResizing } = useResizable(refBlock, size, setSize)
 
   useEffect(() => {
     if (props.updateObject) {
@@ -38,7 +42,7 @@ export const TextBlock = (props: TextBlock) => {
 
   return (
     <div
-      ref={refBlock}
+      //ref={refBlock}
       onClick={props.onClick}
       style={{
         position: 'absolute',
@@ -52,13 +56,12 @@ export const TextBlock = (props: TextBlock) => {
         left: coordinates.x * scalePercent,
         opacity: color.opacity,
         outline: props.isSelected ? '1px solid blue' : 'none',
-        cursor: isDragging ? 'grabbing' : 'grab',
+        //cursor: isDragging ? 'grabbing' : 'grab',
       }}
     >
       {value}
       {props.isSelected && (
         <div
-          onMouseDown={onMouseDownResize}
           style={{
             width: 10 * scalePercent + 'px',
             height: 10 * scalePercent + 'px',

@@ -1,62 +1,57 @@
-import { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
-const useResizable = (initialWidth = 100, initialHeight = 100) => {
+export const useResizable = (
+  ref: React.RefObject<HTMLElement>,
+  size: { width: number; height: number },
+  setSize: React.Dispatch<React.SetStateAction<{ width: number; height: number }>>,
+) => {
   const [isResizing, setIsResizing] = useState(false)
-  const [size, setSize] = useState({
-    width: initialWidth,
-    height: initialHeight,
-  })
-  const [initialSize, setInitialSize] = useState({
-    width: initialWidth,
-    height: initialHeight,
-  })
-  const [initialMousePosition, setInitialMousePosition] = useState({
-    x: 0,
-    y: 0,
-  })
-
-  const onMouseDownResize = useCallback(
-    (e: { preventDefault: () => void; clientX: any; clientY: any }) => {
-      e.preventDefault()
-      setIsResizing(true)
-      setInitialMousePosition({ x: e.clientX, y: e.clientY })
-      setInitialSize(size)
-    },
-    [size],
-  )
-
-  const onMouseMoveResize = useCallback(
-    (e: { clientX: number; clientY: number }) => {
-      if (!isResizing) return
-      const dx = e.clientX - initialMousePosition.x
-      const dy = e.clientY - initialMousePosition.y
-      requestAnimationFrame(() => {
-        setSize({
-          width: Math.max(10, initialSize.width + dx),
-          height: Math.max(10, initialSize.height + dy),
-        })
-      })
-    },
-    [isResizing, initialMousePosition, initialSize],
-  )
-
-  const onMouseUpResize = useCallback(() => {
-    setIsResizing(false)
-  }, [])
+  const startSize = useRef<{ width: number; height: number } | null>(null)
 
   useEffect(() => {
-    if (isResizing) {
-      window.addEventListener('mousemove', onMouseMoveResize)
-      window.addEventListener('mouseup', onMouseUpResize)
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isResizing && startSize.current) {
+        const newWidth = startSize.current.width + e.pageX - startSize.current.width
+        const newHeight = startSize.current.height + e.pageY - startSize.current.height
+        setSize({ width: newWidth, height: newHeight })
+      }
     }
 
-    return () => {
-      window.removeEventListener('mousemove', onMouseMoveResize)
-      window.removeEventListener('mouseup', onMouseUpResize)
+    const handleMouseUp = () => {
+      if (isResizing) {
+        setIsResizing(false)
+      }
+      startSize.current = null
     }
-  }, [isResizing, onMouseMoveResize, onMouseUpResize])
 
-  return { size, onMouseDownResize }
+    const handleMouseDown = (e: MouseEvent) => {
+      e.preventDefault()
+      startSize.current = { width: size.width, height: size.height }
+      setIsResizing(true)
+    }
+
+    const handleEvents = (event: MouseEvent) => {
+      if (ref.current) {
+        if (event.type === 'mousedown') {
+          handleMouseDown(event)
+          document.addEventListener('mousemove', handleMouseMove)
+          document.addEventListener('mouseup', handleMouseUp)
+        } else if (event.type === 'mouseup') {
+          document.removeEventListener('mousemove', handleMouseMove)
+          document.removeEventListener('mouseup', handleMouseUp)
+        }
+      }
+    }
+
+    if (ref.current) {
+      ref.current.addEventListener('mousedown', handleEvents)
+      return () => {
+        ref.current?.removeEventListener('mousedown', handleEvents)
+        document.removeEventListener('mousemove', handleMouseMove)
+        document.removeEventListener('mouseup', handleMouseUp)
+      }
+    }
+  }, [ref, isResizing])
+
+  return { isResizing }
 }
-
-export default useResizable

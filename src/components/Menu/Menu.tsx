@@ -10,6 +10,7 @@ import { useDeleteObject } from '../../hooks/menu/objectsManager/useDeleteObject
 import { useAddPrimitive } from '../../hooks/menu/objectsManager/useAddPrimitive'
 import { Loader } from './Loader/Loader'
 import { LoaderImage } from './LoaderImage/LoaderImage'
+import { useChangeColor } from '../../hooks/menu/slideManager/useChangeColor'
 
 interface Menu {
   selectedObjectId?: string
@@ -34,6 +35,7 @@ const Menu = ({
   const addText = useAddText(presentationData, updatePresentationData, selectedSlideId)
   const addPrimitive = useAddPrimitive(presentationData, updatePresentationData, selectedSlideId)
   const deleteObject = useDeleteObject(presentationData, updatePresentationData, selectedObjectId)
+  const changeColor = useChangeColor(presentationData, updatePresentationData, selectedSlideId)
   const { error, handleFileChange } = useImportFileHandler(updatePresentationData)
   const { name } = presentationData
 
@@ -55,7 +57,7 @@ const Menu = ({
           if (setSelectedObjectId) {
             setSelectedObjectId('')
           }
-          addText('text', { x: 10, y: 30 }, { width: 40, height: 40 })
+          addText('text', { x: 10, y: 30 }, { width: 100, height: 100 })
         }}
       >
         Добавить текст
@@ -66,16 +68,19 @@ const Menu = ({
           if (setSelectedObjectId) {
             setSelectedObjectId('')
           }
-          addPrimitive(Figures.RECTANGLE, { x: 30, y: 50 }, { width: 20, height: 40 })
+          addPrimitive(Figures.RECTANGLE, { x: 30, y: 50 }, { width: 100, height: 100 })
         }}
       >
         Добавить примитив
       </button>
-      <LoaderImage addImage={addImage} setSelectedObjectId={setSelectedObjectId}/>
+      <LoaderImage addImage={addImage} setSelectedObjectId={setSelectedObjectId} />
       <button className={styles.menuButton} onClick={deleteObject}>
         Удалить объект
       </button>
       <Loader handleFileChange={handleFileChange} error={error} presentationData={presentationData} />
+      <button onClick={() => changeColor('green')}>🟢</button>
+      <button onClick={() => changeColor('red')}>🔴</button>
+      <button onClick={() => changeColor('yellow')}>🟡</button>
     </div>
   )
 }

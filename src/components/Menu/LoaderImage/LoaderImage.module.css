@@ -1,14 +1,14 @@
 .loaderImage {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .button {
-    padding: 10px;
-    margin-right: 10px;
-    border-radius: 10px;
-    background-color: #3498db;
-    color: #ffffff;
-    border: none;
-    cursor: pointer;
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 10px;
+  background-color: #3498db;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
 }
