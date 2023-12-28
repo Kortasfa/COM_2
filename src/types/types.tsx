@@ -12,10 +12,8 @@ enum ObjectType {
 
 type SlideObject = {
   id: string
-  coordinates: {
-    x: number
-    y: number
-  }
+  x: number
+  y: number
   width: number
   height: number
 }

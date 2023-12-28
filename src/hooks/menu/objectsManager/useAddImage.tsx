@@ -8,10 +8,8 @@ export function useAddImage(
   return (base64Image: string) => {
     const newImage: Image = {
       id: `image-${Math.random().toString(36).substr(2, 9)}`,
-      coordinates: {
-        x: 0,
-        y: 0,
-      },
+      x: 0,
+      y: 0,
       width: 100,
       height: 100,
       type: ObjectType.IMAGE,

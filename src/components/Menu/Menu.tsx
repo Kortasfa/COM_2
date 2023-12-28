@@ -13,6 +13,8 @@ import { LoaderImage } from './LoaderImage/LoaderImage'
 import { useChangeColor } from '../../hooks/menu/slideManager/useChangeColor'
 import { useChangeFont } from '../../hooks/menu/objectsManager/useChangeFontFamily'
 import { Fonts } from './Fonts/Fonts'
+import primitiveImage from '../../images/primitive.png'
+import textImage from '../../images/text.png'
 
 interface Menu {
   selectedObjectId?: string
@@ -47,44 +49,46 @@ const Menu = ({
   }, [name])
 
   return (
-    <div className={styles.menu}>
-      <button className={styles.menuButton} onClick={addSlide}>
-        Добавить слайд
-      </button>
-      <button className={styles.menuButton} onClick={deleteSlide}>
-        Удалить слайд
-      </button>
-      <button
-        className={styles.menuButton}
-        onClick={() => {
-          if (setSelectedObjectId) {
-            setSelectedObjectId('')
-          }
-          addText('text', { x: 10, y: 30 }, { width: 100, height: 100 })
-        }}
-      >
-        Добавить текст
-      </button>
-      <button
-        className={styles.menuButton}
-        onClick={() => {
-          if (setSelectedObjectId) {
-            setSelectedObjectId('')
-          }
-          addPrimitive(Figures.RECTANGLE, { x: 30, y: 50 }, { width: 100, height: 100 })
-        }}
-      >
-        Добавить примитив
-      </button>
-      <LoaderImage addImage={addImage} setSelectedObjectId={setSelectedObjectId} />
-      <button className={styles.menuButton} onClick={deleteObject}>
-        Удалить объект
-      </button>
-      <Fonts changeFont={changeFont} />
-      <Loader handleFileChange={handleFileChange} error={error} presentationData={presentationData} />
-      <button onClick={() => changeColor('green')}>🟢</button>
-      <button onClick={() => changeColor('red')}>🔴</button>
-      <button onClick={() => changeColor('yellow')}>🟡</button>
+    <div>
+      <h4>New Presentation</h4>
+      <div className={styles.menu}>
+        <button className={styles.menuButton} onClick={addSlide}>
+          +
+        </button>
+        <button className={styles.menuButton} onClick={deleteSlide}>
+          -
+        </button>
+        <img
+          src={textImage}
+          className={styles.menuButton}
+          onClick={() => {
+            if (setSelectedObjectId) {
+              setSelectedObjectId('')
+            }
+            addText()
+          }}
+        />
+        <img
+          src={primitiveImage}
+          className={styles.menuButton}
+          onClick={() => {
+            if (setSelectedObjectId) {
+              setSelectedObjectId('')
+            }
+            addPrimitive(Figures.RECTANGLE)
+          }}
+          alt={'primitive'}
+        />
+        <button className={styles.menuButton} onClick={deleteObject}>
+          Удалить объект
+        </button>
+        <LoaderImage addImage={addImage} setSelectedObjectId={setSelectedObjectId} />
+        <Fonts changeFont={changeFont} />
+        <Loader handleFileChange={handleFileChange} error={error} presentationData={presentationData} />
+        <button onClick={() => changeColor('green')}>🟢</button>
+        <button onClick={() => changeColor('red')}>🔴</button>
+        <button onClick={() => changeColor('yellow')}>🟡</button>
+      </div>
     </div>
   )
 }

@@ -11,48 +11,90 @@ interface ImageBlock {
 }
 
 export const ImageBlock = (props: ImageBlock) => {
-  const { coordinates, width, height, base64 } = props.imageBlockData
+  const { x, y, width, height, base64 } = props.imageBlockData
   const scalePercent = props.scale / 100
 
   const refBlock = useRef<HTMLDivElement>(null)
-  const [coords, setCoords] = useState({
-    x: coordinates.x,
-    y: coordinates.y,
+  const refSize = useRef<HTMLDivElement>(null)
+  // const { isDragging } = useDragAndDrop(refBlock, setCoords, coords)
+
+  const [posBlock, setPosBlock] = useState({
+    x: x,
+    y: y,
   })
 
-  const { isDragging } = useDragAndDrop(refBlock, setCoords, coords)
+  const [posSize, setPosSize] = useState({
+    x: width,
+    y: height,
+  })
+
+  const { isDragging } = useDragAndDrop(refBlock, setPosBlock, posBlock, 'pos')
+  useDragAndDrop(refSize, setPosSize, posSize, 'size')
+
+  const [isEditing, setIsEditing] = useState(false)
 
   useEffect(() => {
     if (props.updateObject) {
       props.updateObject({
         ...props.imageBlockData,
-        coordinates: coords,
+        x: posBlock.x,
+        y: posBlock.y,
+        width: posSize.x,
+        height: posSize.y,
       })
     }
-  }, [coords])
+  }, [posBlock, posSize])
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (scalePercent === 1) {
+      setIsEditing(true)
+      if (props.onClick && !props.isSelected) {
+        props.onClick(e)
+      }
+    }
+  }
 
   return (
-    <div
-      ref={refBlock}
-      onClick={props.onClick}
-      style={{
-        width: width * scalePercent,
-        height: height * scalePercent,
-        top: coordinates.y * scalePercent,
-        left: coordinates.x * scalePercent,
-        position: 'absolute',
-        outline: props.isSelected ? '1px solid blue' : 'none',
-        cursor: isDragging ? 'grabbing' : 'grab',
-      }}
-    >
+    <div>
+      <div
+        ref={refBlock}
+        style={{
+          position: 'absolute',
+          width: posSize.x * scalePercent + 4,
+          height: posSize.y * scalePercent + 2,
+          top: posBlock.y * scalePercent - 4,
+          left: posBlock.x * scalePercent - 5,
+          border: '4px solid blue',
+          cursor: isDragging ? 'grabbing' : 'grab',
+          visibility: isEditing ? 'visible' : 'hidden',
+        }}
+      ></div>
       <img
+        onClick={handleClick}
         src={base64}
         style={{
-          width: width * scalePercent,
-          height: height * scalePercent,
+          position: 'absolute',
+          width: width * scalePercent - 4,
+          height: height * scalePercent - 5,
+          top: posBlock.y * scalePercent,
+          left: posBlock.x * scalePercent,
         }}
         alt={'image'}
       />
+      <div
+        ref={refSize}
+        style={{
+          position: 'absolute',
+          width: '10px',
+          height: '10px',
+          top: (posBlock.y + posSize.y) * scalePercent - 7,
+          left: (posBlock.x + posSize.x) * scalePercent - 8,
+          background: 'blue',
+          cursor: 'nwse-resize',
+          border: '1px solid white',
+          visibility: isEditing ? 'visible' : 'hidden',
+        }}
+      ></div>
     </div>
   )
 }

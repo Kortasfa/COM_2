@@ -3,7 +3,7 @@ import { Presentation, Slide, ObjectType, Color } from '../../../types/types'
 export function useChangeFont(
   presentationData: Presentation,
   updatePresentationData: (data: Presentation) => void,
-  selectedObjectId?: string,
+  selectedObjectId?: string | null,
   selectedSlideId?: string,
 ) {
   return ({ fontFamily, fontSize, color }: { fontFamily: string; fontSize: number; color: Color }) => {

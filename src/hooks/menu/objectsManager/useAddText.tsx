@@ -5,21 +5,15 @@ export function useAddText(
   updatePresentationData: (data: Presentation) => void,
   selectedSlideId?: string,
 ) {
-  return (
-    textValue: string,
-    initialPosition: { x: number; y: number },
-    initialSize: { width: number; height: number },
-  ) => {
+  return () => {
     const newTextBlock: Text = {
       id: `text-${Math.random().toString(36).substr(2, 9)}`,
-      coordinates: {
-        x: initialPosition.x,
-        y: initialPosition.y,
-      },
-      width: initialSize.width,
-      height: initialSize.height,
+      x: 100,
+      y: 100,
+      width: 50,
+      height: 50,
       type: ObjectType.TEXTBLOCK,
-      value: textValue,
+      value: 'New Text',
       color: { hex: '#000000', opacity: 1 },
       fontSize: 16,
       fontFamily: 'Arial',

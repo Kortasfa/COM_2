@@ -1,59 +1,66 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-export const useDragAndDrop = (
+interface Position {
+  x: number
+  y: number
+}
+
+const useDragAndDrop = (
   ref: React.RefObject<HTMLElement>,
-  setPos: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>,
-  initialPos: { x: number; y: number },
+  setPos: React.Dispatch<React.SetStateAction<Position>>,
+  initialPos: Position,
+  type: string,
 ) => {
   const [isDragging, setIsDragging] = useState(false)
-  const startPos = useRef<{ x: number; y: number } | null>(null)
+  const startPos = useRef<Position | null>(null)
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (isDragging && startPos.current) {
-        const newSize = {
-          x: initialPos.x + e.pageX - startPos.current.x,
-          y: initialPos.y + e.pageY - startPos.current.y,
+        const delta = {
+          x: e.pageX - startPos.current.x,
+          y: e.pageY - startPos.current.y,
         }
-        setPos(newSize)
+        const newCoords = {
+          x: initialPos.x + delta.x,
+          y: initialPos.y + delta.y,
+        }
+
+        setPos(newCoords)
       }
     }
 
     const handleMouseUp = () => {
       if (isDragging) {
+        startPos.current = null
+        document.removeEventListener('mousemove', handleMouseMove)
+        document.removeEventListener('mouseup', handleMouseUp)
         setIsDragging(false)
       }
-      startPos.current = null
     }
 
     const handleMouseDown = (e: MouseEvent) => {
       e.preventDefault()
       startPos.current = { x: e.pageX, y: e.pageY }
       setIsDragging(true)
-    }
-
-    const handleEvents = (event: MouseEvent) => {
-      if (ref.current) {
-        if (event.type === 'mousedown') {
-          handleMouseDown(event)
-          document.addEventListener('mousemove', handleMouseMove)
-          document.addEventListener('mouseup', handleMouseUp)
-        } else if (event.type === 'mouseup') {
-          document.removeEventListener('mousemove', handleMouseMove)
-          document.removeEventListener('mouseup', handleMouseUp)
-        }
-      }
+      document.addEventListener('mousemove', handleMouseMove)
+      document.addEventListener('mouseup', handleMouseUp)
     }
 
     if (ref.current) {
-      ref.current.addEventListener('mousedown', handleEvents)
-      return () => {
-        ref.current?.removeEventListener('mousedown', handleEvents)
-        document.removeEventListener('mousemove', handleMouseMove)
-        document.removeEventListener('mouseup', handleMouseUp)
+      ref.current.addEventListener('mousedown', handleMouseDown)
+      document.addEventListener('mouseup', handleMouseUp)
+      document.addEventListener('mousemove', handleMouseMove)
+    }
+
+    return () => {
+      if (ref.current) {
+        ref.current.removeEventListener('mousedown', handleMouseDown)
       }
     }
   }, [ref, isDragging])
 
   return { isDragging }
 }
+
+export { useDragAndDrop }

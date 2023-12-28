@@ -9,7 +9,7 @@ interface SlideView {
   scale?: number
   onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
   isSlideSelected?: boolean
-  selectedObjectId?: string
+  selectedObjectId?: string | null
   onObjectClick?: (objectId: string) => void
   updateObject?: (data: SlideObject) => void
   selectionSlideClass?: string

@@ -1,7 +1,7 @@
 import { Text } from '../../types/types'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
-import { useResizable } from '../../hooks/useResizable'
+import { useResize } from '../../hooks/useResize'
 
 interface TextBlock {
   textBlockData: Text
@@ -12,70 +12,98 @@ interface TextBlock {
 }
 
 export const TextBlock = (props: TextBlock) => {
-  const { value, color, fontSize, fontFamily, coordinates, width, height } = props.textBlockData
+  const { value, color, fontSize, fontFamily, x, y, width, height } = props.textBlockData
   const scalePercent = props.scale / 100
 
   const refBlock = useRef<HTMLDivElement>(null)
   const refSize = useRef<HTMLDivElement>(null)
 
-  const [coords, setCoords] = useState({
-    x: coordinates.x,
-    y: coordinates.y,
+  const [posBlock, setPosBlock] = useState({
+    x: x,
+    y: y,
   })
 
-  const [size, setSize] = useState({
-    width: coordinates.x,
-    height: coordinates.y,
+  const [posSize, setPosSize] = useState({
+    x: width,
+    y: height,
   })
 
-  const { isDragging } = useDragAndDrop(refBlock, setCoords, coords)
-  const { isResizing } = useResizable(refSize, size, setSize)
+  const { isDragging } = useDragAndDrop(refBlock, setPosBlock, posBlock, 'pos')
+  useDragAndDrop(refSize, setPosSize, posSize, 'size')
+
+  const [isEditing, setIsEditing] = useState(false)
+  const [textValue, setTextValue] = useState(value)
+
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (scalePercent === 1) {
+      setIsEditing(true)
+      if (props.onClick && !props.isSelected) {
+        props.onClick(e)
+      }
+    }
+  }
 
   useEffect(() => {
     if (props.updateObject) {
       props.updateObject({
         ...props.textBlockData,
-        coordinates: coords,
-        width: size.width,
-        height: size.height,
+        x: posBlock.x,
+        y: posBlock.y,
+        value: textValue,
+        width: posSize.x,
+        height: posSize.y,
       })
     }
-  }, [coords])
+  }, [posBlock, posSize, textValue])
 
   return (
-    <div
-      ref={refBlock}
-      onClick={props.onClick}
-      style={{
-        position: 'absolute',
-        color: color.hex,
-        width: width * scalePercent,
-        height: height * scalePercent,
-        fontSize: fontSize * scalePercent,
-        fontFamily: fontFamily,
-        lineHeight: (fontSize + 10) * scalePercent + 'px',
-        top: coordinates.y * scalePercent,
-        left: coordinates.x * scalePercent,
-        opacity: color.opacity,
-        outline: props.isSelected ? '1px solid blue' : 'none',
-        cursor: isDragging ? 'grabbing' : 'grab',
-      }}
-    >
-      {value}
-      {props.isSelected && (
-        <div
-          ref={refSize}
-          style={{
-            width: 10 * scalePercent + 'px',
-            height: 10 * scalePercent + 'px',
-            position: 'absolute',
-            bottom: 0,
-            right: 0,
-            cursor: 'nwse-resize',
-            backgroundColor: 'blue',
-          }}
-        />
-      )}
+    <div>
+      <div
+        ref={refBlock}
+        style={{
+          position: 'absolute',
+          width: posSize.x * scalePercent + 4,
+          height: posSize.y * scalePercent + 2,
+          top: posBlock.y * scalePercent - 4,
+          left: posBlock.x * scalePercent - 5,
+          border: '4px solid blue',
+          cursor: isDragging ? 'grabbing' : 'grab',
+          visibility: isEditing ? 'visible' : 'hidden',
+        }}
+      ></div>
+      <div
+        onClick={handleClick}
+        contentEditable={isEditing}
+        suppressContentEditableWarning={true}
+        style={{
+          position: 'absolute',
+          color: color.hex,
+          width: posSize.x * scalePercent + 4,
+          height: posSize.y * scalePercent + 2,
+          fontSize: fontSize * scalePercent,
+          fontFamily: fontFamily,
+          lineHeight: (fontSize + 10) * scalePercent + 'px',
+          top: posBlock.y * scalePercent,
+          left: posBlock.x * scalePercent,
+          opacity: color.opacity,
+        }}
+      >
+        {textValue}
+      </div>
+      <div
+        ref={refSize}
+        style={{
+          position: 'absolute',
+          width: '10px',
+          height: '10px',
+          top: (posBlock.y + posSize.y) * scalePercent - 7,
+          left: (posBlock.x + posSize.x) * scalePercent - 8,
+          background: 'blue',
+          cursor: 'nwse-resize',
+          border: '1px solid white',
+          visibility: isEditing ? 'visible' : 'hidden',
+        }}
+      ></div>
     </div>
   )
 }

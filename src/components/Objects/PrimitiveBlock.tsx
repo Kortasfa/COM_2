@@ -11,23 +11,24 @@ interface PrimitiveBlock {
 }
 
 export const PrimitiveBlock = (props: PrimitiveBlock) => {
-  const { primitiveType, outlineColor, fillColor, coordinates, width, height } = props.primitiveBlockData
+  const { primitiveType, outlineColor, fillColor, x, y, width, height } = props.primitiveBlockData
   const scalePercent = props.scale / 100
   let shapeElement = null
 
   const refBlock = useRef<HTMLDivElement>(null)
   const [coords, setCoords] = useState({
-    x: coordinates.x,
-    y: coordinates.y,
+    x: x,
+    y: y,
   })
 
-  const { isDragging } = useDragAndDrop(refBlock, setCoords, coords)
+  //const { isDragging } = useDragAndDrop(refBlock, setCoords, coords)
 
   useEffect(() => {
     if (props.updateObject) {
       props.updateObject({
         ...props.primitiveBlockData,
-        coordinates: coords,
+        x: coords.x,
+        y: coords.y,
       })
     }
   }, [coords])
@@ -76,12 +77,12 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
         onClick={props.onClick}
         style={{
           position: 'absolute',
-          left: coordinates.x * scalePercent,
-          top: coordinates.y * scalePercent,
+          left: coords.x * scalePercent,
+          top: coords.y * scalePercent,
           width: width * scalePercent,
           height: height * scalePercent,
           outline: props.isSelected ? '1px solid blue' : 'none',
-          cursor: isDragging ? 'grabbing' : 'grab',
+          //cursor: isDragging ? 'grabbing' : 'grab',
         }}
       >
         {shapeElement}
