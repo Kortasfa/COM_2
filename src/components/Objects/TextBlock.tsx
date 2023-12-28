@@ -1,7 +1,6 @@
 import { Text } from '../../types/types'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
-import { useResize } from '../../hooks/useResize'
 
 interface TextBlock {
   textBlockData: Text
@@ -66,7 +65,7 @@ export const TextBlock = (props: TextBlock) => {
           height: posSize.y * scalePercent + 2,
           top: posBlock.y * scalePercent - 4,
           left: posBlock.x * scalePercent - 5,
-          border: '4px solid blue',
+          outline: '2px solid red',
           cursor: isDragging ? 'grabbing' : 'grab',
           visibility: isEditing ? 'visible' : 'hidden',
         }}
@@ -78,13 +77,13 @@ export const TextBlock = (props: TextBlock) => {
         style={{
           position: 'absolute',
           color: color.hex,
-          width: posSize.x * scalePercent + 4,
-          height: posSize.y * scalePercent + 2,
+          width: width * scalePercent + 4,
+          height: height * scalePercent + 2,
           fontSize: fontSize * scalePercent,
           fontFamily: fontFamily,
           lineHeight: (fontSize + 10) * scalePercent + 'px',
-          top: posBlock.y * scalePercent,
-          left: posBlock.x * scalePercent,
+          top: y * scalePercent,
+          left: x * scalePercent,
           opacity: color.opacity,
         }}
       >
@@ -96,11 +95,10 @@ export const TextBlock = (props: TextBlock) => {
           position: 'absolute',
           width: '10px',
           height: '10px',
-          top: (posBlock.y + posSize.y) * scalePercent - 7,
-          left: (posBlock.x + posSize.x) * scalePercent - 8,
-          background: 'blue',
+          top: (posBlock.y + posSize.y) * scalePercent - 10,
+          left: (posBlock.x + posSize.x) * scalePercent - 10,
+          background: 'red',
           cursor: 'nwse-resize',
-          border: '1px solid white',
           visibility: isEditing ? 'visible' : 'hidden',
         }}
       ></div>

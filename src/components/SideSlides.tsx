@@ -16,7 +16,7 @@ export const SideSlides = (props: SideSlides) => {
         <SideSlide
           slide={slide}
           key={slide.id}
-          scale={20}
+          scale={16}
           index={index + 1}
           onClick={() => props.onSlideClick(slide.id)}
           isSlideSelected={props.selectedSlideId === slide.id}

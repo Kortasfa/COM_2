@@ -16,7 +16,6 @@ export const ImageBlock = (props: ImageBlock) => {
 
   const refBlock = useRef<HTMLDivElement>(null)
   const refSize = useRef<HTMLDivElement>(null)
-  // const { isDragging } = useDragAndDrop(refBlock, setCoords, coords)
 
   const [posBlock, setPosBlock] = useState({
     x: x,
@@ -57,41 +56,45 @@ export const ImageBlock = (props: ImageBlock) => {
   return (
     <div>
       <div
-        ref={refBlock}
         style={{
           position: 'absolute',
           width: posSize.x * scalePercent + 4,
           height: posSize.y * scalePercent + 2,
           top: posBlock.y * scalePercent - 4,
           left: posBlock.x * scalePercent - 5,
-          border: '4px solid blue',
-          cursor: isDragging ? 'grabbing' : 'grab',
+          outline: '2px solid red',
           visibility: isEditing ? 'visible' : 'hidden',
         }}
       ></div>
-      <img
-        onClick={handleClick}
-        src={base64}
+      <div
+        ref={refBlock}
         style={{
-          position: 'absolute',
-          width: width * scalePercent - 4,
-          height: height * scalePercent - 5,
-          top: posBlock.y * scalePercent,
-          left: posBlock.x * scalePercent,
+          cursor: isDragging ? 'grabbing' : 'grab',
         }}
-        alt={'image'}
-      />
+      >
+        <img
+          onClick={handleClick}
+          src={base64}
+          style={{
+            position: 'absolute',
+            width: width * scalePercent - 4,
+            height: height * scalePercent - 5,
+            top: y * scalePercent,
+            left: x * scalePercent,
+          }}
+          alt={'image'}
+        />
+      </div>
       <div
         ref={refSize}
         style={{
           position: 'absolute',
           width: '10px',
           height: '10px',
-          top: (posBlock.y + posSize.y) * scalePercent - 7,
-          left: (posBlock.x + posSize.x) * scalePercent - 8,
-          background: 'blue',
+          top: (posBlock.y + posSize.y) * scalePercent - 10,
+          left: (posBlock.x + posSize.x) * scalePercent - 10,
+          background: 'red',
           cursor: 'nwse-resize',
-          border: '1px solid white',
           visibility: isEditing ? 'visible' : 'hidden',
         }}
       ></div>
