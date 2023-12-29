@@ -17,6 +17,7 @@
     "react-redux": "^9.0.4",
     "react-scripts": "^5.0.1",
     "redux": "^5.0.0",
+    "reselect": "^5.0.1",
     "root": "github:react-buddy/ide-toolbox",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
@@ -48,6 +49,7 @@
     ]
   },
   "devDependencies": {
+    "@types/reselect": "^2.2.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
     "prettier": "3.0.3",

@@ -7,38 +7,61 @@ interface PrimitiveBlock {
   scale: number
   isSelected: boolean
   onClick?: React.MouseEventHandler<SVGSVGElement> | undefined
-  updateObject?: (data: SlideObject) => void
+  updateObject?: (data: Primitive) => void
 }
 
 export const PrimitiveBlock = (props: PrimitiveBlock) => {
-  const { primitiveType, outlineColor, fillColor, coordinates, width, height } = props.primitiveBlockData
+  const { primitiveType, outlineColor, fillColor, x, y, width, height } = props.primitiveBlockData
   const scalePercent = props.scale / 100
   let shapeElement = null
 
   const refBlock = useRef<HTMLDivElement>(null)
-  const [coords, setCoords] = useState({
-    x: coordinates.x,
-    y: coordinates.y,
+  const refSize = useRef<HTMLDivElement>(null)
+
+  const [posBlock, setPosBlock] = useState({
+    x: x,
+    y: y,
   })
 
-  const { isDragging } = useDragAndDrop(refBlock, setCoords, coords)
+  const [posSize, setPosSize] = useState({
+    x: width,
+    y: height,
+  })
+
+  const { isDragging } = useDragAndDrop(refBlock, setPosBlock, posBlock, 'pos')
+  useDragAndDrop(refSize, setPosSize, posSize, 'size')
+
+  const [isEditing, setIsEditing] = useState(false)
+
+  const handleClick = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+    if (scalePercent === 1) {
+      setIsEditing(true)
+      if (props.onClick && !props.isSelected) {
+        props.onClick(e)
+      }
+    }
+  }
 
   useEffect(() => {
     if (props.updateObject) {
       props.updateObject({
         ...props.primitiveBlockData,
-        coordinates: coords,
+        x: posBlock.x,
+        y: posBlock.y,
+        width: posSize.x,
+        height: posSize.y,
       })
     }
-  }, [coords])
+  }, [posBlock, posSize])
 
   switch (primitiveType) {
     case Figures.CIRCLE:
       shapeElement = (
-        <circle
+        <ellipse
           cx={(width / 2) * scalePercent}
           cy={(height / 2) * scalePercent}
-          r={(width / 2) * scalePercent}
+          rx={(width / 2) * scalePercent}
+          ry={(height / 2) * scalePercent}
           fill={fillColor.hex}
           stroke={outlineColor?.hex || 'transparent'}
           strokeWidth={2 * scalePercent}
@@ -71,21 +94,46 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
   }
 
   return (
-    <div ref={refBlock}>
-      <svg
-        onClick={props.onClick}
+    <div>
+      <div
         style={{
           position: 'absolute',
-          left: coordinates.x * scalePercent,
-          top: coordinates.y * scalePercent,
           width: width * scalePercent,
           height: height * scalePercent,
-          outline: props.isSelected ? '1px solid blue' : 'none',
-          cursor: isDragging ? 'grabbing' : 'grab',
+          top: y * scalePercent,
+          left: x * scalePercent,
+          outline: '2px solid red',
+          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
-      >
-        {shapeElement}
-      </svg>
+      ></div>
+      <div ref={refBlock}>
+        <svg
+          onClick={handleClick}
+          style={{
+            position: 'absolute',
+            left: x * scalePercent,
+            top: y * scalePercent,
+            width: width * scalePercent,
+            height: height * scalePercent,
+            cursor: isDragging ? 'grabbing' : 'grab',
+          }}
+        >
+          {shapeElement}
+        </svg>
+      </div>
+      <div
+        ref={refSize}
+        style={{
+          position: 'absolute',
+          width: '10px',
+          height: '10px',
+          top: (posBlock.y + posSize.y) * scalePercent - 10,
+          left: (posBlock.x + posSize.x) * scalePercent - 10,
+          background: 'red',
+          cursor: 'nwse-resize',
+          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
+        }}
+      ></div>
     </div>
   )
 }

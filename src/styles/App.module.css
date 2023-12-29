@@ -9,7 +9,6 @@
   padding: 5px 10px 10px 20px;
   overflow: auto;
   gap: 10px;
-  height: 80vh;
   overflow-x: hidden;
 }
 
@@ -27,3 +26,4 @@
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
+

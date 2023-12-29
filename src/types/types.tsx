@@ -12,10 +12,8 @@ enum ObjectType {
 
 type SlideObject = {
   id: string
-  coordinates: {
-    x: number
-    y: number
-  }
+  x: number
+  y: number
   width: number
   height: number
 }
@@ -30,6 +28,8 @@ type Text = SlideObject & {
   color: Color
   fontSize: number
   fontFamily: string
+  fontWeight: string
+  fontStyle: string
   type: ObjectType.TEXTBLOCK
 }
 

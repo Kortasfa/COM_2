@@ -4,45 +4,50 @@ import { TextBlock } from './Objects/TextBlock'
 import { ImageBlock } from './Objects/ImageBlock'
 import styles from './SlideView.module.css'
 import { PrimitiveBlock } from './Objects/PrimitiveBlock'
+import { useAppSelector, useAppDispatch } from '../store/store'
+// import { selectObject, updateObject } from '../store/slide/slideActions'
+import { getSlides, selectSelectedObjectId, selectSelectedSlideId } from '../store/slide/selector' // Import your actions
 
-interface SlideView {
+interface SlideViewProps {
   slide: Slide
-  scale?: number
-  index?: number
-  onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
-  isSlideSelected?: boolean
-  selectedObjectId?: string
-  onObjectClick?: (objectId: string) => void
-  updateObject?: (data: SlideObject) => void
-  selectionSlideClass?: string
 }
 
-export const SlideView = (props: SlideView) => {
-  const { objects, background } = props.slide
+export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
+  const selectedObjectId = useAppSelector(selectSelectedObjectId)
+  const selectedSlideId = useAppSelector(selectSelectedSlideId)
+  // const dispatch = useAppDispatch()
+  const isSelectedSlide = slide.id === selectedSlideId
+  const { objects, background } = slide
+
+  // const handleObjectClick = (objectId: string) => {
+  //   dispatch(selectObject({ slideId: selectedSlideId, objectId }))
+  // }
+  //
+  // const handleUpdateObject = (data: SlideObject) => {
+  //   dispatch(updateObject({ slideId: selectedSlideId, objectId: selectedObjectId, updatedObject: data }))
+  // }
+  const handleObjectClick = (objectId: string) => {
+    console.log(objectId)
+  }
+
+  const handleUpdateObject = (data: SlideObject) => {
+    console.log(data)
+  }
+  console.log('slide', slide)
   return (
     <div>
-      <div
-        className={props.selectionSlideClass || styles.sideSlide}
-        style={{
-          backgroundColor: background.color.hex,
-          ...(props.isSlideSelected && {
-            outlineColor: '#3498db',
-            outlineWidth: '3px',
-          }),
-        }}
-        onClick={props.onClick}
-      >
-        {objects.map((object) => {
+      <div className={styles.selectionSlide}>
+        {slide.objects.map((object: any) => {
           switch (object.type) {
             case ObjectType.TEXTBLOCK:
               return (
                 <TextBlock
                   textBlockData={object}
                   key={object.id}
-                  scale={props.scale || 100}
-                  isSelected={object.id === props.selectedObjectId}
-                  onClick={() => props.onObjectClick && props.onObjectClick(object.id)}
-                  updateObject={props.updateObject}
+                  scale={100}
+                  isSelected={object.id === selectedObjectId}
+                  onClick={() => handleObjectClick(object.id)}
+                  updateObject={handleUpdateObject}
                 ></TextBlock>
               )
             case ObjectType.IMAGE:
@@ -50,10 +55,10 @@ export const SlideView = (props: SlideView) => {
                 <ImageBlock
                   imageBlockData={object}
                   key={object.id}
-                  scale={props.scale || 100}
-                  isSelected={object.id === props.selectedObjectId}
-                  onClick={() => props.onObjectClick && props.onObjectClick(object.id)}
-                  updateObject={props.updateObject}
+                  scale={100}
+                  isSelected={object.id === selectedSlideId}
+                  onClick={() => handleObjectClick(object.id)}
+                  updateObject={handleUpdateObject}
                 ></ImageBlock>
               )
             case ObjectType.PRIMITIVE:
@@ -61,10 +66,10 @@ export const SlideView = (props: SlideView) => {
                 <PrimitiveBlock
                   primitiveBlockData={object}
                   key={object.id}
-                  scale={props.scale || 100}
-                  isSelected={object.id === props.selectedObjectId}
-                  onClick={() => props.onObjectClick && props.onObjectClick(object.id)}
-                  updateObject={props.updateObject}
+                  scale={100}
+                  isSelected={object.id === selectedObjectId}
+                  onClick={() => handleObjectClick(object.id)}
+                  updateObject={handleUpdateObject}
                 ></PrimitiveBlock>
               )
             default:

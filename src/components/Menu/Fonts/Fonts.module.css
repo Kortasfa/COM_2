@@ -1,0 +1,15 @@
+.fontsContainer {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 1000;
+}
