@@ -42,6 +42,10 @@ export const TextBlock = (props: TextBlock) => {
     }
   }
 
+  const handleInputChange = (e: { target: { value: React.SetStateAction<string> } }) => {
+    setTextValue(e.target.value)
+  }
+
   useEffect(() => {
     if (props.updateObject) {
       props.updateObject({
@@ -70,16 +74,17 @@ export const TextBlock = (props: TextBlock) => {
           visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
-      <div
+      <input
         onClick={handleClick}
         contentEditable={isEditing}
-        onInput={(e) => setTextValue(e.currentTarget.textContent || '')}
+        onChange={handleInputChange}
         suppressContentEditableWarning={true}
+        value={textValue}
         style={{
           position: 'absolute',
           color: color.hex,
-          width: width * scalePercent + 4,
-          height: height * scalePercent + 2,
+          width: width * scalePercent - 5,
+          height: height * scalePercent - 5,
           fontSize: fontSize * scalePercent,
           fontFamily: fontFamily,
           fontWeight: fontWeight,
@@ -89,10 +94,9 @@ export const TextBlock = (props: TextBlock) => {
           left: x * scalePercent,
           opacity: color.opacity,
           outline: 'none',
+          border: 'none',
         }}
-      >
-        {textValue}
-      </div>
+      />
       <div
         ref={refSize}
         style={{

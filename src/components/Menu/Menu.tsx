@@ -50,15 +50,13 @@ const Menu = ({
     document.title = title
   }, [title])
 
-  const handleTitleChange = (e: any) => {
-    setTitle(e.target.textContent)
+  const handleInputChange = (e: { target: { value: React.SetStateAction<string> } }) => {
+    setTitle(e.target.value)
   }
 
   return (
     <div>
-      <h4 className={styles.title} contentEditable={true} onInput={handleTitleChange}>
-        {title}
-      </h4>
+      <input value={title} type={'text'} className={styles.title} onChange={handleInputChange} />
       <div className={styles.menu}>
         <button className={styles.menuButton} onClick={addSlide}>
           +
