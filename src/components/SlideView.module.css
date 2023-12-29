@@ -8,6 +8,7 @@
 
 .selectionSlide {
   position: absolute;
+  top: 110px;
   width: 80vw;
   height: 40vw;
   margin-left: 20px;
