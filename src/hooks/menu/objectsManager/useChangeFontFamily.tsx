@@ -6,7 +6,19 @@ export function useChangeFont(
   selectedObjectId?: string | null,
   selectedSlideId?: string,
 ) {
-  return ({ fontFamily, fontSize, color }: { fontFamily: string; fontSize: number; color: Color }) => {
+  return ({
+    fontFamily,
+    fontSize,
+    color,
+    fontWeight,
+    fontStyle,
+  }: {
+    fontFamily: string
+    fontSize: number
+    color: Color
+    fontWeight: string
+    fontStyle: string
+  }) => {
     const updatedSlides = presentationData.slides.map((slide: Slide) => {
       if (slide.id === selectedSlideId) {
         const updatedObjects = slide.objects.map((obj) => {
@@ -16,6 +28,8 @@ export function useChangeFont(
               fontFamily: fontFamily ? fontFamily : obj.fontFamily,
               fontSize: fontSize ? fontSize : obj.fontSize,
               color: color ? color : obj.color,
+              fontWeight: fontWeight ? fontWeight : obj.fontWeight,
+              fontStyle: fontStyle ? fontStyle : obj.fontStyle,
             }
           }
           return obj

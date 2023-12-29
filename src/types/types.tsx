@@ -28,6 +28,8 @@ type Text = SlideObject & {
   color: Color
   fontSize: number
   fontFamily: string
+  fontWeight: string
+  fontStyle: string
   type: ObjectType.TEXTBLOCK
 }
 

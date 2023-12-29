@@ -15,6 +15,7 @@ import { useChangeFont } from '../../hooks/menu/objectsManager/useChangeFontFami
 import { Fonts } from './Fonts/Fonts'
 import primitiveImage from '../../images/primitive.png'
 import textImage from '../../images/text.png'
+import deleteObjectImage from '../../images/deleteObject.png'
 
 interface Menu {
   selectedObjectId?: string
@@ -79,9 +80,7 @@ const Menu = ({
           }}
           alt={'primitive'}
         />
-        <button className={styles.menuButton} onClick={deleteObject}>
-          Удалить объект
-        </button>
+        <img src={deleteObjectImage} className={styles.menuButton} onClick={deleteObject} />
         <LoaderImage addImage={addImage} setSelectedObjectId={setSelectedObjectId} />
         <Fonts changeFont={changeFont} />
         <Loader handleFileChange={handleFileChange} error={error} presentationData={presentationData} />

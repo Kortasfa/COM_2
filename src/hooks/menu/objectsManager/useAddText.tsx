@@ -17,6 +17,8 @@ export function useAddText(
       color: { hex: '#000000', opacity: 1 },
       fontSize: 16,
       fontFamily: 'Arial',
+      fontWeight: 'normal',
+      fontStyle: 'normal',
     }
 
     const updatedSlides = presentationData.slides.map((slide: Slide) => {
