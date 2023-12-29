@@ -35,10 +35,6 @@
   background-color: #2980b9;
 }
 
-.menu input {
-  display: none; /* скрыть input по умолчанию */
-}
-
 .loader {
   display: flex;
   flex-direction: row;
@@ -67,3 +63,53 @@
   display: flex;
   flex-direction: row;
 }
+
+/* Menu.module.css */
+
+/* Стили для контейнера попапа */
+.popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Стили для кнопок в попапе */
+.popup button {
+  margin: 5px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.popup button:hover {
+  background-color: #0056b3;
+}
+
+/* Стили для ввода URL */
+.popup input[type="text"] {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+}
+
+/* Стили для кнопки загрузки из URL */
+.popup button.upload-button {
+  background-color: #28a745;
+}
+
+.popup button.upload-button:hover {
+  background-color: #1e7e34;
+}
+

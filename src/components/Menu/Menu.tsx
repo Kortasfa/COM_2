@@ -36,7 +36,7 @@ const Menu = ({
 }: Menu) => {
   const deleteSlide = useDeleteSlide(presentationData, updatePresentationData, setSelectedSlideId, selectedSlideId)
   const addSlide = useAddSlide(presentationData, updatePresentationData)
-  const addImage = useAddImage(presentationData, updatePresentationData, selectedSlideId)
+  const addImageObject = useAddImage(presentationData, updatePresentationData, selectedSlideId)
   const addText = useAddText(presentationData, updatePresentationData, selectedSlideId)
   const addPrimitive = useAddPrimitive(presentationData, updatePresentationData, selectedSlideId)
   const deleteObject = useDeleteObject(presentationData, updatePresentationData, selectedObjectId)
@@ -107,7 +107,7 @@ const Menu = ({
           }}
           alt={'primitive'}
         />
-        <LoaderImage addImage={addImage} setSelectedObjectId={setSelectedObjectId} />
+        <LoaderImage addImageObject={addImageObject} setSelectedObjectId={setSelectedObjectId} />
         <img src={deleteObjectImage} className={styles.menuButton} onClick={deleteObject} />
         <Fonts changeFont={changeFont} />
         <Loader handleFileChange={handleFileChange} error={error} presentationData={presentationData} />

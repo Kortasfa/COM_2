@@ -37,11 +37,11 @@ export const Fonts = ({
   }, [fontFamily, fontSize, color, bold, italic])
 
   const incrementFontSize = () => {
-    useFontSize((prevSize) => prevSize + 1)
+    useFontSize(fontSize + 1)
   }
 
   const decrementFontSize = () => {
-    useFontSize((prevSize) => prevSize - 1)
+    useFontSize(fontSize - 1)
   }
 
   const handleFontFamilyChange = (selectedFont: string) => {
