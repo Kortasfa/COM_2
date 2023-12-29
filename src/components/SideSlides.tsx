@@ -53,7 +53,7 @@ export const SideSlides = ({ slide, onClick }: SideSlides) => {
                 <TextBlock
                   textBlockData={object}
                   key={object.id}
-                  scale={100}
+                  scale={20}
                   isSelected={object.id === selectedObjectId}
                   onClick={() => handleObjectClick(object.id)}
                   updateObject={handleUpdateObject}
@@ -64,7 +64,7 @@ export const SideSlides = ({ slide, onClick }: SideSlides) => {
                 <ImageBlock
                   imageBlockData={object}
                   key={object.id}
-                  scale={100}
+                  scale={20}
                   isSelected={object.id === selectedSlideId}
                   onClick={() => handleObjectClick(object.id)}
                   updateObject={handleUpdateObject}
@@ -75,7 +75,7 @@ export const SideSlides = ({ slide, onClick }: SideSlides) => {
                 <PrimitiveBlock
                   primitiveBlockData={object}
                   key={object.id}
-                  scale={100}
+                  scale={20}
                   isSelected={object.id === selectedObjectId}
                   onClick={() => handleObjectClick(object.id)}
                   updateObject={handleUpdateObject}
