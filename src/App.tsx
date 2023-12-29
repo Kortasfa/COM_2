@@ -22,7 +22,12 @@ export const App = () => {
         updatePresentationData={setPresentation}
       />
       <div className={styles.workField}>
-        <SideSlides slides={presentation.slides} selectedSlideId={selectedSlideId} onSlideClick={setSelectedSlideId} />
+        <SideSlides
+          selectedSlideId={selectedSlideId}
+          onSlideClick={setSelectedSlideId}
+          presentationData={presentation}
+          updatePresentationData={setPresentation}
+        />
         <SlideView
           selectionSlideClass={styles.selectionSlide}
           selectedObjectId={selectedObjectId}
