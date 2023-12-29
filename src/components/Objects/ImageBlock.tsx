@@ -63,7 +63,7 @@ export const ImageBlock = (props: ImageBlock) => {
           top: posBlock.y * scalePercent - 4,
           left: posBlock.x * scalePercent - 5,
           outline: '2px solid red',
-          visibility: isEditing ? 'visible' : 'hidden',
+          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
       <div
@@ -95,7 +95,7 @@ export const ImageBlock = (props: ImageBlock) => {
           left: (posBlock.x + posSize.x) * scalePercent - 10,
           background: 'red',
           cursor: 'nwse-resize',
-          visibility: isEditing ? 'visible' : 'hidden',
+          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
     </div>

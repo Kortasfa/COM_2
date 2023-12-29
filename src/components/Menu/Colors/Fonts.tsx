@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Color } from '../../../types/types'
-import fonts from './Fonts.module.css'
+import './Fonts.module.css'
 import styles from '../Menu.module.css'
 import boldFontImage from '../../../images/boldFont.png'
 import italicFontImage from '../../../images/italicFont.png'
@@ -19,8 +19,7 @@ export const Fonts = ({
   const [fontFamily, useFontFamily] = useState<string>('Arial')
   const [fontSize, useFontSize] = useState<number>(16)
   const [color, useColor] = useState<Color>({ hex: 'black', opacity: 1 })
-  const [showDropdownFamily, setShowDropdownFamily] = useState(false)
-  const [showDropdownColor, setShowDropdownColor] = useState(false)
+  const [showDropdown, setShowDropdown] = useState(false)
   const [bold, setBold] = useState(false)
   const [italic, setItalic] = useState(false)
 
@@ -46,12 +45,7 @@ export const Fonts = ({
 
   const handleFontFamilyChange = (selectedFont: string) => {
     useFontFamily(selectedFont)
-    setShowDropdownFamily(false)
-  }
-
-  const handleFontColorChange = (selectedColor: string) => {
-    useColor({ hex: selectedColor, opacity: 1 })
-    setShowDropdownColor(false)
+    setShowDropdown(false)
   }
 
   const boldFont = () => {
@@ -62,13 +56,24 @@ export const Fonts = ({
     setItalic((prevItalic) => !prevItalic)
   }
 
+  const dropdownStyle: React.CSSProperties = {
+    position: 'absolute',
+    top: 'calc(100% + 4px)',
+    backgroundColor: '#fff',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+    borderRadius: '4px',
+    overflow: 'hidden',
+    zIndex: 1000, // Ensure a higher z-index
+    display: showDropdown ? 'block' : 'none', // Control visibility based on showDropdown state
+  }
+
   return (
-    <div className={fonts.fontsContainer}>
-      <div>
-        <button className={styles.menuButton} onClick={() => setShowDropdownFamily(!showDropdownFamily)}>
+    <div style={{ display: 'flex', flexDirection: 'row', position: 'relative' }}>
+      <div style={{ position: 'relative' }}>
+        <button className={styles.menuButton} onClick={() => setShowDropdown(!showDropdown)}>
           Выбрать шрифт
         </button>
-        <div style={{ display: showDropdownFamily ? 'block' : 'none' }} className={fonts.dropdown}>
+        <div style={dropdownStyle}>
           <p onClick={() => handleFontFamilyChange('Arial')}>Arial</p>
           <p onClick={() => handleFontFamilyChange('Times New Roman')}>Times New Roman</p>
           <p onClick={() => handleFontFamilyChange('Roboto')}>Roboto</p>
@@ -92,20 +97,6 @@ export const Fonts = ({
         style={{ backgroundColor: italic ? '#2980b9' : '#f0f0f0' }}
         onClick={italicFont}
       />
-      <div>
-        <button className={styles.menuButton} onClick={() => setShowDropdownColor(!showDropdownColor)}>
-          Выбрать цвет шрифта
-        </button>
-        <div className={fonts.dropdown} style={{ display: showDropdownColor ? 'block' : 'none', columns: 5 }}>
-          <p onClick={() => handleFontColorChange('black')}>⚫</p>
-          <p onClick={() => handleFontColorChange('red')}>🔴</p>
-          <p onClick={() => handleFontColorChange('yellow')}>🟡</p>
-          <p onClick={() => handleFontColorChange('brown')}>🟤</p>
-          <p onClick={() => handleFontColorChange('green')}>🟢</p>
-          <p onClick={() => handleFontColorChange('purple')}>🟣</p>
-          <p onClick={() => handleFontColorChange('orange')}>🟠</p>
-        </div>
-      </div>
     </div>
   )
 }

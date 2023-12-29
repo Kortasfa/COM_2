@@ -1,3 +1,9 @@
+.title {
+  margin-left: 10px;
+  margin-top: 10px;
+  outline: none;
+}
+
 .menu {
   display: flex;
   flex-direction: row;
@@ -28,4 +34,33 @@
 
 .menu input {
   display: none; /* скрыть input по умолчанию */
+}
+
+.loader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.importImage,
+.exportImage {
+  width: 100%;
+  height: 100%;
+  margin-right: 5px;
+}
+
+.fileLoader {
+  display: none;
+}
+
+.error {
+  position: absolute;
+  top: 2%;
+  font-size: 20px;
+  left: 70%;
+}
+
+.loaderImage {
+  display: flex;
+  flex-direction: row;
 }

@@ -1,5 +1,6 @@
-import styles from './LoaderImage.module.css'
+import styles from '../Menu.module.css'
 import React, { useRef } from 'react'
+import addImageSrc from '../../../images/addImage.png'
 
 interface LoaderImageProps {
   addImage: (base64Data: string) => void
@@ -36,9 +37,7 @@ const LoaderImage = ({ addImage, setSelectedObjectId }: LoaderImageProps) => {
   return (
     <div className={styles.loaderImage}>
       <input className={styles.image} type="file" ref={fileInputRef} onChange={handleFileLoader} accept=".png" />
-      <button className={styles.button} onClick={() => handleClick()}>
-        Добавить картинку
-      </button>
+      <img src={addImageSrc} className={styles.menuButton} onClick={() => handleClick()} />
     </div>
   )
 }

@@ -57,10 +57,11 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
   switch (primitiveType) {
     case Figures.CIRCLE:
       shapeElement = (
-        <circle
+        <ellipse
           cx={(width / 2) * scalePercent}
           cy={(height / 2) * scalePercent}
-          r={(width / 2) * scalePercent}
+          rx={(width / 2) * scalePercent}
+          ry={(height / 2) * scalePercent}
           fill={fillColor.hex}
           stroke={outlineColor?.hex || 'transparent'}
           strokeWidth={2 * scalePercent}
@@ -102,7 +103,7 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
           top: y * scalePercent,
           left: x * scalePercent,
           outline: '2px solid red',
-          visibility: isEditing ? 'visible' : 'hidden',
+          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
       <div ref={refBlock}>
@@ -114,7 +115,6 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
             top: y * scalePercent,
             width: width * scalePercent,
             height: height * scalePercent,
-            outline: props.isSelected ? '1px solid blue' : 'none',
             cursor: isDragging ? 'grabbing' : 'grab',
           }}
         >
@@ -131,7 +131,7 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
           left: (posBlock.x + posSize.x) * scalePercent - 10,
           background: 'red',
           cursor: 'nwse-resize',
-          visibility: isEditing ? 'visible' : 'hidden',
+          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
     </div>

@@ -1,5 +1,5 @@
 import styles from './Menu.module.css'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Figures, Presentation } from '../../types/types'
 import { useImportFileHandler } from '../../hooks/menu/presentationManager/useImportFileHandler'
 import useDeleteSlide from '../../hooks/menu/slideManager/useDeleteSlide'
@@ -44,14 +44,21 @@ const Menu = ({
   const changeFont = useChangeFont(presentationData, updatePresentationData, selectedObjectId, selectedSlideId)
   const { error, handleFileChange } = useImportFileHandler(updatePresentationData)
   const { name } = presentationData
+  const [title, setTitle] = useState(name)
 
   useEffect(() => {
-    document.title = name
-  }, [name])
+    document.title = title
+  }, [title])
+
+  const handleTitleChange = (e: any) => {
+    setTitle(e.target.textContent)
+  }
 
   return (
     <div>
-      <h4>New Presentation</h4>
+      <h4 className={styles.title} contentEditable={true} onInput={handleTitleChange}>
+        {title}
+      </h4>
       <div className={styles.menu}>
         <button className={styles.menuButton} onClick={addSlide}>
           +
@@ -80,13 +87,41 @@ const Menu = ({
           }}
           alt={'primitive'}
         />
-        <img src={deleteObjectImage} className={styles.menuButton} onClick={deleteObject} />
+        <img
+          src={primitiveImage}
+          className={styles.menuButton}
+          onClick={() => {
+            if (setSelectedObjectId) {
+              setSelectedObjectId('')
+            }
+            addPrimitive(Figures.CIRCLE)
+          }}
+          alt={'primitive'}
+        />
+        <img
+          src={primitiveImage}
+          className={styles.menuButton}
+          onClick={() => {
+            if (setSelectedObjectId) {
+              setSelectedObjectId('')
+            }
+            addPrimitive(Figures.TRIANGLE)
+          }}
+          alt={'primitive'}
+        />
         <LoaderImage addImage={addImage} setSelectedObjectId={setSelectedObjectId} />
+        <img src={deleteObjectImage} className={styles.menuButton} onClick={deleteObject} />
         <Fonts changeFont={changeFont} />
         <Loader handleFileChange={handleFileChange} error={error} presentationData={presentationData} />
-        <button onClick={() => changeColor('green')}>🟢</button>
-        <button onClick={() => changeColor('red')}>🔴</button>
-        <button onClick={() => changeColor('yellow')}>🟡</button>
+        <button className={styles.menuButton} onClick={() => changeColor('green')}>
+          🟢
+        </button>
+        <button className={styles.menuButton} onClick={() => changeColor('red')}>
+          🔴
+        </button>
+        <button className={styles.menuButton} onClick={() => changeColor('yellow')}>
+          🟡
+        </button>
       </div>
     </div>
   )

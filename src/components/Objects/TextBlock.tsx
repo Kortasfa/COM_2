@@ -67,12 +67,13 @@ export const TextBlock = (props: TextBlock) => {
           left: posBlock.x * scalePercent - 5,
           outline: '2px solid red',
           cursor: isDragging ? 'grabbing' : 'grab',
-          visibility: isEditing ? 'visible' : 'hidden',
+          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
       <div
         onClick={handleClick}
         contentEditable={isEditing}
+        onInput={(e) => setTextValue(e.currentTarget.textContent || '')}
         suppressContentEditableWarning={true}
         style={{
           position: 'absolute',
@@ -87,6 +88,7 @@ export const TextBlock = (props: TextBlock) => {
           top: y * scalePercent,
           left: x * scalePercent,
           opacity: color.opacity,
+          outline: 'none',
         }}
       >
         {textValue}
@@ -101,7 +103,7 @@ export const TextBlock = (props: TextBlock) => {
           left: (posBlock.x + posSize.x) * scalePercent - 10,
           background: 'red',
           cursor: 'nwse-resize',
-          visibility: isEditing ? 'visible' : 'hidden',
+          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
     </div>
