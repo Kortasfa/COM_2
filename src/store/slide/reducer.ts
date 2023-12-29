@@ -6,7 +6,7 @@ import {
   CHANGE_BACKGROUND_COLOR,
   DELETE_OBJECT,
   MOVE_OBJECT,
-  REMOVE_SLIDE,
+  REMOVE_SLIDE, SELECT_OBJECT,
   SELECT_SLIDE,
 } from './types'
 import { Color, Slide } from '../../types/types'
@@ -18,7 +18,7 @@ export const initialState = {
   namePres: InitializedPresentation.name,
   idPres: InitializedPresentation.id,
   selectedSlideId: InitializedPresentation.slides[INITIAL_SLIDE_ID].id,
-  selectedObjectId: null,
+  selectedObjectId: InitializedPresentation.slides[INITIAL_SLIDE_ID].objects,
 }
 
 function createNewSlide(): Slide {
@@ -33,8 +33,10 @@ export const slideReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case ADD_IMAGE: {
       const { slideId, image } = action.payload
+      console.log('slideId', slideId)
       const updatedSlides = state.slides.map((slide: Slide) => {
         if (slide.id === slideId) {
+          console.log(image)
           return {
             ...slide,
             objects: [...slide.objects, image],
@@ -48,7 +50,7 @@ export const slideReducer = (state = initialState, action: any) => {
       }
     }
 
-    case 'ADD_TEXT': {
+    case ADD_TEXT: {
       const { slideId, text } = action.payload
       console.log(action)
       const updatedSlides = state.slides.map((slide) => {
@@ -161,12 +163,19 @@ export const slideReducer = (state = initialState, action: any) => {
         slides: updatedSlides,
       }
     }
+
     case SELECT_SLIDE:
       return {
         ...state,
         selectedSlideId: action.payload.selectedSlideId,
       }
 
+    case SELECT_OBJECT:
+      console.log('action.payload.selectedObjectId', action.payload.selectedObjectId)
+      return {
+        ...state,
+        selectedObjectId: action.payload.selectedObjectId,
+      }
     default:
       return state
   }

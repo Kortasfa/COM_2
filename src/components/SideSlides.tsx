@@ -6,7 +6,8 @@ import styles from './SlideView.module.css'
 import { PrimitiveBlock } from './Objects/PrimitiveBlock'
 import { useAppSelector, useAppDispatch } from '../store/store'
 // import { selectObject, updateObject } from '../store/slide/slideActions'
-import { getSlides, selectSelectedObjectId, selectSelectedSlideId } from '../store/slide/selector' // Import your actions
+import { getSlides, getSelectedObjectId, getSelectedSlideId } from '../store/slide/selector'
+import { selectObject } from '../store/slide/slideActions' // Import your actions
 
 interface SideSlides {
   slide: Slide
@@ -14,8 +15,8 @@ interface SideSlides {
 }
 
 export const SideSlides = ({ slide, onClick }: SideSlides) => {
-  const selectedSlideId = useAppSelector(selectSelectedSlideId)
-  const selectedObjectId = useAppSelector(selectSelectedObjectId)
+  const selectedSlideId = useAppSelector(getSelectedSlideId)
+  const selectedObjectId = useAppSelector(getSelectedObjectId)
   const isSelected = slide.id === selectedSlideId
   const { objects, background } = slide
 
@@ -27,7 +28,6 @@ export const SideSlides = ({ slide, onClick }: SideSlides) => {
   //   dispatch(updateObject({ slideId: selectedSlideId, objectId: selectedObjectId, updatedObject: data }))
   // }
   const handleObjectClick = (objectId: string) => {
-    console.log(objectId)
   }
 
   const handleUpdateObject = (data: SlideObject) => {

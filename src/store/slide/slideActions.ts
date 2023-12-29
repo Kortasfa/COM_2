@@ -8,9 +8,9 @@ import {
   DELETE_OBJECT,
   MOVE_OBJECT,
   SELECT_SLIDE,
-  CHANGE_BACKGROUND_COLOR,
+  CHANGE_BACKGROUND_COLOR, SELECT_OBJECT,
 } from './types'
-import { SlideObject } from '../../types/types'
+import { Image, SlideObject } from '../../types/types'
 
 export const addSlide = () => ({
   type: ADD_SLIDE,
@@ -26,14 +26,25 @@ export const updateSlideObject = (slideId: string, objectId: string, updatedData
   payload: { slideId, objectId, updatedData },
 })
 
-export const addImage = (slideId: string, image: string) => ({
+export const addImage = (slideId: string, image: Image) => ({
   type: ADD_IMAGE,
-  payload: { slideId, image },
+  payload: {
+    slideId,
+    image,
+  },
 })
 
 export const selectSlide = (selectedSlideId: string) => ({
   type: SELECT_SLIDE,
   payload: { selectedSlideId },
+})
+
+export const selectObject = (selectedSlideId: string, selectedObjectId: string) => ({
+  type: SELECT_OBJECT,
+  payload: {
+    selectedSlideId,
+    selectedObjectId,
+  },
 })
 
 // export const isSlideSelected = (status: boolean) => ({

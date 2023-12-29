@@ -13,7 +13,7 @@ import {
   deleteObject,
   changeBackgroundColor,
 } from '../../store/slide/slideActions'
-import { getPresentationName, selectSelectedObjectId, selectSelectedSlideId } from '../../store/slide/selector'
+import { getPresentationName, getSelectedObjectId, getSelectedSlideId } from '../../store/slide/selector'
 import { addNewText } from '../../hooks/menu/objectsManager/useAddText'
 // import { useChangeColor } from '../../hooks/menu/slideManager/useChangeColor'
 // import { useChangeFont } from '../../hooks/menu/objectsManager/useChangeFontFamily'
@@ -22,11 +22,12 @@ import primitiveImage from '../../images/primitive.png'
 import textImage from '../../images/text.png'
 import deleteObjectImage from '../../images/deleteObject.png'
 import { addNewPrimitive } from '../../hooks/menu/objectsManager/useAddPrimitive'
+import { LoaderImage } from './LoaderImage/LoaderImage'
 
 const Menu: React.FC = () => {
   const dispatch = useAppDispatch()
-  const selectedObjectId = useAppSelector(selectSelectedObjectId)
-  const selectedSlideId = useAppSelector(selectSelectedSlideId)
+  const selectedObjectId = useAppSelector(getSelectedObjectId)
+  const selectedSlideId = useAppSelector(getSelectedSlideId)
   // const { error, handleFileChange } = useImportFileHandler()
   const presentationName = useAppSelector(getPresentationName)
 
@@ -52,10 +53,6 @@ const Menu: React.FC = () => {
     dispatch(addPrimitive(selectedSlideId, newPrimitive))
   }
 
-  const handleAddImage = () => {
-    dispatch(addImage(selectedSlideId, 'image'))
-  }
-
   const handleDeleteObject = () => {
     dispatch(deleteObject(selectedSlideId, selectedObjectId))
   }
@@ -78,9 +75,6 @@ const Menu: React.FC = () => {
           src={textImage}
           className={styles.menuButton}
           onClick={() => {
-            // if (setSelectedObjectId) {
-            //   setSelectedObjectId('')
-            // }
             handleAddText()
           }}
         />
@@ -88,9 +82,6 @@ const Menu: React.FC = () => {
           src={primitiveImage}
           className={styles.menuButton}
           onClick={() => {
-            // if (setSelectedObjectId) {
-            //   setSelectedObjectId('')
-            // }
             handleAddPrimitive(Figures.RECTANGLE)
           }}
           alt={'primitive'}
@@ -99,9 +90,6 @@ const Menu: React.FC = () => {
           src={primitiveImage}
           className={styles.menuButton}
           onClick={() => {
-            // if (setSelectedObjectId) {
-            //   setSelectedObjectId('')
-            // }
             handleAddPrimitive(Figures.CIRCLE)
           }}
           alt={'primitive'}
@@ -110,17 +98,14 @@ const Menu: React.FC = () => {
           src={primitiveImage}
           className={styles.menuButton}
           onClick={() => {
-            // if (setSelectedObjectId) {
-            //   setSelectedObjectId('')
-            // }
             handleAddPrimitive(Figures.TRIANGLE)
           }}
           alt={'primitive'}
         />
-        {/*<LoaderImage addImage={addImage} setSelectedObjectId={setSelectedObjectId} />*/}
+        <LoaderImage />
         {/*<img src={deleteObjectImage} className={styles.menuButton} onClick={deleteObject} />*/}
         {/*<Fonts changeFont={changeFont} />*/}
-        {/*<Loader handleFileChange={handleFileChange} error={error} presentationData={presentationData} />*/}
+        {/*<Loader handleFileChange={handleFileChange} />*/}
         <button className={styles.menuButton} onClick={() => changeColor('green')}>
           🟢
         </button>

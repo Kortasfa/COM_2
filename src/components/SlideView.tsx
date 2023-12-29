@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ObjectType, Slide, SlideObject } from '../types/types'
 import { TextBlock } from './Objects/TextBlock'
 import { ImageBlock } from './Objects/ImageBlock'
@@ -6,16 +6,20 @@ import styles from './SlideView.module.css'
 import { PrimitiveBlock } from './Objects/PrimitiveBlock'
 import { useAppSelector, useAppDispatch } from '../store/store'
 // import { selectObject, updateObject } from '../store/slide/slideActions'
-import { getSlides, selectSelectedObjectId, selectSelectedSlideId } from '../store/slide/selector' // Import your actions
+import { getSlides, getSelectedObjectId, getSelectedSlideId } from '../store/slide/selector'
+import { selectObject } from '../store/slide/slideActions' // Import your actions
 
 interface SlideViewProps {
   slide: Slide
 }
 
 export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
-  const selectedObjectId = useAppSelector(selectSelectedObjectId)
-  const selectedSlideId = useAppSelector(selectSelectedSlideId)
+  const dispatch = useAppDispatch()
+  const selectedSlideId = useAppSelector(getSelectedSlideId)
   // const dispatch = useAppDispatch()
+  // const [selectedObjectId, setSelectedObjectId] = useState<any>(slide)
+  const selectedObjectId = useAppSelector(getSelectedObjectId)
+  const [objectId, setObjectId] = useState<string>(selectedObjectId)
   const isSelectedSlide = slide.id === selectedSlideId
   const { objects, background } = slide
 
@@ -27,11 +31,18 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
   //   dispatch(updateObject({ slideId: selectedSlideId, objectId: selectedObjectId, updatedObject: data }))
   // }
   const handleObjectClick = (objectId: string) => {
-    console.log(objectId)
+    dispatch(selectObject(selectedSlideId, objectId))
+    setObjectId(objectId)
   }
 
-  const handleUpdateObject = (data: SlideObject) => {
-    console.log(data)
+  const handleUpdateObject = (object: SlideObject) => {
+    if (object.id === objectId) {
+      return {
+        ...objects,
+        objects: object,
+      }
+    }
+    return objects
   }
   if (!isSelectedSlide) return null
   return (
@@ -47,7 +58,9 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
                   scale={100}
                   isSelected={object.id === selectedObjectId}
                   onClick={() => handleObjectClick(object.id)}
-                  updateObject={handleUpdateObject}
+                  updateObject={() => {
+                    handleUpdateObject(object)
+                  }}
                 ></TextBlock>
               )
             case ObjectType.IMAGE:
@@ -58,7 +71,7 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
                   scale={100}
                   isSelected={object.id === selectedSlideId}
                   onClick={() => handleObjectClick(object.id)}
-                  updateObject={handleUpdateObject}
+                  updateObject={() => handleUpdateObject(object)}
                 ></ImageBlock>
               )
             case ObjectType.PRIMITIVE:
@@ -69,7 +82,7 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
                   scale={100}
                   isSelected={object.id === selectedObjectId}
                   onClick={() => handleObjectClick(object.id)}
-                  updateObject={handleUpdateObject}
+                  updateObject={() => handleUpdateObject(object)}
                 ></PrimitiveBlock>
               )
             default:
