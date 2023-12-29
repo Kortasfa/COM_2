@@ -33,7 +33,7 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
   const handleUpdateObject = (data: SlideObject) => {
     console.log(data)
   }
-  console.log('slide', slide)
+  if (!isSelectedSlide) return null
   return (
     <div>
       <div className={styles.selectionSlide}>
