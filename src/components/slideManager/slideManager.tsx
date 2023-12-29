@@ -13,7 +13,6 @@ export const SlideManager = () => {
   const slides = useAppSelector(getSlides)
   const dispatch = useAppDispatch()
   const initSelectedSlideId = useAppSelector(selectSelectedSlideId)
-
   const [selectedSlideId, setSelectedSlideId] = useState<any>(initSelectedSlideId)
 
   const handleSlideClick = (slideId: string) => {
