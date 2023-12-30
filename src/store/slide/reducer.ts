@@ -5,18 +5,22 @@ import {
   ADD_TEXT,
   CHANGE_BACKGROUND_COLOR,
   DELETE_OBJECT,
+  IMPORT_PARSED_DATA,
   MOVE_OBJECT,
-  REMOVE_SLIDE, SELECT_OBJECT,
+  REMOVE_SLIDE,
+  SELECT_OBJECT,
   SELECT_SLIDE,
+  UPDATE_PRESENTATION_DATA,
 } from './types'
 import { Color, Slide } from '../../types/types'
 import InitializedPresentation from '../../components/InitializedPresentation'
 import { actions } from './slideActions'
 const INITIAL_SLIDE_ID = 0
 export const initialState = {
-  slides: InitializedPresentation.slides,
-  namePres: InitializedPresentation.name,
-  idPres: InitializedPresentation.id,
+  presentation: InitializedPresentation,
+  // slides: InitializedPresentation.slides,
+  // namePres: InitializedPresentation.name,
+  // idPres: InitializedPresentation.id,
   selectedSlideId: InitializedPresentation.slides[INITIAL_SLIDE_ID].id,
   selectedObjectId: InitializedPresentation.slides[INITIAL_SLIDE_ID].objects,
 }
@@ -33,10 +37,8 @@ export const slideReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case ADD_IMAGE: {
       const { slideId, image } = action.payload
-      console.log('slideId', slideId)
-      const updatedSlides = state.slides.map((slide: Slide) => {
+      const updatedSlides = state.presentation.slides.map((slide: Slide) => {
         if (slide.id === slideId) {
-          console.log(image)
           return {
             ...slide,
             objects: [...slide.objects, image],
@@ -46,14 +48,16 @@ export const slideReducer = (state = initialState, action: any) => {
       })
       return {
         ...state,
-        slides: updatedSlides,
+        presentation: {
+          ...state.presentation,
+          slides: updatedSlides,
+        },
       }
     }
 
     case ADD_TEXT: {
       const { slideId, text } = action.payload
-      console.log(action)
-      const updatedSlides = state.slides.map((slide) => {
+      const updatedSlides = state.presentation.slides.map((slide) => {
         if (slide.id === slideId) {
           return {
             ...slide,
@@ -65,13 +69,16 @@ export const slideReducer = (state = initialState, action: any) => {
 
       return {
         ...state,
-        slides: updatedSlides,
+        presentation: {
+          ...state.presentation,
+          slides: updatedSlides,
+        },
       }
     }
 
     case CHANGE_BACKGROUND_COLOR: {
       const { slideId, color } = action.payload
-      const updatedSlides = state.slides.map((slide) => {
+      const updatedSlides = state.presentation.slides.map((slide) => {
         if (slide.id === slideId) {
           return {
             ...slide,
@@ -86,13 +93,16 @@ export const slideReducer = (state = initialState, action: any) => {
 
       return {
         ...state,
-        slides: updatedSlides,
+        presentation: {
+          ...state.presentation,
+          slides: updatedSlides,
+        },
       }
     }
 
     case ADD_PRIMITIVE: {
       const { slideId, primitive } = action.payload
-      const updatedSlides = state.slides.map((slide: Slide) => {
+      const updatedSlides = state.presentation.slides.map((slide: Slide) => {
         if (slide.id === slideId) {
           return {
             ...slide,
@@ -103,13 +113,16 @@ export const slideReducer = (state = initialState, action: any) => {
       })
       return {
         ...state,
-        slides: updatedSlides,
+        presentation: {
+          ...state.presentation,
+          slides: updatedSlides,
+        },
       }
     }
 
     case MOVE_OBJECT: {
       const { slideId, objectId, coordinates } = action.payload
-      const updatedSlides = state.slides.map((slide: Slide) => {
+      const updatedSlides = state.presentation.slides.map((slide: Slide) => {
         if (slide.id === slideId) {
           return {
             ...slide,
@@ -128,13 +141,16 @@ export const slideReducer = (state = initialState, action: any) => {
       })
       return {
         ...state,
-        slides: updatedSlides,
+        presentation: {
+          ...state.presentation,
+          slides: updatedSlides,
+        },
       }
     }
 
     case DELETE_OBJECT: {
       const { slideId, objectId } = action.payload
-      const updatedSlides = state.slides.map((slide: Slide) => {
+      const updatedSlides = state.presentation.slides.map((slide: Slide) => {
         if (slide.id === slideId) {
           return {
             ...slide,
@@ -145,22 +161,33 @@ export const slideReducer = (state = initialState, action: any) => {
       })
       return {
         ...state,
-        slides: updatedSlides,
+        presentation: {
+          ...state.presentation,
+          slides: updatedSlides,
+        },
       }
     }
+
     case ADD_SLIDE: {
       const newSlide = createNewSlide()
       return {
         ...state,
-        slides: [...state.slides, newSlide],
+        presentation: {
+          ...state.presentation,
+          slides: [...state.presentation.slides, newSlide],
+        },
       }
     }
+
     case REMOVE_SLIDE: {
       const slideId = action.payload
-      const updatedSlides = state.slides.filter((slide: Slide) => slide.id !== slideId)
+      const updatedSlides = state.presentation.slides.filter((slide: Slide) => slide.id !== slideId)
       return {
         ...state,
-        slides: updatedSlides,
+        presentation: {
+          ...state.presentation,
+          slides: updatedSlides,
+        },
       }
     }
 
@@ -171,11 +198,17 @@ export const slideReducer = (state = initialState, action: any) => {
       }
 
     case SELECT_OBJECT:
-      console.log('action.payload.selectedObjectId', action.payload.selectedObjectId)
       return {
         ...state,
         selectedObjectId: action.payload.selectedObjectId,
       }
+
+    case IMPORT_PARSED_DATA:
+      return {
+        ...state,
+        presentation: action.payload.parsedData,
+      }
+
     default:
       return state
   }

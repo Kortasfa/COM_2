@@ -13,7 +13,12 @@ import {
   deleteObject,
   changeBackgroundColor,
 } from '../../store/slide/slideActions'
-import { getPresentationName, getSelectedObjectId, getSelectedSlideId } from '../../store/slide/selector'
+import {
+  getPresentationData,
+  getPresentationName,
+  getSelectedObjectId,
+  getSelectedSlideId,
+} from '../../store/slide/selector'
 import { addNewText } from '../../hooks/menu/objectsManager/useAddText'
 // import { useChangeColor } from '../../hooks/menu/slideManager/useChangeColor'
 // import { useChangeFont } from '../../hooks/menu/objectsManager/useChangeFontFamily'
@@ -23,12 +28,14 @@ import textImage from '../../images/text.png'
 import deleteObjectImage from '../../images/deleteObject.png'
 import { addNewPrimitive } from '../../hooks/menu/objectsManager/useAddPrimitive'
 import { LoaderImage } from './LoaderImage/LoaderImage'
+import { Loader } from './Loader/Loader'
+import { useImportFileHandler } from '../../hooks/menu/presentationManager/useImportFileHandler'
 
 const Menu: React.FC = () => {
   const dispatch = useAppDispatch()
   const selectedObjectId = useAppSelector(getSelectedObjectId)
   const selectedSlideId = useAppSelector(getSelectedSlideId)
-  // const { error, handleFileChange } = useImportFileHandler()
+  const { error, handleFileChange } = useImportFileHandler()
   const presentationName = useAppSelector(getPresentationName)
 
   useEffect(() => {
@@ -103,9 +110,9 @@ const Menu: React.FC = () => {
           alt={'primitive'}
         />
         <LoaderImage />
-        {/*<img src={deleteObjectImage} className={styles.menuButton} onClick={deleteObject} />*/}
+        <img src={deleteObjectImage} className={styles.menuButton} onClick={handleDeleteObject} alt={'delete'} />
         {/*<Fonts changeFont={changeFont} />*/}
-        {/*<Loader handleFileChange={handleFileChange} />*/}
+        <Loader handleFileChange={handleFileChange} error={error} />
         <button className={styles.menuButton} onClick={() => changeColor('green')}>
           🟢
         </button>

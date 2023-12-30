@@ -8,9 +8,13 @@ import {
   DELETE_OBJECT,
   MOVE_OBJECT,
   SELECT_SLIDE,
-  CHANGE_BACKGROUND_COLOR, SELECT_OBJECT,
+  CHANGE_BACKGROUND_COLOR,
+  SELECT_OBJECT,
+  IMPORT_PARSED_DATA,
+  UPDATE_PRESENTATION_DATA,
 } from './types'
-import { Image, SlideObject } from '../../types/types'
+import { Image, Presentation, Slide } from '../../types/types'
+import initializedPresentation from '../../components/InitializedPresentation'
 
 export const addSlide = () => ({
   type: ADD_SLIDE,
@@ -81,9 +85,19 @@ export const moveObject = (slideId: string, objectId: any, coordinates: any) => 
   payload: { slideId, objectId, coordinates },
 })
 
-export const deleteObject = (slideId: string, objectId: any) => ({
+export const deleteObject = (slideId: string, objectId: string) => ({
   type: DELETE_OBJECT,
   payload: { slideId, objectId },
+})
+
+export const importParsedData = (parsedData: Presentation) => ({
+  type: IMPORT_PARSED_DATA,
+  payload: { parsedData },
+})
+
+export const updatePresentaionData = (slides: Slide) => ({
+  type: UPDATE_PRESENTATION_DATA,
+  payload: { slides },
 })
 
 export type actions =
