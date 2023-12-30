@@ -8,7 +8,7 @@ import {
   IMPORT_PARSED_DATA,
   REMOVE_SLIDE,
   SELECT_OBJECT,
-  SELECT_SLIDE,
+  SELECT_SLIDE, UPDATE_PRESENTATION_DATA,
   UPDATE_SLIDE_OBJECT,
 } from './types'
 import { Color, Slide } from '../../types/types'
@@ -200,9 +200,14 @@ export const slideReducer = (state = initialState, action: any) => {
         presentation: action.payload.parsedData,
       }
 
+    case UPDATE_PRESENTATION_DATA: {
+      return {
+        presentation: action.payload.presentation
+      }
+    }
+
     default:
       return state
   }
 }
 
-export default slideReducer

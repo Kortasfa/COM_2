@@ -84,6 +84,11 @@ export const importParsedData = (parsedData: Presentation) => ({
   payload: { parsedData },
 })
 
+export const updatePresentationData = (presentationData: Presentation) => ({
+  type: UPDATE_PRESENTATION_DATA,
+  payload: { presentationData },
+})
+
 export type actions =
   | ReturnType<typeof addSlide>
   | ReturnType<typeof deleteSlide>
