@@ -7,7 +7,7 @@ import { PrimitiveBlock } from './Objects/PrimitiveBlock'
 import { useAppSelector, useAppDispatch } from '../store/store'
 // import { selectObject, updateObject } from '../store/slide/slideActions'
 import { getSlides, getSelectedObjectId, getSelectedSlideId } from '../store/slide/selector'
-import { selectObject } from '../store/slide/slideActions' // Import your actions
+import { selectObject, updateSlideObject } from '../store/slide/slideActions' // Import your actions
 
 interface SlideViewProps {
   slide: Slide
@@ -16,20 +16,11 @@ interface SlideViewProps {
 export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
   const dispatch = useAppDispatch()
   const selectedSlideId = useAppSelector(getSelectedSlideId)
-  // const dispatch = useAppDispatch()
-  // const [selectedObjectId, setSelectedObjectId] = useState<any>(slide)
   const selectedObjectId = useAppSelector(getSelectedObjectId)
   const [objectId, setObjectId] = useState<string>(selectedObjectId)
   const isSelectedSlide = slide.id === selectedSlideId
   const { objects, background } = slide
 
-  // const handleObjectClick = (objectId: string) => {
-  //   dispatch(selectObject({ slideId: selectedSlideId, objectId }))
-  // }
-  //
-  // const handleUpdateObject = (data: SlideObject) => {
-  //   dispatch(updateObject({ slideId: selectedSlideId, objectId: selectedObjectId, updatedObject: data }))
-  // }
   const handleObjectClick = (objectId: string) => {
     dispatch(selectObject(selectedSlideId, objectId))
     setObjectId(objectId)

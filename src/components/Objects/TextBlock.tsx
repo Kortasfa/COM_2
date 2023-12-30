@@ -11,7 +11,6 @@ interface TextBlock {
 }
 
 export const TextBlock = (props: TextBlock) => {
-  console.log(props.isSelected)
   const { value, color, fontSize, fontFamily, fontWeight, fontStyle, x, y, width, height } = props.textBlockData
   const scalePercent = props.scale / 100
 

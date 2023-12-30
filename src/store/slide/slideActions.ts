@@ -6,7 +6,6 @@ import {
   ADD_PRIMITIVE,
   ADD_TEXT,
   DELETE_OBJECT,
-  MOVE_OBJECT,
   SELECT_SLIDE,
   CHANGE_BACKGROUND_COLOR,
   SELECT_OBJECT,
@@ -25,9 +24,9 @@ export const deleteSlide = (slideId: string) => ({
   payload: slideId,
 })
 
-export const updateSlideObject = (slideId: string, objectId: string, updatedData: any) => ({
+export const updateSlideObject = (slideId: string, objectId: string) => ({
   type: UPDATE_SLIDE_OBJECT,
-  payload: { slideId, objectId, updatedData },
+  payload: { slideId, objectId },
 })
 
 export const addImage = (slideId: string, image: Image) => ({
@@ -50,11 +49,6 @@ export const selectObject = (selectedSlideId: string, selectedObjectId: string) 
     selectedObjectId,
   },
 })
-
-// export const isSlideSelected = (status: boolean) => ({
-//   type: IS_SLIDE_SELECTED,
-//   payload: { status },
-// })
 
 export const addText = (slideId: string, text: any) => ({
   type: ADD_TEXT,
@@ -80,11 +74,6 @@ export const addPrimitive = (slideId: string, primitive: any) => ({
   },
 })
 
-export const moveObject = (slideId: string, objectId: any, coordinates: any) => ({
-  type: MOVE_OBJECT,
-  payload: { slideId, objectId, coordinates },
-})
-
 export const deleteObject = (slideId: string, objectId: string) => ({
   type: DELETE_OBJECT,
   payload: { slideId, objectId },
@@ -95,11 +84,6 @@ export const importParsedData = (parsedData: Presentation) => ({
   payload: { parsedData },
 })
 
-export const updatePresentaionData = (slides: Slide) => ({
-  type: UPDATE_PRESENTATION_DATA,
-  payload: { slides },
-})
-
 export type actions =
   | ReturnType<typeof addSlide>
   | ReturnType<typeof deleteSlide>
@@ -108,5 +92,4 @@ export type actions =
   | ReturnType<typeof selectSlide>
   | ReturnType<typeof addText>
   | ReturnType<typeof addPrimitive>
-  | ReturnType<typeof moveObject>
   | ReturnType<typeof deleteObject>

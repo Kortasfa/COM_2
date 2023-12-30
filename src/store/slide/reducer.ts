@@ -6,11 +6,10 @@ import {
   CHANGE_BACKGROUND_COLOR,
   DELETE_OBJECT,
   IMPORT_PARSED_DATA,
-  MOVE_OBJECT,
   REMOVE_SLIDE,
   SELECT_OBJECT,
   SELECT_SLIDE,
-  UPDATE_PRESENTATION_DATA,
+  UPDATE_SLIDE_OBJECT,
 } from './types'
 import { Color, Slide } from '../../types/types'
 import InitializedPresentation from '../../components/InitializedPresentation'
@@ -120,21 +119,13 @@ export const slideReducer = (state = initialState, action: any) => {
       }
     }
 
-    case MOVE_OBJECT: {
-      const { slideId, objectId, coordinates } = action.payload
+    case UPDATE_SLIDE_OBJECT: {
+      const { slideId, objectId } = action.payload
       const updatedSlides = state.presentation.slides.map((slide: Slide) => {
         if (slide.id === slideId) {
           return {
             ...slide,
-            objects: slide.objects.map((object) => {
-              if (object.id === objectId) {
-                return {
-                  ...object,
-                  coordinates,
-                }
-              }
-              return object
-            }),
+            objects: slide.objects.filter((object) => object.id === objectId),
           }
         }
         return slide
