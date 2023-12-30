@@ -12,7 +12,7 @@ import { selectObject, updateSlideObject } from '../store/slide/slideActions' //
 interface SideSlides {
   slide: Slide
   onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
-  index?: number,
+  index?: number
 }
 
 export const SideSlides = ({ slide, onClick }: SideSlides) => {

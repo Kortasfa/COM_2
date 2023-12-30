@@ -17,6 +17,10 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
   const dispatch = useAppDispatch()
   const selectedSlideId = useAppSelector(getSelectedSlideId)
   const selectedObjectId = useAppSelector(getSelectedObjectId)
+  const slides = useAppSelector(getSlides)
+  const selectedSlide = slides.find((s: any) => s.id === selectedSlideId)
+
+  const backgroundColor = selectedSlide?.background?.color?.hex || '#FFFFFF'
   const [objectId, setObjectId] = useState<string>(selectedObjectId)
   const isSelectedSlide = slide.id === selectedSlideId
   // const { objects, background } = slide
@@ -33,7 +37,7 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
   if (!isSelectedSlide) return null
   return (
     <div>
-      <div className={styles.selectionSlide}>
+      <div className={styles.selectionSlide} style={{ backgroundColor: backgroundColor }}>
         {slide.objects.map((object: any) => {
           switch (object.type) {
             case ObjectType.TEXTBLOCK:
