@@ -60,6 +60,8 @@ type Presentation = {
   id: string
   name: string
   slides: Array<Slide>
+  selectedSlideId?: string
+  selectedObjectId?: string
 }
 
 export { Figures, ObjectType }

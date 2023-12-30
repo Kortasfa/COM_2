@@ -1,6 +1,6 @@
 import styles from './Menu.module.css'
 import React, { useEffect } from 'react'
-import { Figures } from '../../types/types'
+import { Color, Figures } from '../../types/types'
 // import { useImportFileHandler } from '../../hooks/menu/presentationManager/useImportFileHandler'
 // import { Loader } from './Loader/Loader'
 import { useAppDispatch, useAppSelector } from '../../store/store'
@@ -12,10 +12,11 @@ import {
   addImage,
   deleteObject,
   changeBackgroundColor,
+  changeFont,
 } from '../../store/slide/slideActions'
 import {
   getPresentationData,
-  getPresentationName,
+  // getPresentationName,
   getSelectedObjectId,
   getSelectedSlideId,
 } from '../../store/slide/selector'
@@ -31,16 +32,16 @@ import { LoaderImage } from './LoaderImage/LoaderImage'
 import { Loader } from './Loader/Loader'
 import { useImportFileHandler } from '../../hooks/menu/presentationManager/useImportFileHandler'
 
-const Menu: React.FC = () => {
+const Menu = () => {
   const dispatch = useAppDispatch()
   const selectedObjectId = useAppSelector(getSelectedObjectId)
   const selectedSlideId = useAppSelector(getSelectedSlideId)
   const { error, handleFileChange } = useImportFileHandler()
-  const presentationName = useAppSelector(getPresentationName)
+  // const presentationName = useAppSelector(getPresentationName)
 
-  useEffect(() => {
-    document.title = presentationName
-  }, [presentationName])
+  // useEffect(() => {
+  //   document.title = presentationName
+  // }, [presentationName])
 
   const handleAddSlide = () => {
     dispatch(addSlide())
@@ -111,7 +112,7 @@ const Menu: React.FC = () => {
         />
         <LoaderImage />
         <img src={deleteObjectImage} className={styles.menuButton} onClick={handleDeleteObject} alt={'delete'} />
-        {/*<Fonts changeFont={changeFont} />*/}
+        <Fonts />
         <Loader handleFileChange={handleFileChange} error={error} />
         <button className={styles.menuButton} onClick={() => changeColor('green')}>
           🟢

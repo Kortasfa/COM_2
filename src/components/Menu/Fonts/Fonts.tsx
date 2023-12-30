@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { Color } from '../../../types/types'
+import { Color, ObjectType, Slide, SlideObject } from '../../../types/types'
 import fonts from './Fonts.module.css'
 import styles from '../Menu.module.css'
 import boldFontImage from '../../../images/boldFont.png'
 import italicFontImage from '../../../images/italicFont.png'
+import { changeFont } from '../../../store/slide/slideActions'
+import { useAppDispatch, useAppSelector } from '../../../store/store'
+import { getSelectedObjectId, getSelectedSlideId, getSlides } from '../../../store/slide/selector'
 
-export const Fonts = ({
-  changeFont,
-}: {
-  changeFont: (data: {
-    fontFamily: string
-    fontSize: number
-    color: Color
-    fontWeight: string
-    fontStyle: string
-  }) => void
-}) => {
-  const [fontFamily, useFontFamily] = useState<string>('Arial')
-  const [fontSize, useFontSize] = useState<number>(16)
+export const Fonts = () => {
+  const dispatch = useAppDispatch()
+  const selectedSlideId = useAppSelector(getSelectedSlideId)
+  const selectedObjectId = useAppSelector(getSelectedObjectId)
+  const slides = useAppSelector(getSlides)
+  const slide = slides.find((slide: Slide) => slide.id === selectedSlideId)
+  const textData = slide.objects.find((obj: SlideObject) => obj.id === selectedObjectId)
+  const [fontFamily, useFontFamily] = useState<string>(textData?.fontFamily || "Arial")
+  const [fontSize, useFontSize] = useState<number>(textData?.fontSize || 19)
   const [color, useColor] = useState<Color>({ hex: 'black', opacity: 1 })
   const [showDropdownFamily, setShowDropdownFamily] = useState(false)
   const [showDropdownColor, setShowDropdownColor] = useState(false)
@@ -27,13 +26,7 @@ export const Fonts = ({
   useEffect(() => {
     const fontWeightValue = bold ? 'bold' : 'normal'
     const fontStyleValue = italic ? 'italic' : 'normal'
-    changeFont({
-      fontFamily: fontFamily,
-      fontSize: fontSize,
-      color: color,
-      fontWeight: fontWeightValue,
-      fontStyle: fontStyleValue,
-    })
+    dispatch(changeFont(selectedSlideId, selectedObjectId, fontFamily, color, fontSize, fontWeightValue, fontStyleValue))
   }, [fontFamily, fontSize, color, bold, italic])
 
   const incrementFontSize = () => {

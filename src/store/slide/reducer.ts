@@ -4,15 +4,18 @@ import {
   ADD_SLIDE,
   ADD_TEXT,
   CHANGE_BACKGROUND_COLOR,
+  CHANGE_FONT,
   DELETE_OBJECT,
   IMPORT_PARSED_DATA,
   REMOVE_SLIDE,
   SELECT_OBJECT,
   SELECT_SLIDE,
+  UPDATE_PRESENTATION_DATA,
   UPDATE_SLIDE_OBJECT,
 } from './types'
 import { Color, Slide } from '../../types/types'
 import InitializedPresentation from '../../components/InitializedPresentation'
+import { actions } from './slideActions'
 
 const INITIAL_SLIDE_ID = 0
 export const initialState = {
@@ -48,6 +51,7 @@ export const slideReducer = (state = initialState, action: any) => {
       })
       return {
         ...state,
+        selectedObjectId: '',
         presentation: {
           ...state.presentation,
           slides: updatedSlides,
@@ -69,6 +73,7 @@ export const slideReducer = (state = initialState, action: any) => {
 
       return {
         ...state,
+        selectedObjectId: '',
         presentation: {
           ...state.presentation,
           slides: updatedSlides,
@@ -113,6 +118,7 @@ export const slideReducer = (state = initialState, action: any) => {
       })
       return {
         ...state,
+        selectedObjectId: '',
         presentation: {
           ...state.presentation,
           slides: updatedSlides,
@@ -162,6 +168,7 @@ export const slideReducer = (state = initialState, action: any) => {
       })
       return {
         ...state,
+        selectedObjectId: '',
         presentation: {
           ...state.presentation,
           slides: updatedSlides,
@@ -207,8 +214,51 @@ export const slideReducer = (state = initialState, action: any) => {
     case IMPORT_PARSED_DATA:
       return {
         ...state,
-        presentation: action.payload.parsedData,
+        presentation: {
+          ...state.presentation,
+          slides: action.payload.parsedData,
+        },
       }
+
+    case UPDATE_PRESENTATION_DATA: {
+      return {
+        ...state.presentation,
+        presentation: { slides: action.payload.slides },
+      }
+    }
+
+    case CHANGE_FONT: {
+      const { slideId, objectId, fontFamily, fontSize, color, fontWeight, fontStyle } = action.payload
+      const updatedSlides = state.presentation.slides.map((slide: Slide) => {
+        if (slide.id === slideId) {
+          const updatedObjects = slide.objects.map((obj) => {
+            if (obj.id === objectId) {
+              return {
+                ...obj,
+                fontFamily: fontFamily,
+                fontSize: fontSize,
+                color: color,
+                fontWeight: fontWeight,
+                fontStyle: fontStyle,
+              }
+            }
+            return obj
+          })
+          return {
+            ...slide,
+            objects: updatedObjects,
+          }
+        }
+        return slide
+      })
+      return {
+        ...state,
+        presentation: {
+          ...state.presentation,
+          slides: updatedSlides,
+        },
+      }
+    }
 
     default:
       return state

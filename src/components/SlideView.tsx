@@ -23,7 +23,6 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
   const backgroundColor = selectedSlide?.background?.color?.hex || '#FFFFFF'
   const [objectId, setObjectId] = useState<string>(selectedObjectId)
   const isSelectedSlide = slide.id === selectedSlideId
-  // const { objects, background } = slide
 
   const handleObjectClick = (objectId: string) => {
     dispatch(selectObject(selectedSlideId, objectId))

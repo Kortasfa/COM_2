@@ -30,8 +30,6 @@ export const ImageBlock = (props: ImageBlock) => {
   const { isDragging } = useDragAndDrop(refBlock, setPosBlock, posBlock, 'pos')
   useDragAndDrop(refSize, setPosSize, posSize, 'size')
 
-  const [isEditing, setIsEditing] = useState(false)
-
   useEffect(() => {
     if (props.updateObject) {
       props.updateObject({
@@ -46,7 +44,6 @@ export const ImageBlock = (props: ImageBlock) => {
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (scalePercent === 1) {
-      setIsEditing(true)
       if (props.onClick && !props.isSelected) {
         props.onClick(e)
       }
@@ -63,7 +60,7 @@ export const ImageBlock = (props: ImageBlock) => {
           top: y * scalePercent - 4,
           left: x * scalePercent - 5,
           outline: '2px solid red',
-          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
+          visibility: props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
       <div
@@ -95,7 +92,7 @@ export const ImageBlock = (props: ImageBlock) => {
           left: (x + width) * scalePercent - 10,
           background: 'red',
           cursor: 'nwse-resize',
-          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
+          visibility: props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
     </div>
