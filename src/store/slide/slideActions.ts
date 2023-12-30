@@ -12,7 +12,7 @@ import {
   IMPORT_PARSED_DATA,
   UPDATE_PRESENTATION_DATA,
 } from './types'
-import { Image, Presentation, Slide } from '../../types/types'
+import { Image, ObjectType, Presentation, Slide, SlideObject } from '../../types/types'
 import initializedPresentation from '../../components/InitializedPresentation'
 
 export const addSlide = () => ({
@@ -24,9 +24,9 @@ export const deleteSlide = (slideId: string) => ({
   payload: slideId,
 })
 
-export const updateSlideObject = (slideId: string, objectId: string) => ({
+export const updateSlideObject = (slideId: string, objectId: string, object: SlideObject) => ({
   type: UPDATE_SLIDE_OBJECT,
-  payload: { slideId, objectId },
+  payload: { slideId, objectId, object },
 })
 
 export const addImage = (slideId: string, image: Image) => ({
@@ -84,9 +84,9 @@ export const importParsedData = (parsedData: Presentation) => ({
   payload: { parsedData },
 })
 
-export const updatePresentationData = (presentationData: Presentation) => ({
+export const updatePresentationData = (slides: Slide[]) => ({
   type: UPDATE_PRESENTATION_DATA,
-  payload: { presentationData },
+  payload: { slides },
 })
 
 export type actions =

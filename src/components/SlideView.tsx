@@ -19,7 +19,7 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
   const selectedObjectId = useAppSelector(getSelectedObjectId)
   const [objectId, setObjectId] = useState<string>(selectedObjectId)
   const isSelectedSlide = slide.id === selectedSlideId
-  const { objects, background } = slide
+  // const { objects, background } = slide
 
   const handleObjectClick = (objectId: string) => {
     dispatch(selectObject(selectedSlideId, objectId))
@@ -27,14 +27,9 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
   }
 
   const handleUpdateObject = (object: SlideObject) => {
-    if (object.id === objectId) {
-      return {
-        ...objects,
-        objects: object,
-      }
-    }
-    return objects
+    dispatch(updateSlideObject(selectedSlideId, selectedObjectId, object))
   }
+
   if (!isSelectedSlide) return null
   return (
     <div>
@@ -49,9 +44,7 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
                   scale={100}
                   isSelected={object.id === selectedObjectId}
                   onClick={() => handleObjectClick(object.id)}
-                  updateObject={() => {
-                    handleUpdateObject(object)
-                  }}
+                  updateObject={handleUpdateObject}
                 ></TextBlock>
               )
             case ObjectType.IMAGE:
@@ -62,7 +55,7 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
                   scale={100}
                   isSelected={object.id === selectedSlideId}
                   onClick={() => handleObjectClick(object.id)}
-                  updateObject={() => handleUpdateObject(object)}
+                  updateObject={handleUpdateObject}
                 ></ImageBlock>
               )
             case ObjectType.PRIMITIVE:
@@ -73,7 +66,7 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
                   scale={100}
                   isSelected={object.id === selectedObjectId}
                   onClick={() => handleObjectClick(object.id)}
-                  updateObject={() => handleUpdateObject(object)}
+                  updateObject={handleUpdateObject}
                 ></PrimitiveBlock>
               )
             default:

@@ -16,7 +16,6 @@ const Loader = ({ handleFileChange, error }: LoaderProps) => {
     document.getElementById('fileInputImport')?.click()
   }
   const presentationData = useAppSelector(getPresentationData)
-  console.log('sdadsadsa', presentationData)
   return (
     <div className={styles.loader}>
       <input className={styles.fileLoader} id="fileInputImport" type="file" onChange={handleFileChange} />

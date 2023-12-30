@@ -14,6 +14,7 @@ import {
 import { Color, Slide } from '../../types/types'
 import InitializedPresentation from '../../components/InitializedPresentation'
 import { actions } from './slideActions'
+
 const INITIAL_SLIDE_ID = 0
 export const initialState = {
   presentation: InitializedPresentation,
@@ -32,6 +33,7 @@ function createNewSlide(): Slide {
     background: { color: defaultColor },
   }
 }
+
 export const slideReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case ADD_IMAGE: {
@@ -120,12 +122,21 @@ export const slideReducer = (state = initialState, action: any) => {
     }
 
     case UPDATE_SLIDE_OBJECT: {
-      const { slideId, objectId } = action.payload
+      const { slideId, objectId, object } = action.payload
       const updatedSlides = state.presentation.slides.map((slide: Slide) => {
         if (slide.id === slideId) {
+          const updatedObjects = slide.objects.map((obj) => {
+            if (obj.id === objectId) {
+              return {
+                ...obj,
+                ...object,
+              }
+            }
+            return obj
+          })
           return {
             ...slide,
-            objects: slide.objects.filter((object) => object.id === objectId),
+            objects: updatedObjects,
           }
         }
         return slide
@@ -202,7 +213,8 @@ export const slideReducer = (state = initialState, action: any) => {
 
     case UPDATE_PRESENTATION_DATA: {
       return {
-        presentation: action.payload.presentation
+        ...state.presentation,
+        presentation: {slides: action.payload.slides}
       }
     }
 

@@ -7,11 +7,12 @@ import { PrimitiveBlock } from './Objects/PrimitiveBlock'
 import { useAppSelector, useAppDispatch } from '../store/store'
 // import { selectObject, updateObject } from '../store/slide/slideActions'
 import { getSlides, getSelectedObjectId, getSelectedSlideId } from '../store/slide/selector'
-import { selectObject } from '../store/slide/slideActions' // Import your actions
+import { selectObject, updateSlideObject } from '../store/slide/slideActions' // Import your actions
 
 interface SideSlides {
   slide: Slide
   onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
+  index?: number,
 }
 
 export const SideSlides = ({ slide, onClick }: SideSlides) => {
@@ -20,19 +21,6 @@ export const SideSlides = ({ slide, onClick }: SideSlides) => {
   const isSelected = slide.id === selectedSlideId
   const { objects, background } = slide
 
-  // const handleObjectClick = (objectId: string) => {
-  //   dispatch(selectObject({ slideId: selectedSlideId, objectId }))
-  // }
-  //
-  // const handleUpdateObject = (data: SlideObject) => {
-  //   dispatch(updateObject({ slideId: selectedSlideId, objectId: selectedObjectId, updatedObject: data }))
-  // }
-  const handleObjectClick = (objectId: string) => {
-  }
-
-  const handleUpdateObject = (data: SlideObject) => {
-    console.log(data)
-  }
   return slide ? (
     <div>
       <div
@@ -55,8 +43,6 @@ export const SideSlides = ({ slide, onClick }: SideSlides) => {
                   key={object.id}
                   scale={20}
                   isSelected={object.id === selectedObjectId}
-                  onClick={() => handleObjectClick(object.id)}
-                  updateObject={handleUpdateObject}
                 ></TextBlock>
               )
             case ObjectType.IMAGE:
@@ -66,8 +52,6 @@ export const SideSlides = ({ slide, onClick }: SideSlides) => {
                   key={object.id}
                   scale={20}
                   isSelected={object.id === selectedSlideId}
-                  onClick={() => handleObjectClick(object.id)}
-                  updateObject={handleUpdateObject}
                 ></ImageBlock>
               )
             case ObjectType.PRIMITIVE:
@@ -77,8 +61,6 @@ export const SideSlides = ({ slide, onClick }: SideSlides) => {
                   key={object.id}
                   scale={20}
                   isSelected={object.id === selectedObjectId}
-                  onClick={() => handleObjectClick(object.id)}
-                  updateObject={handleUpdateObject}
                 ></PrimitiveBlock>
               )
             default:

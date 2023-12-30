@@ -1,4 +1,4 @@
-import { Image, ObjectType, Presentation, Slide } from '../../../types/types'
+import { Image, ObjectType } from '../../../types/types'
 
 export const addNewImage = (base64Image: string): Image => {
   return {
