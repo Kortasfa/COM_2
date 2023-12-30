@@ -73,8 +73,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-  border: 1px solid #ccc;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  border: 1px solid #cccccc;
+  box-shadow: 0 0 5px rgb(0 0 0 / 20%);
   padding: 20px;
   z-index: 1000;
   display: flex;
@@ -101,7 +101,7 @@
 .popup input[type='text'] {
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
 }
 
 /* Стили для кнопки загрузки из URL */

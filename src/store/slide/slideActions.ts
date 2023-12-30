@@ -11,8 +11,9 @@ import {
   SELECT_OBJECT,
   IMPORT_PARSED_DATA,
   UPDATE_PRESENTATION_DATA,
+  CHANGE_FONT,
 } from './types'
-import { Image, ObjectType, Presentation, Slide, SlideObject } from '../../types/types'
+import { Color, Image, ObjectType, Presentation, Slide, SlideObject, Text } from '../../types/types'
 import initializedPresentation from '../../components/InitializedPresentation'
 
 export const addSlide = () => ({
@@ -87,6 +88,21 @@ export const importParsedData = (parsedData: Presentation) => ({
 export const updatePresentationData = (slides: Slide[]) => ({
   type: UPDATE_PRESENTATION_DATA,
   payload: { slides },
+})
+
+export const changeFont = (
+  slideId: string,
+  objectId: string,
+  fontFamily: string,
+  color: Color,
+  fontSize: number,
+  fontWeight: string,
+  fontStyle: string,
+) => ({
+  type: CHANGE_FONT,
+  payload: {
+    slideId, objectId, fontFamily, color, fontSize, fontWeight, fontStyle,
+  },
 })
 
 export type actions =
