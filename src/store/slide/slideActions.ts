@@ -101,7 +101,13 @@ export const changeFont = (
 ) => ({
   type: CHANGE_FONT,
   payload: {
-    slideId, objectId, fontFamily, color, fontSize, fontWeight, fontStyle,
+    slideId,
+    objectId,
+    fontFamily,
+    color,
+    fontSize,
+    fontWeight,
+    fontStyle,
   },
 })
 

@@ -14,8 +14,8 @@ export const Fonts = () => {
   const selectedObjectId = useAppSelector(getSelectedObjectId)
   const slides = useAppSelector(getSlides)
   const slide = slides.find((slide: Slide) => slide.id === selectedSlideId)
-  const textData = slide.objects.find((obj: SlideObject) => obj.id === selectedObjectId)
-  const [fontFamily, useFontFamily] = useState<string>(textData?.fontFamily || "Arial")
+  const textData = slide?.objects.find((obj: SlideObject) => obj.id === selectedObjectId)
+  const [fontFamily, useFontFamily] = useState<string>(textData?.fontFamily || 'Arial')
   const [fontSize, useFontSize] = useState<number>(textData?.fontSize || 19)
   const [color, useColor] = useState<Color>({ hex: 'black', opacity: 1 })
   const [showDropdownFamily, setShowDropdownFamily] = useState(false)
@@ -26,7 +26,9 @@ export const Fonts = () => {
   useEffect(() => {
     const fontWeightValue = bold ? 'bold' : 'normal'
     const fontStyleValue = italic ? 'italic' : 'normal'
-    dispatch(changeFont(selectedSlideId, selectedObjectId, fontFamily, color, fontSize, fontWeightValue, fontStyleValue))
+    dispatch(
+      changeFont(selectedSlideId, selectedObjectId, fontFamily, color, fontSize, fontWeightValue, fontStyleValue),
+    )
   }, [fontFamily, fontSize, color, bold, italic])
 
   const incrementFontSize = () => {
