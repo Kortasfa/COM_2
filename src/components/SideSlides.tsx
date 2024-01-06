@@ -1,18 +1,15 @@
 import React from 'react'
-import { ObjectType, Slide, SlideObject } from '../types/types'
+import { ObjectType, Slide } from '../types/types'
 import { TextBlock } from './Objects/TextBlock'
 import { ImageBlock } from './Objects/ImageBlock'
 import styles from './SlideView.module.css'
 import { PrimitiveBlock } from './Objects/PrimitiveBlock'
-import { useAppSelector, useAppDispatch } from '../store/store'
-// import { selectObject, updateObject } from '../store/slide/slideActions'
-import { getSlides, getSelectedObjectId, getSelectedSlideId } from '../store/slide/selector'
-import { selectObject, updateSlideObject } from '../store/slide/slideActions' // Import your actions
+import { useAppSelector } from '../store/store'
+import { getSelectedObjectId, getSelectedSlideId } from '../store/slide/selector'
 
 interface SideSlides {
   slide: Slide
   onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
-  index?: number
 }
 
 export const SideSlides = ({ slide, onClick }: SideSlides) => {

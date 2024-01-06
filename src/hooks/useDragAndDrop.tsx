@@ -9,14 +9,13 @@ const useDragAndDrop = (
   ref: React.RefObject<HTMLElement>,
   setPos: React.Dispatch<React.SetStateAction<Position>>,
   initialPos: Position,
-  type: string,
 ) => {
-  const [isDragging, setIsDragging] = useState(false)
+  const [isAction, setIsAction] = useState(false)
   const startPos = useRef<Position | null>(null)
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (isDragging && startPos.current) {
+      if (isAction && startPos.current) {
         const delta = {
           x: e.pageX - startPos.current.x,
           y: e.pageY - startPos.current.y,
@@ -31,18 +30,18 @@ const useDragAndDrop = (
     }
 
     const handleMouseUp = () => {
-      if (isDragging) {
+      if (isAction) {
         startPos.current = null
         document.removeEventListener('mousemove', handleMouseMove)
         document.removeEventListener('mouseup', handleMouseUp)
-        setIsDragging(false)
+        setIsAction(false)
       }
     }
 
     const handleMouseDown = (e: MouseEvent) => {
       e.preventDefault()
       startPos.current = { x: e.pageX, y: e.pageY }
-      setIsDragging(true)
+      setIsAction(true)
       document.addEventListener('mousemove', handleMouseMove)
       document.addEventListener('mouseup', handleMouseUp)
     }
@@ -58,9 +57,9 @@ const useDragAndDrop = (
         ref.current.removeEventListener('mousedown', handleMouseDown)
       }
     }
-  }, [ref, isDragging])
+  }, [ref, isAction])
 
-  return { isDragging }
+  return { isAction }
 }
 
 export { useDragAndDrop }

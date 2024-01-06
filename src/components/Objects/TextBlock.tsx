@@ -27,8 +27,8 @@ export const TextBlock = (props: TextBlock) => {
     y: height,
   })
 
-  const { isDragging } = useDragAndDrop(refBlock, setPosBlock, posBlock, 'pos')
-  useDragAndDrop(refSize, setPosSize, posSize, 'size')
+  const { isAction } = useDragAndDrop(refBlock, setPosBlock, posBlock)
+  useDragAndDrop(refSize, setPosSize, posSize)
 
   const [isEditing, setIsEditing] = useState(false)
   const [textValue, setTextValue] = useState(value)
@@ -70,13 +70,13 @@ export const TextBlock = (props: TextBlock) => {
           top: y * scalePercent - 4,
           left: x * scalePercent - 5,
           outline: '2px solid red',
-          cursor: isDragging ? 'grabbing' : 'grab',
+          cursor: isAction && props.isSelected ? 'grabbing' : 'grab',
           visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
       <input
         onClick={handleClick}
-        contentEditable={isEditing}
+        contentEditable={isEditing && props.isSelected}
         onChange={handleInputChange}
         suppressContentEditableWarning={true}
         value={textValue}

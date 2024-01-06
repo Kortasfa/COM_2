@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { Color, ObjectType, Slide, SlideObject } from '../../../types/types'
 import fonts from './Fonts.module.css'
 import styles from '../Menu.module.css'
-import boldFontImage from '../../../images/boldFont.png'
-import italicFontImage from '../../../images/italicFont.png'
+import boldFontImage from '../../../images/bold.svg'
+import italicFontImage from '../../../images/italic.svg'
+import incFontImage from '../../../images/arrow-shape-up.svg'
+import decFontImage from '../../../images/arrow-shape-down.svg'
 import { changeFont } from '../../../store/slide/slideActions'
 import { useAppDispatch, useAppSelector } from '../../../store/store'
 import { getSelectedObjectId, getSelectedSlideId, getSlides } from '../../../store/slide/selector'
@@ -69,12 +71,8 @@ export const Fonts = () => {
           <p onClick={() => handleFontFamilyChange('Roboto')}>Roboto</p>
         </div>
       </div>
-      <button className={styles.menuButton} onClick={incrementFontSize}>
-        +
-      </button>
-      <button className={styles.menuButton} onClick={decrementFontSize}>
-        -
-      </button>
+      <img className={styles.menuButton} onClick={incrementFontSize} src={incFontImage} />
+      <img className={styles.menuButton} onClick={decrementFontSize} src={decFontImage} />
       <img
         src={boldFontImage}
         className={styles.menuButton}

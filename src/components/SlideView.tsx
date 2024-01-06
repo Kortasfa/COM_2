@@ -19,10 +19,19 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
   const selectedObjectId = useAppSelector(getSelectedObjectId)
   const [objectId, setObjectId] = useState<string>(selectedObjectId)
   const isSelectedSlide = slide.id === selectedSlideId
+  const [isDraggingOrResizing, setIsDraggingOrResizing] = useState(false)
 
-  const handleObjectClick = (objectId: string) => {
+  const handleBackgroundClick = () => {
+    if (!isDraggingOrResizing) {
+      dispatch(selectObject(selectedSlideId, ''))
+      setObjectId('')
+    }
+  }
+
+  const handleObjectClick = (objectId: string, event: React.MouseEvent) => {
     dispatch(selectObject(selectedSlideId, objectId))
     setObjectId(objectId)
+    event.stopPropagation()
   }
 
   const handleUpdateObject = (object: SlideObject) => {
@@ -32,7 +41,7 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
   if (!isSelectedSlide) return null
   return (
     <div>
-      <div className={styles.selectionSlide}>
+      <div className={styles.selectionSlide} onClick={handleBackgroundClick}>
         {slide.objects.map((object: any) => {
           switch (object.type) {
             case ObjectType.TEXTBLOCK:
@@ -42,7 +51,7 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
                   key={object.id}
                   scale={100}
                   isSelected={object.id === selectedObjectId}
-                  onClick={() => handleObjectClick(object.id)}
+                  onClick={(e) => handleObjectClick(object.id, e)}
                   updateObject={handleUpdateObject}
                 ></TextBlock>
               )
@@ -52,8 +61,8 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
                   imageBlockData={object}
                   key={object.id}
                   scale={100}
-                  isSelected={object.id === selectedSlideId}
-                  onClick={() => handleObjectClick(object.id)}
+                  isSelected={object.id === selectedObjectId}
+                  onClick={(e) => handleObjectClick(object.id, e)}
                   updateObject={handleUpdateObject}
                 ></ImageBlock>
               )
@@ -64,8 +73,9 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
                   key={object.id}
                   scale={100}
                   isSelected={object.id === selectedObjectId}
-                  onClick={() => handleObjectClick(object.id)}
+                  onClick={(e) => handleObjectClick(object.id, e)}
                   updateObject={handleUpdateObject}
+                  setIsDraggingOrResizing={setIsDraggingOrResizing}
                 ></PrimitiveBlock>
               )
             default:

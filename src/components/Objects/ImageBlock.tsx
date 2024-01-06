@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Image, SlideObject } from '../../types/types'
+import { Image } from '../../types/types'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
 
 interface ImageBlock {
@@ -27,8 +27,8 @@ export const ImageBlock = (props: ImageBlock) => {
     y: height,
   })
 
-  const { isDragging } = useDragAndDrop(refBlock, setPosBlock, posBlock, 'pos')
-  useDragAndDrop(refSize, setPosSize, posSize, 'size')
+  const { isAction } = useDragAndDrop(refBlock, setPosBlock, posBlock)
+  useDragAndDrop(refSize, setPosSize, posSize)
 
   useEffect(() => {
     if (props.updateObject) {
@@ -66,7 +66,7 @@ export const ImageBlock = (props: ImageBlock) => {
       <div
         ref={refBlock}
         style={{
-          cursor: isDragging ? 'grabbing' : 'grab',
+          cursor: props.isSelected ? (isAction ? 'grabbing' : 'grab') : 'default',
         }}
       >
         <img

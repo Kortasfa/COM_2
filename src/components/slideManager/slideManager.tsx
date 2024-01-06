@@ -42,7 +42,7 @@ export const SlideManager = () => {
     <div>
       <Menu />
       <div onDragOver={(e) => e.preventDefault()} onDragEnd={handleDragEnd}>
-        {slides.map((slide: Slide, index: number) => (
+        {slides.map((slide: Slide) => (
           <div key={slide.id} className={styles.workField}>
             <div
               key={slide.id}
@@ -50,7 +50,7 @@ export const SlideManager = () => {
               onDragStart={() => handleDragStart(slide.id)}
               onDrop={(e) => handleDrop(e, slide.id)}
             >
-              <SideSlides slide={slide} index={index + 1} onClick={() => handleSlideClick(slide.id)} />
+              <SideSlides slide={slide} onClick={() => handleSlideClick(slide.id)} />
             </div>
             <SlideView slide={slide} />
           </div>

@@ -1,6 +1,6 @@
 import styles from '../Menu.module.css'
 import React, { useEffect, useRef, useState } from 'react'
-import addImageSrc from '../../../images/addImage.png'
+import addImageSrc from '../../../images/picture.svg'
 import { addNewImage } from '../../../hooks/menu/objectsManager/useAddImage'
 import { useAppDispatch, useAppSelector } from '../../../store/store'
 import { addImage, selectSlide } from '../../../store/slide/slideActions'
@@ -9,8 +9,8 @@ import { getSelectedSlideId } from '../../../store/slide/selector'
 const LoaderImage = () => {
   const dispatch = useAppDispatch()
   const selectSlideId = useAppSelector(getSelectedSlideId)
-  const handleImageLoader = (base64Data: string) => {
-    const newImage = addNewImage(base64Data)
+  const handleImageLoader = (base64Data: string, width: number, height: number) => {
+    const newImage = addNewImage(base64Data, width, height)
     console.log(newImage)
     dispatch(addImage(selectSlideId, newImage))
   }
@@ -27,7 +27,14 @@ const LoaderImage = () => {
         reader.onloadend = () => {
           const base64Data = reader.result as string
           if (selectedFile.type.includes('image')) {
-            handleImageLoader(base64Data)
+            const image = new Image()
+            image.src = base64Data
+
+            image.onload = () => {
+              const width = image.width
+              const height = image.height
+              handleImageLoader(base64Data, width, height)
+            }
           }
         }
         reader.readAsDataURL(selectedFile)
@@ -36,7 +43,7 @@ const LoaderImage = () => {
   }
 
   const handleClick = () => {
-    setShowPopup(true) // Show the popup when the image is clicked
+    setShowPopup(true)
   }
 
   const handleImageUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +51,7 @@ const LoaderImage = () => {
   }
 
   const handleImageUrlUpload = () => {
-    handleImageLoader(imageUrl)
+    handleImageLoader(imageUrl, 100, 100)
 
     setShowPopup(false)
     setImageUrl('')

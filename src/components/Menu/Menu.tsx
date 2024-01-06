@@ -1,32 +1,25 @@
 import styles from './Menu.module.css'
-import React, { useEffect } from 'react'
-import { Color, Figures } from '../../types/types'
-// import { useImportFileHandler } from '../../hooks/menu/presentationManager/useImportFileHandler'
-// import { Loader } from './Loader/Loader'
+import React from 'react'
+import { Figures } from '../../types/types'
 import { useAppDispatch, useAppSelector } from '../../store/store'
 import {
   addSlide,
   deleteSlide,
   addText,
   addPrimitive,
-  addImage,
   deleteObject,
   changeBackgroundColor,
-  changeFont,
 } from '../../store/slide/slideActions'
-import {
-  getPresentationData,
-  // getPresentationName,
-  getSelectedObjectId,
-  getSelectedSlideId,
-} from '../../store/slide/selector'
+import { getSelectedObjectId, getSelectedSlideId } from '../../store/slide/selector'
 import { addNewText } from '../../hooks/menu/objectsManager/useAddText'
-// import { useChangeColor } from '../../hooks/menu/slideManager/useChangeColor'
-// import { useChangeFont } from '../../hooks/menu/objectsManager/useChangeFontFamily'
+import addSlideImage from '../../images/circle-plus-fill.svg'
+import deleteSlideImage from '../../images/circle-minus-fill.svg'
 import { Fonts } from './Fonts/Fonts'
-import primitiveImage from '../../images/primitive.png'
-import textImage from '../../images/text.png'
-import deleteObjectImage from '../../images/deleteObject.png'
+import rectangleImage from '../../images/square.svg'
+import circleImage from '../../images/circle.svg'
+import triangleImage from '../../images/triangle-up.svg'
+import textImage from '../../images/text.svg'
+import deleteObjectImage from '../../images/trash-bin.svg'
 import { addNewPrimitive } from '../../hooks/menu/objectsManager/useAddPrimitive'
 import { LoaderImage } from './LoaderImage/LoaderImage'
 import { Loader } from './Loader/Loader'
@@ -73,12 +66,8 @@ const Menu = () => {
     <div>
       {/*<input value={title} type={'text'} className={styles.title} onChange={handleInputChange} />*/}
       <div className={styles.menu}>
-        <button className={styles.menuButton} onClick={handleAddSlide}>
-          +
-        </button>
-        <button className={styles.menuButton} onClick={handleDeleteSlide}>
-          -
-        </button>
+        <img className={styles.menuButton} onClick={handleAddSlide} src={addSlideImage} />
+        <img className={styles.menuButton} onClick={handleDeleteSlide} src={deleteSlideImage} />
         <img
           src={textImage}
           className={styles.menuButton}
@@ -87,7 +76,7 @@ const Menu = () => {
           }}
         />
         <img
-          src={primitiveImage}
+          src={rectangleImage}
           className={styles.menuButton}
           onClick={() => {
             handleAddPrimitive(Figures.RECTANGLE)
@@ -95,7 +84,7 @@ const Menu = () => {
           alt={'primitive'}
         />
         <img
-          src={primitiveImage}
+          src={circleImage}
           className={styles.menuButton}
           onClick={() => {
             handleAddPrimitive(Figures.CIRCLE)
@@ -103,7 +92,7 @@ const Menu = () => {
           alt={'primitive'}
         />
         <img
-          src={primitiveImage}
+          src={triangleImage}
           className={styles.menuButton}
           onClick={() => {
             handleAddPrimitive(Figures.TRIANGLE)
