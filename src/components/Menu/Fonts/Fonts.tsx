@@ -1,65 +1,76 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Color } from '../../../types/types'
+import {
+  changeFont,
+  changeFontFamily,
+  changeFontSize,
+  changeFontColor,
+  selectBold,
+  selectItalic,
+} from '../../../store/fonts/fontsActions'
+import { RootState, useAppSelector } from '../../../store/store' // Путь к корневому редуктору
 import fonts from './Fonts.module.css'
 import styles from '../Menu.module.css'
 import boldFontImage from '../../../images/boldFont.png'
 import italicFontImage from '../../../images/italicFont.png'
+import { selectSelectedSlideId } from '../../../store/slide/selector'
+import { fontTypes } from '../../../store/fonts/selector'
 
-export const Fonts = ({
-  changeFont,
-}: {
-  changeFont: (data: {
-    fontFamily: string
-    fontSize: number
-    color: Color
-    fontWeight: string
-    fontStyle: string
-  }) => void
-}) => {
-  const [fontFamily, useFontFamily] = useState<string>('Arial')
-  const [fontSize, useFontSize] = useState<number>(16)
-  const [color, useColor] = useState<Color>({ hex: 'black', opacity: 1 })
-  const [showDropdownFamily, setShowDropdownFamily] = useState(false)
-  const [showDropdownColor, setShowDropdownColor] = useState(false)
-  const [bold, setBold] = useState(false)
-  const [italic, setItalic] = useState(false)
+// const FontsProps {
+//   changeFont: (data: {
+//     fontFamily: string
+//     fontSize: number
+//     color: Color
+//     fontWeight: string
+//     fontStyle: string
+//   }) => void
+// }
+
+export const Fonts = () => {
+  const dispatch = useDispatch()
+  const { fontFamily, fontSize, color, bold, italic } = useAppSelector(fontTypes)
+  const [showDropdownFamily, setShowDropdownFamily] = useState<boolean>(false)
+  const [showDropdownColor, setShowDropdownColor] = useState<boolean>(false)
 
   useEffect(() => {
     const fontWeightValue = bold ? 'bold' : 'normal'
     const fontStyleValue = italic ? 'italic' : 'normal'
-    changeFont({
-      fontFamily: fontFamily,
-      fontSize: fontSize,
-      color: color,
-      fontWeight: fontWeightValue,
-      fontStyle: fontStyleValue,
-    })
+
+    dispatch(
+      changeFont({
+        fontFamily,
+        fontSize,
+        color,
+        fontWeight: fontWeightValue,
+        fontStyle: fontStyleValue,
+      }),
+    )
   }, [fontFamily, fontSize, color, bold, italic])
 
-  const incrementFontSize = () => {
-    useFontSize((prevSize) => prevSize + 1)
-  }
-
-  const decrementFontSize = () => {
-    useFontSize((prevSize) => prevSize - 1)
-  }
-
   const handleFontFamilyChange = (selectedFont: string) => {
-    useFontFamily(selectedFont)
+    dispatch(changeFontFamily(selectedFont))
     setShowDropdownFamily(false)
   }
-
   const handleFontColorChange = (selectedColor: string) => {
-    useColor({ hex: selectedColor, opacity: 1 })
+    dispatch(changeFontColor({ hex: selectedColor, opacity: 1 }))
     setShowDropdownColor(false)
   }
 
   const boldFont = () => {
-    setBold((prevBold) => !prevBold)
+    dispatch(selectBold())
   }
 
   const italicFont = () => {
-    setItalic((prevItalic) => !prevItalic)
+    dispatch(selectItalic())
+  }
+
+  const incrementFontSize = () => {
+    dispatch(changeFontSize(fontSize + 1))
+  }
+
+  const decrementFontSize = () => {
+    dispatch(changeFontSize(fontSize - 1))
   }
 
   return (

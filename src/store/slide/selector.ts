@@ -13,4 +13,3 @@ export const getPresentationName = (state: RootState) => state.pres?.namePres
 export const selectSelectedSlideId = (state: RootState) => state.pres.selectedSlideId
 // export const getSelectedSlideStatus = (state: RootState) => state.pres.isSlideSelected
 export const selectSelectedObjectId = (state: RootState) => state.pres.selectedObjectId
-

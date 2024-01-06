@@ -1,0 +1,369 @@
+Subject: [PATCH] Changes
+---
+Index: src/components/SideSlide.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/components/SideSlide.tsx b/src/components/SideSlide.tsx
+deleted file mode 100644
+--- a/src/components/SideSlide.tsx	
++++ /dev/null	
+@@ -1,93 +0,0 @@
+-// import React from 'react'
+-// import { ObjectType, Slide, SlideObject } from '../types/types'
+-// import { TextBlock } from './Objects/TextBlock'
+-// import { ImageBlock } from './Objects/ImageBlock'
+-// import styles from './SlideView.module.css'
+-// import { PrimitiveBlock } from './Objects/PrimitiveBlock'
+-// import { useAppSelector, useAppDispatch } from '../store/store'
+-// // import { selectObject, updateObject } from '../store/slide/slideActions'
+-// import { getSlides, selectSelectedObjectId, selectSelectedSlideId } from '../store/slide/selector' // Import your actions
+-//
+-// interface SideSlideHelper {
+-//   slide: Slide
+-//   onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
+-// }
+-//
+-// export const SideSlide = ({ slide, onClick }: SideSlideHelper) => {
+-//   const selectedSlideId = useAppSelector(selectSelectedSlideId)
+-//   const selectedObjectId = useAppSelector(selectSelectedObjectId)
+-//   const isSelected = slide.id === selectedSlideId
+-//   const { objects, background } = slide
+-//
+-//   // const handleObjectClick = (objectId: string) => {
+-//   //   dispatch(selectObject({ slideId: selectedSlideId, objectId }))
+-//   // }
+-//   //
+-//   // const handleUpdateObject = (data: SlideObject) => {
+-//   //   dispatch(updateObject({ slideId: selectedSlideId, objectId: selectedObjectId, updatedObject: data }))
+-//   // }
+-//   const handleObjectClick = (objectId: string) => {
+-//     console.log(objectId)
+-//   }
+-//
+-//   const handleUpdateObject = (data: SlideObject) => {
+-//     console.log(data)
+-//   }
+-//   return slide ? (
+-//     <div>
+-//       <div
+-//         className={styles.sideSlide}
+-//         style={{
+-//           backgroundColor: background.color.hex,
+-//           ...(isSelected && {
+-//             outlineColor: '#3498db',
+-//             outlineWidth: '3px',
+-//           }),
+-//         }}
+-//         onClick={onClick}
+-//       >
+-//         {objects.map((object: any) => {
+-//           switch (object.type) {
+-//             case ObjectType.TEXTBLOCK:
+-//               return (
+-//                 <TextBlock
+-//                   textBlockData={object}
+-//                   key={object.id}
+-//                   scale={100}
+-//                   isSelected={object.id === selectedObjectId}
+-//                   onClick={() => handleObjectClick(object.id)}
+-//                   updateObject={handleUpdateObject}
+-//                 ></TextBlock>
+-//               )
+-//             case ObjectType.IMAGE:
+-//               return (
+-//                 <ImageBlock
+-//                   imageBlockData={object}
+-//                   key={object.id}
+-//                   scale={100}
+-//                   isSelected={object.id === selectedSlideId}
+-//                   onClick={() => handleObjectClick(object.id)}
+-//                   updateObject={handleUpdateObject}
+-//                 ></ImageBlock>
+-//               )
+-//             case ObjectType.PRIMITIVE:
+-//               return (
+-//                 <PrimitiveBlock
+-//                   primitiveBlockData={object}
+-//                   key={object.id}
+-//                   scale={100}
+-//                   isSelected={object.id === selectedObjectId}
+-//                   onClick={() => handleObjectClick(object.id)}
+-//                   updateObject={handleUpdateObject}
+-//                 ></PrimitiveBlock>
+-//               )
+-//             default:
+-//               return null
+-//           }
+-//         })}
+-//       </div>
+-//     </div>
+-//   ) : (
+-//     <div></div>
+-//   )
+-// }
+Index: src/store/fonts/reducer.ts
+===================================================================
+diff --git a/src/store/fonts/reducer.ts b/src/store/fonts/reducer.ts
+new file mode 100644
+--- /dev/null	
++++ b/src/store/fonts/reducer.ts	
+@@ -0,0 +1,39 @@
++interface FontsState {
++  fontFamily: string
++  fontSize: number
++  color: { hex: string; opacity: number }
++  bold: boolean
++  italic: boolean
++}
++
++const initialState: FontsState = {
++  fontFamily: 'Arial',
++  fontSize: 16,
++  color: { hex: 'black', opacity: 1 },
++  bold: false,
++  italic: false,
++}
++
++const fontsReducer = (state: FontsState = initialState, action: any): FontsState => {
++  switch (action.type) {
++    case 'CHANGE_FONT_FAMILY':
++      return { ...state, fontFamily: action.payload }
++
++    case 'CHANGE_FONT_SIZE':
++      return { ...state, fontSize: action.payload }
++
++    case 'CHANGE_FONT_COLOR':
++      return { ...state, color: action.payload }
++
++    case 'SELECTED_BOLD':
++      return { ...state, bold: !state.bold }
++
++    case 'SELECTED_ITALIC':
++      return { ...state, italic: !state.italic }
++
++    default:
++      return state
++  }
++}
++
++export default fontsReducer
+Index: src/store/fonts/fontsActions.ts
+===================================================================
+diff --git a/src/store/fonts/fontsActions.ts b/src/store/fonts/fontsActions.ts
+new file mode 100644
+--- /dev/null	
++++ b/src/store/fonts/fontsActions.ts	
+@@ -0,0 +1,33 @@
++export const changeFont = (fontData: {
++  fontFamily: string
++  fontSize: number
++  color: { hex: string; opacity: number }
++  fontWeight: string
++  fontStyle: string
++}) => ({
++  type: 'CHANGE_FONT',
++  payload: fontData,
++})
++
++export const changeFontFamily = (fontFamily: string) => ({
++  type: 'CHANGE_FONT_FAMILY',
++  payload: fontFamily,
++})
++
++export const changeFontSize = (fontSize: number) => ({
++  type: 'CHANGE_FONT_SIZE',
++  payload: fontSize,
++})
++
++export const changeFontColor = (color: { hex: string; opacity: number }) => ({
++  type: 'CHANGE_FONT_COLOR',
++  payload: color,
++})
++
++export const selectBold = () => ({
++  type: 'SELECT_BOLD',
++})
++
++export const selectItalic = () => ({
++  type: 'SELECT_ITALIC',
++})
+Index: src/store/slide/selector.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/store/slide/selector.ts b/src/store/slide/selector.ts
+--- a/src/store/slide/selector.ts	
++++ b/src/store/slide/selector.ts	
+@@ -13,4 +13,3 @@
+ export const selectSelectedSlideId = (state: RootState) => state.pres.selectedSlideId
+ // export const getSelectedSlideStatus = (state: RootState) => state.pres.isSlideSelected
+ export const selectSelectedObjectId = (state: RootState) => state.pres.selectedObjectId
+-
+Index: src/store/fonts/selector.ts
+===================================================================
+diff --git a/src/store/fonts/selector.ts b/src/store/fonts/selector.ts
+new file mode 100644
+--- /dev/null	
++++ b/src/store/fonts/selector.ts	
+@@ -0,0 +1,3 @@
++import { RootState } from '../store'
++
++export const fontTypes = (state: RootState) => state.pres.fonts
+Index: src/components/Menu/Fonts/Fonts.tsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/components/Menu/Fonts/Fonts.tsx b/src/components/Menu/Fonts/Fonts.tsx
+--- a/src/components/Menu/Fonts/Fonts.tsx	
++++ b/src/components/Menu/Fonts/Fonts.tsx	
+@@ -1,65 +1,76 @@
+ import React, { useEffect, useState } from 'react'
++import { useDispatch, useSelector } from 'react-redux'
+ import { Color } from '../../../types/types'
++import {
++  changeFont,
++  changeFontFamily,
++  changeFontSize,
++  changeFontColor,
++  selectBold,
++  selectItalic,
++} from '../../../store/fonts/fontsActions'
++import { RootState, useAppSelector } from '../../../store/store' // Путь к корневому редуктору
+ import fonts from './Fonts.module.css'
+ import styles from '../Menu.module.css'
+ import boldFontImage from '../../../images/boldFont.png'
+ import italicFontImage from '../../../images/italicFont.png'
++import { selectSelectedSlideId } from '../../../store/slide/selector'
++import {fontTypes} from "../../../store/fonts/selector";
+ 
+-export const Fonts = ({
+-  changeFont,
+-}: {
+-  changeFont: (data: {
+-    fontFamily: string
+-    fontSize: number
+-    color: Color
+-    fontWeight: string
+-    fontStyle: string
+-  }) => void
+-}) => {
+-  const [fontFamily, useFontFamily] = useState<string>('Arial')
+-  const [fontSize, useFontSize] = useState<number>(16)
+-  const [color, useColor] = useState<Color>({ hex: 'black', opacity: 1 })
+-  const [showDropdownFamily, setShowDropdownFamily] = useState(false)
+-  const [showDropdownColor, setShowDropdownColor] = useState(false)
+-  const [bold, setBold] = useState(false)
+-  const [italic, setItalic] = useState(false)
++// const FontsProps {
++//   changeFont: (data: {
++//     fontFamily: string
++//     fontSize: number
++//     color: Color
++//     fontWeight: string
++//     fontStyle: string
++//   }) => void
++// }
++
++export const Fonts = () => {
++  const dispatch = useDispatch()
++    const { fontFamily, fontSize, color, bold, italic } = useAppSelector(fontTypes);
++  const [showDropdownFamily, setShowDropdownFamily] = useState<boolean>(false)
++  const [showDropdownColor, setShowDropdownColor] = useState<boolean>(false)
+ 
+   useEffect(() => {
+     const fontWeightValue = bold ? 'bold' : 'normal'
+     const fontStyleValue = italic ? 'italic' : 'normal'
+-    changeFont({
+-      fontFamily: fontFamily,
+-      fontSize: fontSize,
+-      color: color,
+-      fontWeight: fontWeightValue,
+-      fontStyle: fontStyleValue,
+-    })
++
++    dispatch(
++      changeFont({
++        fontFamily,
++        fontSize,
++        color,
++        fontWeight: fontWeightValue,
++        fontStyle: fontStyleValue,
++      }),
++    )
+   }, [fontFamily, fontSize, color, bold, italic])
+ 
+-  const incrementFontSize = () => {
+-    useFontSize((prevSize) => prevSize + 1)
+-  }
+-
+-  const decrementFontSize = () => {
+-    useFontSize((prevSize) => prevSize - 1)
+-  }
+-
+   const handleFontFamilyChange = (selectedFont: string) => {
+-    useFontFamily(selectedFont)
++    dispatch(changeFontFamily(selectedFont))
+     setShowDropdownFamily(false)
+   }
+-
+   const handleFontColorChange = (selectedColor: string) => {
+-    useColor({ hex: selectedColor, opacity: 1 })
++    dispatch(changeFontColor({ hex: selectedColor, opacity: 1 }))
+     setShowDropdownColor(false)
+   }
+ 
+   const boldFont = () => {
+-    setBold((prevBold) => !prevBold)
++    dispatch(selectBold())
+   }
+ 
+   const italicFont = () => {
+-    setItalic((prevItalic) => !prevItalic)
++    dispatch(selectItalic())
++  }
++
++  const incrementFontSize = () => {
++    dispatch(changeFontSize(fontSize + 1))
++  }
++
++  const decrementFontSize = () => {
++    dispatch(changeFontSize(fontSize - 1))
+   }
+ 
+   return (
+Index: src/store/store.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/store/store.ts b/src/store/store.ts
+--- a/src/store/store.ts	
++++ b/src/store/store.ts	
+@@ -6,7 +6,22 @@
+   pres: slideReducer,
+ })
+ export const store = createStore(rootReducer)
+-export type RootState = ReturnType<typeof store.getState>
++export type RootState = {
++  pres: {
++    slides: { objects: any[]; id: string; background: Background }[];
++    namePres: string;
++    idPres: string;
++    selectedSlideId: string;
++    selectedObjectId: null;
++
++    fonts: {
++      fontFamily: string;
++      fontSize: number;
++      color: any;
++      bold: boolean;
++      italic: boolean;
++    };
++  };
+ export const useAppSelector = (selector: (state: RootState) => any) => useSelector(selector)
+ 
+ export type AppDispatch = typeof store.dispatch
