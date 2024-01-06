@@ -11,9 +11,11 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 100px;
+  height: 50px;
   background: rgb(241 230 230 / 41%);
   padding: 10px;
+  margin-bottom: 50px;
+  margin-bottom: 50px;
 }
 
 .image {
@@ -22,7 +24,6 @@
 
 .menuButton {
   margin-right: 10px;
-  border-radius: 10px;
   border: none;
   cursor: pointer;
   width: initial;

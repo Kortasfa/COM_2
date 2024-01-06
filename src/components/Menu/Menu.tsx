@@ -31,7 +31,7 @@ const Menu = () => {
   const selectedSlideId = useAppSelector(getSelectedSlideId)
   const { error, handleFileChange } = useImportFileHandler()
   // const presentationName = useAppSelector(getPresentationName)
-
+  //
   // useEffect(() => {
   //   document.title = presentationName
   // }, [presentationName])
@@ -56,10 +56,6 @@ const Menu = () => {
 
   const handleDeleteObject = () => {
     dispatch(deleteObject(selectedSlideId, selectedObjectId))
-  }
-
-  const changeColor = (color: string) => {
-    dispatch(changeBackgroundColor(selectedSlideId, color))
   }
 
   return (
@@ -103,15 +99,6 @@ const Menu = () => {
         <img src={deleteObjectImage} className={styles.menuButton} onClick={handleDeleteObject} alt={'delete'} />
         <Fonts />
         <Loader handleFileChange={handleFileChange} error={error} />
-        <button className={styles.menuButton} onClick={() => changeColor('green')}>
-          🟢
-        </button>
-        <button className={styles.menuButton} onClick={() => changeColor('red')}>
-          🔴
-        </button>
-        <button className={styles.menuButton} onClick={() => changeColor('yellow')}>
-          🟡
-        </button>
       </div>
     </div>
   )

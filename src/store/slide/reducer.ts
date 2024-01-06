@@ -5,6 +5,7 @@ import {
   ADD_TEXT,
   CHANGE_BACKGROUND_COLOR,
   CHANGE_FONT,
+  CHANGE_PRIMITIVE_COLOR,
   DELETE_OBJECT,
   IMPORT_PARSED_DATA,
   REMOVE_SLIDE,
@@ -237,6 +238,36 @@ export const slideReducer = (state = initialState, action: any) => {
                 fontWeight: fontWeight,
                 fontStyle: fontStyle,
                 fontUnderline: fontUnderline,
+              }
+            }
+            return obj
+          })
+          return {
+            ...slide,
+            objects: updatedObjects,
+          }
+        }
+        return slide
+      })
+      return {
+        ...state,
+        presentation: {
+          ...state.presentation,
+          slides: updatedSlides,
+        },
+      }
+    }
+
+    case CHANGE_PRIMITIVE_COLOR: {
+      const { slideId, objectId, color } = action.payload
+      console.log(color)
+      const updatedSlides = state.presentation.slides.map((slide: Slide) => {
+        if (slide.id === slideId) {
+          const updatedObjects = slide.objects.map((obj) => {
+            if (obj.id === objectId) {
+              return {
+                ...obj,
+                fillColor: color,
               }
             }
             return obj

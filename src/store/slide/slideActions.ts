@@ -12,6 +12,7 @@ import {
   IMPORT_PARSED_DATA,
   UPDATE_PRESENTATION_DATA,
   CHANGE_FONT,
+  CHANGE_PRIMITIVE_COLOR,
 } from './types'
 import { Color, Image, Presentation, Slide, SlideObject } from '../../types/types'
 
@@ -109,6 +110,15 @@ export const changeFont = (
     fontWeight,
     fontStyle,
     fontUnderline,
+  },
+})
+
+export const changePrimitiveColor = (slideId: string, objectId: string, color: Color) => ({
+  type: CHANGE_PRIMITIVE_COLOR,
+  payload: {
+    slideId,
+    objectId,
+    color,
   },
 })
 

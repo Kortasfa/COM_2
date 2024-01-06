@@ -14,7 +14,7 @@ interface PrimitiveBlock {
 }
 
 export const PrimitiveBlock = (props: PrimitiveBlock) => {
-  const { primitiveType, outlineColor, fillColor, x, y, width, height } = props.primitiveBlockData
+  const { primitiveType, fillColor, x, y, width, height } = props.primitiveBlockData
   const scalePercent = props.scale / 100
   let shapeElement = null
 
@@ -72,7 +72,6 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
           rx={(width / 2) * scalePercent}
           ry={(height / 2) * scalePercent}
           fill={fillColor.hex}
-          stroke={outlineColor?.hex || 'transparent'}
           strokeWidth={2 * scalePercent}
         />
       )
@@ -83,7 +82,6 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
           width={width * scalePercent}
           height={height * scalePercent}
           fill={fillColor.hex}
-          stroke={outlineColor?.hex || 'transparent'}
           strokeWidth={2 * scalePercent}
         />
       )
@@ -95,7 +93,6 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
             height * scalePercent
           }`}
           fill={fillColor.hex}
-          stroke={outlineColor?.hex || 'transparent'}
           strokeWidth={2 * scalePercent}
         />
       )
@@ -124,7 +121,7 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
             top: y * scalePercent,
             width: width * scalePercent,
             height: height * scalePercent,
-            cursor: props.isSelected ? (isAction ? 'grabbing' : 'grab') : 'default',
+            cursor: isEditing && props.isSelected ? (isAction ? 'grabbing' : 'grab') : 'default',
           }}
         >
           {shapeElement}
@@ -136,25 +133,25 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
         style={{
           top: (y + height) * scalePercent - 10,
           left: (x + width) * scalePercent - 10,
-          visibility: props.isSelected ? 'visible' : 'hidden',
+          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
       <div
         className={styles.resize}
         ref={refSize2}
         style={{
-          top: y * scalePercent - 6,
-          left: x * scalePercent - 6,
-          visibility: props.isSelected ? 'visible' : 'hidden',
+          top: y * scalePercent - 2,
+          left: x * scalePercent - 2,
+          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
       <div
         className={styles.resize}
         ref={refSize3}
         style={{
-          top: y * scalePercent - 6,
+          top: y * scalePercent - 2,
           left: (x + width) * scalePercent - 10,
-          visibility: props.isSelected ? 'visible' : 'hidden',
+          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
       <div
@@ -162,8 +159,8 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
         ref={refSize4}
         style={{
           top: (y + height) * scalePercent - 10,
-          left: x * scalePercent - 6,
-          visibility: props.isSelected ? 'visible' : 'hidden',
+          left: x * scalePercent - 2,
+          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
     </div>

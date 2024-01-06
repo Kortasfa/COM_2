@@ -36,7 +36,6 @@ type Text = SlideObject & {
 
 type Primitive = SlideObject & {
   primitiveType: Figures
-  outlineColor?: Color
   fillColor: Color
   type: ObjectType.PRIMITIVE
 }

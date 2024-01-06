@@ -5,9 +5,8 @@ import { ImageBlock } from './Objects/ImageBlock'
 import styles from './SlideView.module.css'
 import { PrimitiveBlock } from './Objects/PrimitiveBlock'
 import { useAppSelector, useAppDispatch } from '../store/store'
-// import { selectObject, updateObject } from '../store/slide/slideActions'
 import { getSlides, getSelectedObjectId, getSelectedSlideId } from '../store/slide/selector'
-import { selectObject, updateSlideObject } from '../store/slide/slideActions' // Import your actions
+import { selectObject, updateSlideObject } from '../store/slide/slideActions'
 
 interface SlideViewProps {
   slide: Slide

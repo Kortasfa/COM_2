@@ -7,7 +7,9 @@ import italicFontImage from '../../../images/italic.svg'
 import underlineFontImage from '../../../images/underline.svg'
 import incFontImage from '../../../images/arrow-shape-up.svg'
 import decFontImage from '../../../images/arrow-shape-down.svg'
-import { changeFont } from '../../../store/slide/slideActions'
+import colorImage from '../../../images/palette.svg'
+import fontCase from '../../../images/font-case.svg'
+import { changeBackgroundColor, changeFont, changePrimitiveColor } from '../../../store/slide/slideActions'
 import { useAppDispatch, useAppSelector } from '../../../store/store'
 import { getSelectedObjectId, getSelectedSlideId, getSlides } from '../../../store/slide/selector'
 
@@ -58,8 +60,22 @@ export const Fonts = () => {
     setShowDropdownFamily(false)
   }
 
+  const changeColor = (color: string) => {
+    dispatch(changeBackgroundColor(selectedSlideId, color))
+  }
+
+  const changePrimitiveColorAction = (color: Color) => {
+    dispatch(changePrimitiveColor(selectedSlideId, selectedObjectId, color))
+  }
+
   const handleFontColorChange = (selectedColor: string) => {
-    useColor({ hex: selectedColor, opacity: 1 })
+    console.log(selectedObjectId)
+    if (selectedObjectId.length) {
+      useColor({ hex: selectedColor, opacity: 1 })
+      changePrimitiveColorAction({ hex: selectedColor, opacity: 1 })
+    } else {
+      changeColor(selectedColor)
+    }
     setShowDropdownColor(false)
   }
 
@@ -78,9 +94,7 @@ export const Fonts = () => {
   return (
     <div className={fonts.fontsContainer}>
       <div>
-        <button className={styles.menuButton} onClick={() => setShowDropdownFamily(!showDropdownFamily)}>
-          Выбрать шрифт
-        </button>
+        <img className={styles.menuButton} onClick={() => setShowDropdownFamily(!showDropdownFamily)} src={fontCase} />
         <div style={{ display: showDropdownFamily ? 'block' : 'none' }} className={fonts.dropdown}>
           <p onClick={() => handleFontFamilyChange('Arial')}>Arial</p>
           <p onClick={() => handleFontFamilyChange('Times New Roman')}>Times New Roman</p>
@@ -95,10 +109,8 @@ export const Fonts = () => {
       <img src={italicFontImage} className={styles.menuButton} onClick={italicFont} />
       <img src={underlineFontImage} className={styles.menuButton} onClick={underlineFont} />
       <div>
-        <button className={styles.menuButton} onClick={() => setShowDropdownColor(!showDropdownColor)}>
-          Выбрать цвет шрифта
-        </button>
-        <div className={fonts.dropdown} style={{ display: showDropdownColor ? 'block' : 'none', columns: 5 }}>
+        <img className={styles.menuButton} onClick={() => setShowDropdownColor(!showDropdownColor)} src={colorImage} />
+        <div className={fonts.dropdown} style={{ display: showDropdownColor ? 'block' : 'none', columns: 3 }}>
           <p onClick={() => handleFontColorChange('black')}>⚫</p>
           <p onClick={() => handleFontColorChange('red')}>🔴</p>
           <p onClick={() => handleFontColorChange('yellow')}>🟡</p>

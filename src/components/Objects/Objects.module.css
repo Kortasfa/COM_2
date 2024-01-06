@@ -1,7 +1,7 @@
 .resize {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: red;
-    cursor: nesw-resize;
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: red;
+  cursor: nesw-resize;
 }
