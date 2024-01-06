@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Image, SlideObject } from '../../types/types'
+import { Image } from '../../types/types'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
 
 interface ImageBlock {
@@ -27,10 +27,8 @@ export const ImageBlock = (props: ImageBlock) => {
     y: height,
   })
 
-  const { isDragging } = useDragAndDrop(refBlock, setPosBlock, posBlock, 'pos')
-  useDragAndDrop(refSize, setPosSize, posSize, 'size')
-
-  const [isEditing, setIsEditing] = useState(false)
+  const { isAction } = useDragAndDrop(refBlock, setPosBlock, posBlock)
+  useDragAndDrop(refSize, setPosSize, posSize)
 
   useEffect(() => {
     if (props.updateObject) {
@@ -46,7 +44,6 @@ export const ImageBlock = (props: ImageBlock) => {
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (scalePercent === 1) {
-      setIsEditing(true)
       if (props.onClick && !props.isSelected) {
         props.onClick(e)
       }
@@ -58,18 +55,18 @@ export const ImageBlock = (props: ImageBlock) => {
       <div
         style={{
           position: 'absolute',
-          width: posSize.x * scalePercent + 4,
-          height: posSize.y * scalePercent + 2,
-          top: posBlock.y * scalePercent - 4,
-          left: posBlock.x * scalePercent - 5,
+          width: width * scalePercent + 4,
+          height: height * scalePercent + 2,
+          top: y * scalePercent - 4,
+          left: x * scalePercent - 5,
           outline: '2px solid red',
-          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
+          visibility: props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
       <div
         ref={refBlock}
         style={{
-          cursor: isDragging ? 'grabbing' : 'grab',
+          cursor: props.isSelected ? (isAction ? 'grabbing' : 'grab') : 'default',
         }}
       >
         <img
@@ -91,11 +88,11 @@ export const ImageBlock = (props: ImageBlock) => {
           position: 'absolute',
           width: '10px',
           height: '10px',
-          top: (posBlock.y + posSize.y) * scalePercent - 10,
-          left: (posBlock.x + posSize.x) * scalePercent - 10,
+          top: (y + height) * scalePercent - 10,
+          left: (x + width) * scalePercent - 10,
           background: 'red',
           cursor: 'nwse-resize',
-          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
+          visibility: props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
     </div>

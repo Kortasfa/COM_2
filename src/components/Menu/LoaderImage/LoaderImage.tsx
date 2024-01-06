@@ -1,17 +1,22 @@
 import styles from '../Menu.module.css'
-import React, { useRef, useState } from 'react'
-import addImageSrc from '../../../images/addImage.png'
+import React, { useEffect, useRef, useState } from 'react'
+import addImageSrc from '../../../images/picture.svg'
+import { addNewImage } from '../../../hooks/menu/objectsManager/useAddImage'
+import { useAppDispatch, useAppSelector } from '../../../store/store'
+import { addImage, selectSlide } from '../../../store/slide/slideActions'
+import { getSelectedSlideId } from '../../../store/slide/selector'
 
-interface LoaderImageProps {
-  addImageObject: (base64Data: string) => void
-  setSelectedObjectId?: (data: string) => void
-}
-
-const LoaderImage = ({ addImageObject, setSelectedObjectId }: LoaderImageProps) => {
+const LoaderImage = () => {
+  const dispatch = useAppDispatch()
+  const selectSlideId = useAppSelector(getSelectedSlideId)
+  const handleImageLoader = (base64Data: string, width: number, height: number) => {
+    const newImage = addNewImage(base64Data, width, height)
+    console.log(newImage)
+    dispatch(addImage(selectSlideId, newImage))
+  }
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [showPopup, setShowPopup] = useState(false) // State to control the popup visibility
   const [imageUrl, setImageUrl] = useState('none')
-
   const handleFileLoader = () => {
     if (fileInputRef.current) {
       const selectedFile = fileInputRef.current.files?.[0]
@@ -22,7 +27,14 @@ const LoaderImage = ({ addImageObject, setSelectedObjectId }: LoaderImageProps) 
         reader.onloadend = () => {
           const base64Data = reader.result as string
           if (selectedFile.type.includes('image')) {
-            addImageObject(base64Data)
+            const image = new Image()
+            image.src = base64Data
+
+            image.onload = () => {
+              const width = image.width
+              const height = image.height
+              handleImageLoader(base64Data, width, height)
+            }
           }
         }
         reader.readAsDataURL(selectedFile)
@@ -31,10 +43,7 @@ const LoaderImage = ({ addImageObject, setSelectedObjectId }: LoaderImageProps) 
   }
 
   const handleClick = () => {
-    setShowPopup(true) // Show the popup when the image is clicked
-    if (setSelectedObjectId) {
-      setSelectedObjectId('')
-    }
+    setShowPopup(true)
   }
 
   const handleImageUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +51,7 @@ const LoaderImage = ({ addImageObject, setSelectedObjectId }: LoaderImageProps) 
   }
 
   const handleImageUrlUpload = () => {
-    addImageObject(imageUrl)
+    handleImageLoader(imageUrl, 100, 100)
 
     setShowPopup(false)
     setImageUrl('')

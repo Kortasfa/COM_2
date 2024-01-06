@@ -1,116 +1,108 @@
 import styles from './Menu.module.css'
-import React, { useEffect, useState } from 'react'
-import { Figures, Presentation } from '../../types/types'
-import { useImportFileHandler } from '../../hooks/menu/presentationManager/useImportFileHandler'
-import useDeleteSlide from '../../hooks/menu/slideManager/useDeleteSlide'
-import { useAddSlide } from '../../hooks/menu/slideManager/useAddButton'
-import { useAddImage } from '../../hooks/menu/objectsManager/useAddImage'
-import { useAddText } from '../../hooks/menu/objectsManager/useAddText'
-import { useDeleteObject } from '../../hooks/menu/objectsManager/useDeleteObject'
-import { useAddPrimitive } from '../../hooks/menu/objectsManager/useAddPrimitive'
-import { Loader } from './Loader/Loader'
-import { LoaderImage } from './LoaderImage/LoaderImage'
-import { useChangeColor } from '../../hooks/menu/slideManager/useChangeColor'
-import { useChangeFont } from '../../hooks/menu/objectsManager/useChangeFontFamily'
+import React from 'react'
+import { Figures } from '../../types/types'
+import { useAppDispatch, useAppSelector } from '../../store/store'
+import {
+  addSlide,
+  deleteSlide,
+  addText,
+  addPrimitive,
+  deleteObject,
+  changeBackgroundColor,
+} from '../../store/slide/slideActions'
+import { getSelectedObjectId, getSelectedSlideId } from '../../store/slide/selector'
+import { addNewText } from '../../hooks/menu/objectsManager/useAddText'
+import addSlideImage from '../../images/circle-plus-fill.svg'
+import deleteSlideImage from '../../images/circle-minus-fill.svg'
 import { Fonts } from './Fonts/Fonts'
-import primitiveImage from '../../images/primitive.png'
-import textImage from '../../images/text.png'
-import deleteObjectImage from '../../images/deleteObject.png'
+import rectangleImage from '../../images/square.svg'
+import circleImage from '../../images/circle.svg'
+import triangleImage from '../../images/triangle-up.svg'
+import textImage from '../../images/text.svg'
+import deleteObjectImage from '../../images/trash-bin.svg'
+import { addNewPrimitive } from '../../hooks/menu/objectsManager/useAddPrimitive'
+import { LoaderImage } from './LoaderImage/LoaderImage'
+import { Loader } from './Loader/Loader'
+import { useImportFileHandler } from '../../hooks/menu/presentationManager/useImportFileHandler'
 
-interface Menu {
-  selectedObjectId?: string
-  selectedSlideId?: string
-  setSelectedSlideId?: (data: string) => void
-  setSelectedObjectId?: (data: string) => void
-  presentationData: Presentation
-  updatePresentationData: (data: Presentation) => void
-}
+const Menu = () => {
+  const dispatch = useAppDispatch()
+  const selectedObjectId = useAppSelector(getSelectedObjectId)
+  const selectedSlideId = useAppSelector(getSelectedSlideId)
+  const { error, handleFileChange } = useImportFileHandler()
+  // const presentationName = useAppSelector(getPresentationName)
 
-const Menu = ({
-  selectedObjectId,
-  selectedSlideId,
-  setSelectedSlideId,
-  setSelectedObjectId,
-  presentationData,
-  updatePresentationData,
-}: Menu) => {
-  const deleteSlide = useDeleteSlide(presentationData, updatePresentationData, setSelectedSlideId, selectedSlideId)
-  const addSlide = useAddSlide(presentationData, updatePresentationData)
-  const addImageObject = useAddImage(presentationData, updatePresentationData, selectedSlideId)
-  const addText = useAddText(presentationData, updatePresentationData, selectedSlideId)
-  const addPrimitive = useAddPrimitive(presentationData, updatePresentationData, selectedSlideId)
-  const deleteObject = useDeleteObject(presentationData, updatePresentationData, selectedObjectId)
-  const changeColor = useChangeColor(presentationData, updatePresentationData, selectedSlideId)
-  const changeFont = useChangeFont(presentationData, updatePresentationData, selectedObjectId, selectedSlideId)
-  const { error, handleFileChange } = useImportFileHandler(updatePresentationData)
-  const { name } = presentationData
-  const [title, setTitle] = useState(name)
+  // useEffect(() => {
+  //   document.title = presentationName
+  // }, [presentationName])
 
-  useEffect(() => {
-    document.title = title
-  }, [title])
+  const handleAddSlide = () => {
+    dispatch(addSlide())
+  }
 
-  const handleInputChange = (e: { target: { value: React.SetStateAction<string> } }) => {
-    setTitle(e.target.value)
+  const handleDeleteSlide = () => {
+    dispatch(deleteSlide(selectedSlideId))
+  }
+
+  const handleAddText = () => {
+    const newText = addNewText()
+    dispatch(addText(selectedSlideId, newText))
+  }
+
+  const handleAddPrimitive = (primitiveType: Figures) => {
+    const newPrimitive = addNewPrimitive(primitiveType)
+    dispatch(addPrimitive(selectedSlideId, newPrimitive))
+  }
+
+  const handleDeleteObject = () => {
+    dispatch(deleteObject(selectedSlideId, selectedObjectId))
+  }
+
+  const changeColor = (color: string) => {
+    dispatch(changeBackgroundColor(selectedSlideId, color))
   }
 
   return (
     <div>
-      <input value={title} type={'text'} className={styles.title} onChange={handleInputChange} />
+      {/*<input value={title} type={'text'} className={styles.title} onChange={handleInputChange} />*/}
       <div className={styles.menu}>
-        <button className={styles.menuButton} onClick={addSlide}>
-          +
-        </button>
-        <button className={styles.menuButton} onClick={deleteSlide}>
-          -
-        </button>
+        <img className={styles.menuButton} onClick={handleAddSlide} src={addSlideImage} />
+        <img className={styles.menuButton} onClick={handleDeleteSlide} src={deleteSlideImage} />
         <img
           src={textImage}
           className={styles.menuButton}
           onClick={() => {
-            if (setSelectedObjectId) {
-              setSelectedObjectId('')
-            }
-            addText()
+            handleAddText()
           }}
         />
         <img
-          src={primitiveImage}
+          src={rectangleImage}
           className={styles.menuButton}
           onClick={() => {
-            if (setSelectedObjectId) {
-              setSelectedObjectId('')
-            }
-            addPrimitive(Figures.RECTANGLE)
+            handleAddPrimitive(Figures.RECTANGLE)
           }}
           alt={'primitive'}
         />
         <img
-          src={primitiveImage}
+          src={circleImage}
           className={styles.menuButton}
           onClick={() => {
-            if (setSelectedObjectId) {
-              setSelectedObjectId('')
-            }
-            addPrimitive(Figures.CIRCLE)
+            handleAddPrimitive(Figures.CIRCLE)
           }}
           alt={'primitive'}
         />
         <img
-          src={primitiveImage}
+          src={triangleImage}
           className={styles.menuButton}
           onClick={() => {
-            if (setSelectedObjectId) {
-              setSelectedObjectId('')
-            }
-            addPrimitive(Figures.TRIANGLE)
+            handleAddPrimitive(Figures.TRIANGLE)
           }}
           alt={'primitive'}
         />
-        <LoaderImage addImageObject={addImageObject} setSelectedObjectId={setSelectedObjectId} />
-        <img src={deleteObjectImage} className={styles.menuButton} onClick={deleteObject} />
-        <Fonts changeFont={changeFont} />
-        <Loader handleFileChange={handleFileChange} error={error} presentationData={presentationData} />
+        <LoaderImage />
+        <img src={deleteObjectImage} className={styles.menuButton} onClick={handleDeleteObject} alt={'delete'} />
+        <Fonts />
+        <Loader handleFileChange={handleFileChange} error={error} />
         <button className={styles.menuButton} onClick={() => changeColor('green')}>
           🟢
         </button>

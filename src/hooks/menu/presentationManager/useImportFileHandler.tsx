@@ -1,9 +1,12 @@
 import { Presentation } from '../../../types/types'
 import React, { useState } from 'react'
 import InitializedPresentation from '../../../components/InitializedPresentation'
+import { importParsedData } from '../../../store/slide/slideActions'
+import { useAppDispatch } from '../../../store/store'
 
-function useImportFileHandler(updatePresentationData: (data: Presentation) => void) {
+function useImportFileHandler() {
   const [error, setError] = useState<string | null>(null)
+  const dispatch = useAppDispatch()
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
 
@@ -14,10 +17,10 @@ function useImportFileHandler(updatePresentationData: (data: Presentation) => vo
         try {
           const jsonData = e.target?.result as string
           const parsedData: Presentation = JSON.parse(jsonData)
-          updatePresentationData(parsedData)
+          dispatch(importParsedData(parsedData))
           setError(null)
         } catch (error) {
-          updatePresentationData(InitializedPresentation)
+          dispatch(importParsedData(InitializedPresentation))
           setError('Check format of your file!')
         }
       }

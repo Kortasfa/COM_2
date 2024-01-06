@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Figures, Primitive, SlideObject } from '../../types/types'
+import { Figures, Primitive } from '../../types/types'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
 
 interface PrimitiveBlock {
@@ -8,6 +8,7 @@ interface PrimitiveBlock {
   isSelected: boolean
   onClick?: React.MouseEventHandler<SVGSVGElement> | undefined
   updateObject?: (data: Primitive) => void
+  setIsDraggingOrResizing?: (data: boolean) => void
 }
 
 export const PrimitiveBlock = (props: PrimitiveBlock) => {
@@ -28,8 +29,8 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
     y: height,
   })
 
-  const { isDragging } = useDragAndDrop(refBlock, setPosBlock, posBlock, 'pos')
-  useDragAndDrop(refSize, setPosSize, posSize, 'size')
+  const { isAction } = useDragAndDrop(refBlock, setPosBlock, posBlock)
+  useDragAndDrop(refSize, setPosSize, posSize)
 
   const [isEditing, setIsEditing] = useState(false)
 
@@ -115,7 +116,7 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
             top: y * scalePercent,
             width: width * scalePercent,
             height: height * scalePercent,
-            cursor: isDragging ? 'grabbing' : 'grab',
+            cursor: props.isSelected ? (isAction ? 'grabbing' : 'grab') : 'default',
           }}
         >
           {shapeElement}
@@ -127,8 +128,8 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
           position: 'absolute',
           width: '10px',
           height: '10px',
-          top: (posBlock.y + posSize.y) * scalePercent - 10,
-          left: (posBlock.x + posSize.x) * scalePercent - 10,
+          top: (y + height) * scalePercent - 10,
+          left: (x + width) * scalePercent - 10,
           background: 'red',
           cursor: 'nwse-resize',
           visibility: isEditing && props.isSelected ? 'visible' : 'hidden',

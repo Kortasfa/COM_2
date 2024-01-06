@@ -1,57 +1,72 @@
-import styles from '../styles/App.module.css'
-import { Presentation, Slide } from '../types/types'
-import React, { useState } from 'react'
-import { SideSlide } from './SideSlide'
+import React from 'react'
+import { ObjectType, Slide } from '../types/types'
+import { TextBlock } from './Objects/TextBlock'
+import { ImageBlock } from './Objects/ImageBlock'
+import styles from './SlideView.module.css'
+import { PrimitiveBlock } from './Objects/PrimitiveBlock'
+import { useAppSelector } from '../store/store'
+import { getSelectedObjectId, getSelectedSlideId } from '../store/slide/selector'
 
-interface SideSlidesProps {
-  selectedSlideId?: string
-  onSlideClick: (slideId: string) => void
-  presentationData: Presentation
-  updatePresentationData: (data: Presentation) => void
+interface SideSlides {
+  slide: Slide
+  onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
 }
 
-export const SideSlides: React.FC<SideSlidesProps> = (props) => {
-  const [draggedSlideId, setDraggedSlideId] = useState<string | null>(null)
+export const SideSlides = ({ slide, onClick }: SideSlides) => {
+  const selectedSlideId = useAppSelector(getSelectedSlideId)
+  const selectedObjectId = useAppSelector(getSelectedObjectId)
+  const isSelected = slide.id === selectedSlideId
+  const { objects, background } = slide
 
-  const handleDragStart = (slideId: string) => {
-    setDraggedSlideId(slideId)
-  }
-
-  const handleDragEnd = () => {
-    setDraggedSlideId(null)
-  }
-
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>, dropSlideId: string) => {
-    event.preventDefault()
-    if (draggedSlideId && draggedSlideId !== dropSlideId) {
-      const newSlides = [...props.presentationData.slides]
-      const draggedIndex = newSlides.findIndex((slide) => slide.id === draggedSlideId)
-      const dropIndex = newSlides.findIndex((slide) => slide.id === dropSlideId)
-      const [draggedSlide] = newSlides.splice(draggedIndex, 1)
-      newSlides.splice(dropIndex, 0, draggedSlide)
-
-      props.updatePresentationData({ ...props.presentationData, slides: newSlides })
-    }
-  }
-
-  return (
-    <div className={styles.slides} onDragOver={(e) => e.preventDefault()} onDragEnd={handleDragEnd}>
-      {props.presentationData.slides.map((slide, index) => (
-        <div
-          key={slide.id}
-          draggable
-          onDragStart={() => handleDragStart(slide.id)}
-          onDrop={(e) => handleDrop(e, slide.id)}
-        >
-          <SideSlide
-            slide={slide}
-            scale={16}
-            index={index + 1}
-            onClick={() => props.onSlideClick(slide.id)}
-            isSlideSelected={props.selectedSlideId === slide.id}
-          />
-        </div>
-      ))}
+  return slide ? (
+    <div>
+      <div
+        className={styles.sideSlide}
+        style={{
+          backgroundColor: background.color.hex,
+          ...(isSelected && {
+            outlineColor: '#3498db',
+            outlineWidth: '3px',
+          }),
+        }}
+        onClick={onClick}
+      >
+        {objects.map((object: any) => {
+          switch (object.type) {
+            case ObjectType.TEXTBLOCK:
+              return (
+                <TextBlock
+                  textBlockData={object}
+                  key={object.id}
+                  scale={15.7}
+                  isSelected={object.id === selectedObjectId}
+                ></TextBlock>
+              )
+            case ObjectType.IMAGE:
+              return (
+                <ImageBlock
+                  imageBlockData={object}
+                  key={object.id}
+                  scale={15.7}
+                  isSelected={object.id === selectedSlideId}
+                ></ImageBlock>
+              )
+            case ObjectType.PRIMITIVE:
+              return (
+                <PrimitiveBlock
+                  primitiveBlockData={object}
+                  key={object.id}
+                  scale={15.7}
+                  isSelected={object.id === selectedObjectId}
+                ></PrimitiveBlock>
+              )
+            default:
+              return null
+          }
+        })}
+      </div>
     </div>
+  ) : (
+    <div></div>
   )
 }

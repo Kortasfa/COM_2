@@ -1,79 +1,65 @@
-import React from 'react'
-import { ObjectType, Presentation, Slide, SlideObject } from '../types/types'
+import React, { useState } from 'react'
+import { ObjectType, Slide, SlideObject } from '../types/types'
 import { TextBlock } from './Objects/TextBlock'
 import { ImageBlock } from './Objects/ImageBlock'
 import styles from './SlideView.module.css'
 import { PrimitiveBlock } from './Objects/PrimitiveBlock'
+import { useAppSelector, useAppDispatch } from '../store/store'
+// import { selectObject, updateObject } from '../store/slide/slideActions'
+import { getSlides, getSelectedObjectId, getSelectedSlideId } from '../store/slide/selector'
+import { selectObject, updateSlideObject } from '../store/slide/slideActions' // Import your actions
 
-interface SlideView {
-  scale?: number
-  onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
-  isSlideSelected?: boolean
-  selectedObjectId?: string | null
-  onObjectClick?: (objectId: string) => void
-  updateObject?: (data: SlideObject) => void
-  selectionSlideClass?: string
-  presentationData: Presentation
-  updatePresentationData: (data: Presentation) => void
-  selectedSlideId?: string
+interface SlideViewProps {
+  slide: Slide
 }
 
-export const SlideView = (props: SlideView) => {
-  const selectedSlide = props.presentationData.slides.find(
-    (slide: { id: string }) => slide.id === props.selectedSlideId,
-  )
-  const updateObject = (updatedObject: SlideObject) => {
-    const updatedObjects = selectedSlide?.objects.map((obj) => {
-      if (obj.id === props.selectedObjectId) {
-        return {
-          ...obj,
-          ...updatedObject,
-        }
-      }
-      return obj
-    })
-    const updatedSlides = props.presentationData.slides.map((slide: Slide) => {
-      if (slide.id === props.selectedSlideId) {
-        return {
-          ...slide,
-          objects: updatedObjects ? updatedObjects : slide.objects,
-        }
-      }
-      return slide
-    })
+export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
+  const dispatch = useAppDispatch()
+  const selectedSlideId = useAppSelector(getSelectedSlideId)
+  const selectedObjectId = useAppSelector(getSelectedObjectId)
+  const [objectId, setObjectId] = useState<string>(selectedObjectId)
+  const isSelectedSlide = slide.id === selectedSlideId
+  const [isDraggingOrResizing, setIsDraggingOrResizing] = useState(false)
+  const { objects, background } = slide
 
-    const updatedPresentationData = {
-      ...props.presentationData,
-      slides: updatedSlides,
+  const handleBackgroundClick = () => {
+    if (!isDraggingOrResizing) {
+      dispatch(selectObject(selectedSlideId, ''))
+      setObjectId('')
     }
-
-    props.updatePresentationData(updatedPresentationData)
   }
 
-  return selectedSlide ? (
+  const handleObjectClick = (objectId: string, event: React.MouseEvent) => {
+    dispatch(selectObject(selectedSlideId, objectId))
+    setObjectId(objectId)
+    event.stopPropagation()
+  }
+
+  const handleUpdateObject = (object: SlideObject) => {
+    dispatch(updateSlideObject(selectedSlideId, selectedObjectId, object))
+  }
+
+  if (!isSelectedSlide) return null
+  return (
     <div>
       <div
-        className={props.selectionSlideClass || styles.sideSlide}
+        className={styles.selectionSlide}
+        onClick={handleBackgroundClick}
         style={{
-          backgroundColor: selectedSlide.background.color.hex,
-          ...(props.isSlideSelected && {
-            outlineColor: '#3498db',
-            outlineWidth: '3px',
-          }),
+          backgroundColor: background.color.hex,
         }}
-        onClick={props.onClick}
       >
-        {selectedSlide.objects.map((object) => {
+        {slide.objects.map((object: any) => {
           switch (object.type) {
             case ObjectType.TEXTBLOCK:
               return (
                 <TextBlock
                   textBlockData={object}
                   key={object.id}
-                  scale={props.scale || 100}
-                  isSelected={object.id === props.selectedObjectId}
-                  onClick={() => props.onObjectClick && props.onObjectClick(object.id)}
-                  updateObject={updateObject}
+                  scale={100}
+                  isSelected={object.id === selectedObjectId}
+                  onClick={(e) => handleObjectClick(object.id, e)}
+                  updateObject={handleUpdateObject}
                 ></TextBlock>
               )
             case ObjectType.IMAGE:
@@ -81,10 +67,10 @@ export const SlideView = (props: SlideView) => {
                 <ImageBlock
                   imageBlockData={object}
                   key={object.id}
-                  scale={props.scale || 100}
-                  isSelected={object.id === props.selectedObjectId}
-                  onClick={() => props.onObjectClick && props.onObjectClick(object.id)}
-                  updateObject={updateObject}
+                  scale={100}
+                  isSelected={object.id === selectedObjectId}
+                  onClick={(e) => handleObjectClick(object.id, e)}
+                  updateObject={handleUpdateObject}
                 ></ImageBlock>
               )
             case ObjectType.PRIMITIVE:
@@ -92,10 +78,11 @@ export const SlideView = (props: SlideView) => {
                 <PrimitiveBlock
                   primitiveBlockData={object}
                   key={object.id}
-                  scale={props.scale || 100}
-                  isSelected={object.id === props.selectedObjectId}
-                  onClick={() => props.onObjectClick && props.onObjectClick(object.id)}
-                  updateObject={updateObject}
+                  scale={100}
+                  isSelected={object.id === selectedObjectId}
+                  onClick={(e) => handleObjectClick(object.id, e)}
+                  updateObject={handleUpdateObject}
+                  setIsDraggingOrResizing={setIsDraggingOrResizing}
                 ></PrimitiveBlock>
               )
             default:
@@ -104,7 +91,5 @@ export const SlideView = (props: SlideView) => {
         })}
       </div>
     </div>
-  ) : (
-    <div></div>
   )
 }
