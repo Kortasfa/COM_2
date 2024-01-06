@@ -22,12 +22,12 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
   const [isDraggingOrResizing, setIsDraggingOrResizing] = useState(false)
   const { objects, background } = slide
 
-  const handleBackgroundClick = () => {
-    if (!isDraggingOrResizing) {
-      dispatch(selectObject(selectedSlideId, ''))
-      setObjectId('')
-    }
-  }
+  // const handleBackgroundClick = () => {
+  //   if (!isDraggingOrResizing) {
+  //     dispatch(selectObject(selectedSlideId, ''))
+  //     setObjectId('')
+  //   }
+  // }
 
   const handleObjectClick = (objectId: string, event: React.MouseEvent) => {
     dispatch(selectObject(selectedSlideId, objectId))
@@ -44,7 +44,6 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
     <div>
       <div
         className={styles.selectionSlide}
-        onClick={handleBackgroundClick}
         style={{
           backgroundColor: background.color.hex,
         }}

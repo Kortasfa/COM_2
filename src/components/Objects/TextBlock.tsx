@@ -1,6 +1,8 @@
 import { Text } from '../../types/types'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
+import { useResize } from '../../hooks/useResize'
+import styles from './Objects.module.css'
 
 interface TextBlock {
   textBlockData: Text
@@ -16,7 +18,10 @@ export const TextBlock = (props: TextBlock) => {
   const scalePercent = props.scale / 100
 
   const refBlock = useRef<HTMLDivElement>(null)
-  const refSize = useRef<HTMLDivElement>(null)
+  const refSize1 = useRef<HTMLDivElement>(null)
+  const refSize2 = useRef<HTMLDivElement>(null)
+  const refSize3 = useRef<HTMLDivElement>(null)
+  const refSize4 = useRef<HTMLDivElement>(null)
 
   const [posBlock, setPosBlock] = useState({
     x: x,
@@ -29,7 +34,10 @@ export const TextBlock = (props: TextBlock) => {
   })
 
   const { isAction } = useDragAndDrop(refBlock, setPosBlock, posBlock)
-  useDragAndDrop(refSize, setPosSize, posSize)
+  useResize(refSize1, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: 1 })
+  useResize(refSize2, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: -1 })
+  useResize(refSize3, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: -1 })
+  useResize(refSize4, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: 1 })
 
   const [isEditing, setIsEditing] = useState(false)
   const [textValue, setTextValue] = useState(value)
@@ -100,15 +108,38 @@ export const TextBlock = (props: TextBlock) => {
         }}
       />
       <div
-        ref={refSize}
+        className={styles.resize}
+        ref={refSize1}
         style={{
-          position: 'absolute',
-          width: '10px',
-          height: '10px',
           top: (y + height) * scalePercent - 10,
           left: (x + width) * scalePercent - 10,
-          background: 'red',
-          cursor: 'nwse-resize',
+          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
+        }}
+      ></div>
+      <div
+        className={styles.resize}
+        ref={refSize2}
+        style={{
+          top: y * scalePercent - 6,
+          left: x * scalePercent - 6,
+          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
+        }}
+      ></div>
+      <div
+        className={styles.resize}
+        ref={refSize3}
+        style={{
+          top: y * scalePercent - 6,
+          left: (x + width) * scalePercent - 10,
+          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
+        }}
+      ></div>
+      <div
+        className={styles.resize}
+        ref={refSize4}
+        style={{
+          top: (y + height) * scalePercent - 10,
+          left: x * scalePercent - 6,
           visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>

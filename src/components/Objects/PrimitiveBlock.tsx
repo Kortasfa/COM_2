@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Figures, Primitive } from '../../types/types'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
+import styles from './Objects.module.css'
+import { useResize } from '../../hooks/useResize'
 
 interface PrimitiveBlock {
   primitiveBlockData: Primitive
@@ -17,7 +19,10 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
   let shapeElement = null
 
   const refBlock = useRef<HTMLDivElement>(null)
-  const refSize = useRef<HTMLDivElement>(null)
+  const refSize1 = useRef<HTMLDivElement>(null)
+  const refSize2 = useRef<HTMLDivElement>(null)
+  const refSize3 = useRef<HTMLDivElement>(null)
+  const refSize4 = useRef<HTMLDivElement>(null)
 
   const [posBlock, setPosBlock] = useState({
     x: x,
@@ -30,7 +35,10 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
   })
 
   const { isAction } = useDragAndDrop(refBlock, setPosBlock, posBlock)
-  useDragAndDrop(refSize, setPosSize, posSize)
+  useResize(refSize1, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: 1 })
+  useResize(refSize2, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: -1 })
+  useResize(refSize3, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: -1 })
+  useResize(refSize4, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: 1 })
 
   const [isEditing, setIsEditing] = useState(false)
 
@@ -123,16 +131,39 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
         </svg>
       </div>
       <div
-        ref={refSize}
+        className={styles.resize}
+        ref={refSize1}
         style={{
-          position: 'absolute',
-          width: '10px',
-          height: '10px',
           top: (y + height) * scalePercent - 10,
           left: (x + width) * scalePercent - 10,
-          background: 'red',
-          cursor: 'nwse-resize',
-          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
+          visibility: props.isSelected ? 'visible' : 'hidden',
+        }}
+      ></div>
+      <div
+        className={styles.resize}
+        ref={refSize2}
+        style={{
+          top: y * scalePercent - 6,
+          left: x * scalePercent - 6,
+          visibility: props.isSelected ? 'visible' : 'hidden',
+        }}
+      ></div>
+      <div
+        className={styles.resize}
+        ref={refSize3}
+        style={{
+          top: y * scalePercent - 6,
+          left: (x + width) * scalePercent - 10,
+          visibility: props.isSelected ? 'visible' : 'hidden',
+        }}
+      ></div>
+      <div
+        className={styles.resize}
+        ref={refSize4}
+        style={{
+          top: (y + height) * scalePercent - 10,
+          left: x * scalePercent - 6,
+          visibility: props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
     </div>
