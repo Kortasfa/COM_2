@@ -20,6 +20,7 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
   const [objectId, setObjectId] = useState<string>(selectedObjectId)
   const isSelectedSlide = slide.id === selectedSlideId
   const [isDraggingOrResizing, setIsDraggingOrResizing] = useState(false)
+  const { objects, background } = slide
 
   const handleBackgroundClick = () => {
     if (!isDraggingOrResizing) {
@@ -41,7 +42,13 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
   if (!isSelectedSlide) return null
   return (
     <div>
-      <div className={styles.selectionSlide} onClick={handleBackgroundClick}>
+      <div
+        className={styles.selectionSlide}
+        onClick={handleBackgroundClick}
+        style={{
+          backgroundColor: background.color.hex,
+        }}
+      >
         {slide.objects.map((object: any) => {
           switch (object.type) {
             case ObjectType.TEXTBLOCK:
