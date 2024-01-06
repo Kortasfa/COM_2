@@ -13,8 +13,7 @@ import {
   UPDATE_PRESENTATION_DATA,
   CHANGE_FONT,
 } from './types'
-import { Color, Image, ObjectType, Presentation, Slide, SlideObject, Text } from '../../types/types'
-import initializedPresentation from '../../components/InitializedPresentation'
+import { Color, Image, Presentation, Slide, SlideObject } from '../../types/types'
 
 export const addSlide = () => ({
   type: ADD_SLIDE,

@@ -15,14 +15,10 @@ import {
 } from './types'
 import { Color, Slide } from '../../types/types'
 import InitializedPresentation from '../../components/InitializedPresentation'
-import { actions } from './slideActions'
 
 const INITIAL_SLIDE_ID = 0
 export const initialState = {
   presentation: InitializedPresentation,
-  // slides: InitializedPresentation.slides,
-  // namePres: InitializedPresentation.name,
-  // idPres: InitializedPresentation.id,
   selectedSlideId: InitializedPresentation.slides[INITIAL_SLIDE_ID].id,
   selectedObjectId: InitializedPresentation.slides[INITIAL_SLIDE_ID].objects,
 }
