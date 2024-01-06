@@ -11,7 +11,8 @@ interface TextBlock {
 }
 
 export const TextBlock = (props: TextBlock) => {
-  const { value, color, fontSize, fontFamily, fontWeight, fontStyle, x, y, width, height } = props.textBlockData
+  const { value, color, fontSize, fontFamily, fontWeight, fontStyle, fontUnderline, x, y, width, height } =
+    props.textBlockData
   const scalePercent = props.scale / 100
 
   const refBlock = useRef<HTMLDivElement>(null)
@@ -89,6 +90,7 @@ export const TextBlock = (props: TextBlock) => {
           fontFamily: fontFamily,
           fontWeight: fontWeight,
           fontStyle: fontStyle,
+          textDecoration: fontUnderline,
           lineHeight: (fontSize + 10) * scalePercent + 'px',
           top: y * scalePercent,
           left: x * scalePercent,

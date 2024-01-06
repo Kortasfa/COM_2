@@ -14,5 +14,6 @@ export const addNewText = (): Text => {
     fontFamily: 'Arial',
     fontWeight: 'normal',
     fontStyle: 'normal',
+    fontUnderline: 'normal',
   }
 }

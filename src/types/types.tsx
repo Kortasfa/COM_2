@@ -30,6 +30,7 @@ type Text = SlideObject & {
   fontFamily: string
   fontWeight: string
   fontStyle: string
+  fontUnderline: string
   type: ObjectType.TEXTBLOCK
 }
 

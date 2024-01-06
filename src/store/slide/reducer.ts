@@ -224,7 +224,7 @@ export const slideReducer = (state = initialState, action: any) => {
     }
 
     case CHANGE_FONT: {
-      const { slideId, objectId, fontFamily, fontSize, color, fontWeight, fontStyle } = action.payload
+      const { slideId, objectId, fontFamily, fontSize, color, fontWeight, fontStyle, fontUnderline } = action.payload
       const updatedSlides = state.presentation.slides.map((slide: Slide) => {
         if (slide.id === slideId) {
           const updatedObjects = slide.objects.map((obj) => {
@@ -236,6 +236,7 @@ export const slideReducer = (state = initialState, action: any) => {
                 color: color,
                 fontWeight: fontWeight,
                 fontStyle: fontStyle,
+                fontUnderline: fontUnderline,
               }
             }
             return obj

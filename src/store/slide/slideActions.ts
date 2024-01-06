@@ -97,6 +97,7 @@ export const changeFont = (
   fontSize: number,
   fontWeight: string,
   fontStyle: string,
+  fontUnderline: string,
 ) => ({
   type: CHANGE_FONT,
   payload: {
@@ -107,6 +108,7 @@ export const changeFont = (
     fontSize,
     fontWeight,
     fontStyle,
+    fontUnderline,
   },
 })
 
