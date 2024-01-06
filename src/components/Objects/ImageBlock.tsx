@@ -10,6 +10,7 @@ interface ImageBlock {
   isSelected: boolean
   onClick?: React.MouseEventHandler<HTMLDivElement>
   updateObject?: (data: Image) => void
+  setIsDraggingOrResizing?: (data: boolean) => void
 }
 
 export const ImageBlock = (props: ImageBlock) => {
@@ -33,10 +34,10 @@ export const ImageBlock = (props: ImageBlock) => {
   })
 
   const { isAction } = useDragAndDrop(refBlock, setPosBlock, posBlock)
-  useResize(refSize1, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: 1 })
-  useResize(refSize2, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: -1 })
-  useResize(refSize3, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: -1 })
-  useResize(refSize4, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: 1 })
+  const resize1 = useResize(refSize1, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: 1 })
+  const resize2 = useResize(refSize2, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: -1 })
+  const resize3 = useResize(refSize3, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: -1 })
+  const resize4 = useResize(refSize4, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: 1 })
 
   useEffect(() => {
     if (props.updateObject) {
@@ -48,7 +49,10 @@ export const ImageBlock = (props: ImageBlock) => {
         height: posSize.y,
       })
     }
-  }, [posBlock, posSize])
+    if (props.setIsDraggingOrResizing) {
+      props.setIsDraggingOrResizing(isAction || resize1 || resize2 || resize3 || resize4)
+    }
+  }, [posBlock, posSize, isAction, resize1, resize2, resize3, resize4])
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (scalePercent === 1) {

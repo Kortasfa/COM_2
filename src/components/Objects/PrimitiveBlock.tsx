@@ -35,10 +35,10 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
   })
 
   const { isAction } = useDragAndDrop(refBlock, setPosBlock, posBlock)
-  useResize(refSize1, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: 1 })
-  useResize(refSize2, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: -1 })
-  useResize(refSize3, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: -1 })
-  useResize(refSize4, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: 1 })
+  const resize1 = useResize(refSize1, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: 1 })
+  const resize2 = useResize(refSize2, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: -1 })
+  const resize3 = useResize(refSize3, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: -1 })
+  const resize4 = useResize(refSize4, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: 1 })
 
   const [isEditing, setIsEditing] = useState(false)
 
@@ -61,7 +61,10 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
         height: posSize.y,
       })
     }
-  }, [posBlock, posSize])
+    if (props.setIsDraggingOrResizing) {
+      props.setIsDraggingOrResizing(isAction || resize1 || resize2 || resize3 || resize4)
+    }
+  }, [posBlock, posSize, isAction, resize1, resize2, resize3, resize4])
 
   switch (primitiveType) {
     case Figures.CIRCLE:

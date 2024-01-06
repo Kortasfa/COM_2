@@ -13,12 +13,12 @@ const useResize = (
   setPos: React.Dispatch<React.SetStateAction<Position>>,
   move: { x: number; y: number },
 ) => {
-  const [isAction, setIsAction] = useState(false)
+  const [isResize, setIsResize] = useState(false)
   const startPos = useRef<Position | null>(null)
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (isAction && startPos.current) {
+      if (isResize && startPos.current) {
         const delta = {
           x: e.pageX - startPos.current.x,
           y: e.pageY - startPos.current.y,
@@ -38,18 +38,18 @@ const useResize = (
     }
 
     const handleMouseUp = () => {
-      if (isAction) {
+      if (isResize) {
         startPos.current = null
         document.removeEventListener('mousemove', handleMouseMove)
         document.removeEventListener('mouseup', handleMouseUp)
-        setIsAction(false)
+        setIsResize(false)
       }
     }
 
     const handleMouseDown = (e: MouseEvent) => {
       e.preventDefault()
       startPos.current = { x: e.pageX, y: e.pageY }
-      setIsAction(true)
+      setIsResize(true)
       document.addEventListener('mousemove', handleMouseMove)
       document.addEventListener('mouseup', handleMouseUp)
     }
@@ -65,9 +65,9 @@ const useResize = (
         size.current.removeEventListener('mousedown', handleMouseDown)
       }
     }
-  }, [size, isAction])
+  }, [size, isResize])
 
-  return { isAction }
+  return isResize
 }
 
 export { useResize }

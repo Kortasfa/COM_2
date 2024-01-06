@@ -11,6 +11,7 @@ interface LoaderProps {
   handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   error: string | null
 }
+
 const Loader = ({ handleFileChange, error }: LoaderProps) => {
   const handleImportButton = () => {
     document.getElementById('fileInputImport')?.click()
@@ -19,12 +20,13 @@ const Loader = ({ handleFileChange, error }: LoaderProps) => {
   return (
     <div className={styles.loader}>
       <input className={styles.fileLoader} id="fileInputImport" type="file" onChange={handleFileChange} />
-      <button className={styles.menuButton} onClick={handleImportButton}>
-        <img src={importImage} alt="Import" className={styles.importImage} />
-      </button>
-      <button className={styles.menuButton} onClick={() => exportPresentation(presentationData)}>
-        <img src={exportImage} alt="Export" className={styles.exportImage} />
-      </button>
+      <img src={importImage} alt="Import" className={styles.menuButton} onClick={handleImportButton} />
+      <img
+        src={exportImage}
+        alt="Export"
+        className={styles.menuButton}
+        onClick={() => exportPresentation(presentationData)}
+      />
       <span className={styles.error}>{error}</span>
     </div>
   )

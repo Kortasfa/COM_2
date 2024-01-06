@@ -10,6 +10,7 @@ interface TextBlock {
   isSelected: boolean
   onClick?: React.MouseEventHandler<HTMLDivElement> | undefined
   updateObject?: (data: Text) => void
+  setIsDraggingOrResizing?: (data: boolean) => void
 }
 
 export const TextBlock = (props: TextBlock) => {
@@ -34,10 +35,10 @@ export const TextBlock = (props: TextBlock) => {
   })
 
   const { isAction } = useDragAndDrop(refBlock, setPosBlock, posBlock)
-  useResize(refSize1, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: 1 })
-  useResize(refSize2, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: -1 })
-  useResize(refSize3, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: -1 })
-  useResize(refSize4, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: 1 })
+  const resize1 = useResize(refSize1, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: 1 })
+  const resize2 = useResize(refSize2, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: -1 })
+  const resize3 = useResize(refSize3, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: -1 })
+  const resize4 = useResize(refSize4, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: 1 })
 
   const [isEditing, setIsEditing] = useState(false)
   const [textValue, setTextValue] = useState(value)
@@ -66,7 +67,10 @@ export const TextBlock = (props: TextBlock) => {
         height: posSize.y,
       })
     }
-  }, [posBlock, posSize, textValue])
+    if (props.setIsDraggingOrResizing) {
+      props.setIsDraggingOrResizing(isAction || resize1 || resize2 || resize3 || resize4)
+    }
+  }, [posBlock, posSize, isAction, resize1, resize2, resize3, resize4, textValue])
 
   return (
     <div>
