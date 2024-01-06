@@ -1,42 +1,52 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ObjectType, Slide, SlideObject } from '../types/types'
 import { TextBlock } from './Objects/TextBlock'
 import { ImageBlock } from './Objects/ImageBlock'
 import styles from './SlideView.module.css'
 import { PrimitiveBlock } from './Objects/PrimitiveBlock'
 import { useAppSelector, useAppDispatch } from '../store/store'
-// import { selectObject, updateObject } from '../store/slide/slideActions'
-import { getSlides, selectSelectedObjectId, selectSelectedSlideId } from '../store/slide/selector' // Import your actions
+import { getSlides, getSelectedObjectId, getSelectedSlideId } from '../store/slide/selector'
+import { selectObject, updateSlideObject } from '../store/slide/slideActions'
 
 interface SlideViewProps {
   slide: Slide
 }
 
 export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
-  const selectedObjectId = useAppSelector(selectSelectedObjectId)
-  const selectedSlideId = useAppSelector(selectSelectedSlideId)
-  // const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch()
+  const selectedSlideId = useAppSelector(getSelectedSlideId)
+  const selectedObjectId = useAppSelector(getSelectedObjectId)
+  const [objectId, setObjectId] = useState<string>(selectedObjectId)
   const isSelectedSlide = slide.id === selectedSlideId
+  const [isDraggingOrResizing, setIsDraggingOrResizing] = useState(false)
   const { objects, background } = slide
 
-  // const handleObjectClick = (objectId: string) => {
-  //   dispatch(selectObject({ slideId: selectedSlideId, objectId }))
-  // }
-  //
-  // const handleUpdateObject = (data: SlideObject) => {
-  //   dispatch(updateObject({ slideId: selectedSlideId, objectId: selectedObjectId, updatedObject: data }))
-  // }
-  const handleObjectClick = (objectId: string) => {
-    console.log(objectId)
+  const handleBackgroundClick = () => {
+    if (!isDraggingOrResizing) {
+      dispatch(selectObject(selectedSlideId, ''))
+      setObjectId('')
+    }
   }
 
-  const handleUpdateObject = (data: SlideObject) => {
-    console.log(data)
+  const handleObjectClick = (objectId: string, event: React.MouseEvent) => {
+    dispatch(selectObject(selectedSlideId, objectId))
+    setObjectId(objectId)
+    event.stopPropagation()
   }
-  console.log('slide', slide)
+
+  const handleUpdateObject = (object: SlideObject) => {
+    dispatch(updateSlideObject(selectedSlideId, selectedObjectId, object))
+  }
+
+  if (!isSelectedSlide) return null
   return (
-    <div>
-      <div className={styles.selectionSlide}>
+    <div onClick={handleBackgroundClick}>
+      <div
+        className={styles.selectionSlide}
+        style={{
+          backgroundColor: background.color.hex,
+        }}
+      >
         {slide.objects.map((object: any) => {
           switch (object.type) {
             case ObjectType.TEXTBLOCK:
@@ -46,8 +56,9 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
                   key={object.id}
                   scale={100}
                   isSelected={object.id === selectedObjectId}
-                  onClick={() => handleObjectClick(object.id)}
+                  onClick={(e) => handleObjectClick(object.id, e)}
                   updateObject={handleUpdateObject}
+                  setIsDraggingOrResizing={setIsDraggingOrResizing}
                 ></TextBlock>
               )
             case ObjectType.IMAGE:
@@ -56,9 +67,10 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
                   imageBlockData={object}
                   key={object.id}
                   scale={100}
-                  isSelected={object.id === selectedSlideId}
-                  onClick={() => handleObjectClick(object.id)}
+                  isSelected={object.id === selectedObjectId}
+                  onClick={(e) => handleObjectClick(object.id, e)}
                   updateObject={handleUpdateObject}
+                  setIsDraggingOrResizing={setIsDraggingOrResizing}
                 ></ImageBlock>
               )
             case ObjectType.PRIMITIVE:
@@ -68,8 +80,9 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
                   key={object.id}
                   scale={100}
                   isSelected={object.id === selectedObjectId}
-                  onClick={() => handleObjectClick(object.id)}
+                  onClick={(e) => handleObjectClick(object.id, e)}
                   updateObject={handleUpdateObject}
+                  setIsDraggingOrResizing={setIsDraggingOrResizing}
                 ></PrimitiveBlock>
               )
             default:

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Image, SlideObject } from '../../types/types'
+import { Image } from '../../types/types'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
+import styles from './Objects.module.css'
+import { useResize } from '../../hooks/useResize'
 
 interface ImageBlock {
   imageBlockData: Image
@@ -8,6 +10,7 @@ interface ImageBlock {
   isSelected: boolean
   onClick?: React.MouseEventHandler<HTMLDivElement>
   updateObject?: (data: Image) => void
+  setIsDraggingOrResizing?: (data: boolean) => void
 }
 
 export const ImageBlock = (props: ImageBlock) => {
@@ -15,7 +18,10 @@ export const ImageBlock = (props: ImageBlock) => {
   const scalePercent = props.scale / 100
 
   const refBlock = useRef<HTMLDivElement>(null)
-  const refSize = useRef<HTMLDivElement>(null)
+  const refSize1 = useRef<HTMLDivElement>(null)
+  const refSize2 = useRef<HTMLDivElement>(null)
+  const refSize3 = useRef<HTMLDivElement>(null)
+  const refSize4 = useRef<HTMLDivElement>(null)
 
   const [posBlock, setPosBlock] = useState({
     x: x,
@@ -27,10 +33,11 @@ export const ImageBlock = (props: ImageBlock) => {
     y: height,
   })
 
-  const { isDragging } = useDragAndDrop(refBlock, setPosBlock, posBlock, 'pos')
-  useDragAndDrop(refSize, setPosSize, posSize, 'size')
-
-  const [isEditing, setIsEditing] = useState(false)
+  const { isAction } = useDragAndDrop(refBlock, setPosBlock, posBlock)
+  const resize1 = useResize(refSize1, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: 1 })
+  const resize2 = useResize(refSize2, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: -1 })
+  const resize3 = useResize(refSize3, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: -1 })
+  const resize4 = useResize(refSize4, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: 1 })
 
   useEffect(() => {
     if (props.updateObject) {
@@ -42,11 +49,13 @@ export const ImageBlock = (props: ImageBlock) => {
         height: posSize.y,
       })
     }
-  }, [posBlock, posSize])
+    if (props.setIsDraggingOrResizing) {
+      props.setIsDraggingOrResizing(isAction || resize1 || resize2 || resize3 || resize4)
+    }
+  }, [posBlock, posSize, isAction, resize1, resize2, resize3, resize4])
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (scalePercent === 1) {
-      setIsEditing(true)
       if (props.onClick && !props.isSelected) {
         props.onClick(e)
       }
@@ -58,18 +67,18 @@ export const ImageBlock = (props: ImageBlock) => {
       <div
         style={{
           position: 'absolute',
-          width: posSize.x * scalePercent + 4,
-          height: posSize.y * scalePercent + 2,
-          top: posBlock.y * scalePercent - 4,
-          left: posBlock.x * scalePercent - 5,
+          width: width * scalePercent + 4,
+          height: height * scalePercent + 2,
+          top: y * scalePercent - 4,
+          left: x * scalePercent - 5,
           outline: '2px solid red',
-          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
+          visibility: props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
       <div
         ref={refBlock}
         style={{
-          cursor: isDragging ? 'grabbing' : 'grab',
+          cursor: props.isSelected ? (isAction ? 'grabbing' : 'grab') : 'default',
         }}
       >
         <img
@@ -86,16 +95,39 @@ export const ImageBlock = (props: ImageBlock) => {
         />
       </div>
       <div
-        ref={refSize}
+        className={styles.resize}
+        ref={refSize1}
         style={{
-          position: 'absolute',
-          width: '10px',
-          height: '10px',
-          top: (posBlock.y + posSize.y) * scalePercent - 10,
-          left: (posBlock.x + posSize.x) * scalePercent - 10,
-          background: 'red',
-          cursor: 'nwse-resize',
-          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
+          top: (y + height) * scalePercent - 10,
+          left: (x + width) * scalePercent - 10,
+          visibility: props.isSelected ? 'visible' : 'hidden',
+        }}
+      ></div>
+      <div
+        className={styles.resize}
+        ref={refSize2}
+        style={{
+          top: y * scalePercent - 6,
+          left: x * scalePercent - 6,
+          visibility: props.isSelected ? 'visible' : 'hidden',
+        }}
+      ></div>
+      <div
+        className={styles.resize}
+        ref={refSize3}
+        style={{
+          top: y * scalePercent - 6,
+          left: (x + width) * scalePercent - 10,
+          visibility: props.isSelected ? 'visible' : 'hidden',
+        }}
+      ></div>
+      <div
+        className={styles.resize}
+        ref={refSize4}
+        style={{
+          top: (y + height) * scalePercent - 10,
+          left: x * scalePercent - 6,
+          visibility: props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
     </div>

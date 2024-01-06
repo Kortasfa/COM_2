@@ -5,61 +5,69 @@ interface Position {
   y: number
 }
 
-const useDragAndDrop = (
-  ref: React.RefObject<HTMLElement>,
-  setPos: React.Dispatch<React.SetStateAction<Position>>,
+const useResize = (
+  size: React.RefObject<HTMLElement>,
+  setSize: React.Dispatch<React.SetStateAction<Position>>,
   initialPos: Position,
+  ref: Position,
+  setPos: React.Dispatch<React.SetStateAction<Position>>,
+  move: { x: number; y: number },
 ) => {
-  const [isAction, setIsAction] = useState(false)
+  const [isResize, setIsResize] = useState(false)
   const startPos = useRef<Position | null>(null)
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (isAction && startPos.current) {
+      if (isResize && startPos.current) {
         const delta = {
           x: e.pageX - startPos.current.x,
           y: e.pageY - startPos.current.y,
         }
         const newCoords = {
-          x: initialPos.x + delta.x,
-          y: initialPos.y + delta.y,
+          x: initialPos.x + move.x * delta.x,
+          y: initialPos.y + move.y * delta.y,
         }
 
-        setPos(newCoords)
+        setSize(newCoords)
+        const position = {
+          x: ref.x + (move.x < 0 ? delta.x : 0),
+          y: ref.y + (move.y < 0 ? delta.y : 0),
+        }
+        setPos(position)
       }
     }
 
     const handleMouseUp = () => {
-      if (isAction) {
+      if (isResize) {
         startPos.current = null
         document.removeEventListener('mousemove', handleMouseMove)
         document.removeEventListener('mouseup', handleMouseUp)
-        setIsAction(false)
+        setIsResize(false)
       }
     }
 
     const handleMouseDown = (e: MouseEvent) => {
       e.preventDefault()
       startPos.current = { x: e.pageX, y: e.pageY }
-      setIsAction(true)
+      setIsResize(true)
       document.addEventListener('mousemove', handleMouseMove)
       document.addEventListener('mouseup', handleMouseUp)
     }
 
-    if (ref.current) {
-      ref.current.addEventListener('mousedown', handleMouseDown)
+    if (size.current) {
+      size.current.addEventListener('mousedown', handleMouseDown)
       document.addEventListener('mouseup', handleMouseUp)
       document.addEventListener('mousemove', handleMouseMove)
     }
 
     return () => {
-      if (ref.current) {
-        ref.current.removeEventListener('mousedown', handleMouseDown)
+      if (size.current) {
+        size.current.removeEventListener('mousedown', handleMouseDown)
       }
     }
-  }, [ref, isAction])
+  }, [size, isResize])
 
-  return { isAction }
+  return isResize
 }
 
-export { useDragAndDrop }
+export { useResize }

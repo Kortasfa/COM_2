@@ -1,113 +1,116 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Color } from '../../../types/types'
-import {
-  changeFont,
-  changeFontFamily,
-  changeFontSize,
-  changeFontColor,
-  selectBold,
-  selectItalic,
-} from '../../../store/fonts/fontsActions'
-import { RootState, useAppSelector } from '../../../store/store' // Путь к корневому редуктору
+import { Color, ObjectType, Slide, SlideObject } from '../../../types/types'
 import fonts from './Fonts.module.css'
 import styles from '../Menu.module.css'
-import boldFontImage from '../../../images/boldFont.png'
-import italicFontImage from '../../../images/italicFont.png'
-import { selectSelectedSlideId } from '../../../store/slide/selector'
-import { fontTypes } from '../../../store/fonts/selector'
-
-// const FontsProps {
-//   changeFont: (data: {
-//     fontFamily: string
-//     fontSize: number
-//     color: Color
-//     fontWeight: string
-//     fontStyle: string
-//   }) => void
-// }
+import boldFontImage from '../../../images/bold.svg'
+import italicFontImage from '../../../images/italic.svg'
+import underlineFontImage from '../../../images/underline.svg'
+import incFontImage from '../../../images/arrow-shape-up.svg'
+import decFontImage from '../../../images/arrow-shape-down.svg'
+import colorImage from '../../../images/palette.svg'
+import fontCase from '../../../images/font-case.svg'
+import { changeBackgroundColor, changeFont, changePrimitiveColor } from '../../../store/slide/slideActions'
+import { useAppDispatch, useAppSelector } from '../../../store/store'
+import { getSelectedObjectId, getSelectedSlideId, getSlides } from '../../../store/slide/selector'
 
 export const Fonts = () => {
-  const dispatch = useDispatch()
-  const { fontFamily, fontSize, color, bold, italic } = useAppSelector(fontTypes)
-  const [showDropdownFamily, setShowDropdownFamily] = useState<boolean>(false)
-  const [showDropdownColor, setShowDropdownColor] = useState<boolean>(false)
+  const dispatch = useAppDispatch()
+  const selectedSlideId = useAppSelector(getSelectedSlideId)
+  const selectedObjectId = useAppSelector(getSelectedObjectId)
+  const slides = useAppSelector(getSlides)
+  const slide = slides.find((slide: Slide) => slide.id === selectedSlideId)
+  const textData = slide?.objects.find((obj: SlideObject) => obj.id === selectedObjectId)
+  const [fontFamily, useFontFamily] = useState<string>(textData?.fontFamily || 'Arial')
+  const [fontSize, useFontSize] = useState<number>(textData?.fontSize || 19)
+  const [color, useColor] = useState<Color>({ hex: 'black', opacity: 1 })
+  const [showDropdownFamily, setShowDropdownFamily] = useState(false)
+  const [showDropdownColor, setShowDropdownColor] = useState(false)
+  const [bold, setBold] = useState(false)
+  const [italic, setItalic] = useState(false)
+  const [underline, setUnderline] = useState(false)
 
   useEffect(() => {
     const fontWeightValue = bold ? 'bold' : 'normal'
     const fontStyleValue = italic ? 'italic' : 'normal'
-
+    const fontUnderlineValue = underline ? 'underline' : 'none'
     dispatch(
-      changeFont({
+      changeFont(
+        selectedSlideId,
+        selectedObjectId,
         fontFamily,
-        fontSize,
         color,
-        fontWeight: fontWeightValue,
-        fontStyle: fontStyleValue,
-      }),
+        fontSize,
+        fontWeightValue,
+        fontStyleValue,
+        fontUnderlineValue,
+      ),
     )
-  }, [fontFamily, fontSize, color, bold, italic])
+  }, [fontFamily, fontSize, color, bold, italic, underline])
+
+  const incrementFontSize = () => {
+    useFontSize(fontSize + 1)
+  }
+
+  const decrementFontSize = () => {
+    useFontSize(fontSize - 1)
+  }
 
   const handleFontFamilyChange = (selectedFont: string) => {
-    dispatch(changeFontFamily(selectedFont))
+    useFontFamily(selectedFont)
     setShowDropdownFamily(false)
   }
+
+  const changeColor = (color: string) => {
+    dispatch(changeBackgroundColor(selectedSlideId, color))
+  }
+
+  const changePrimitiveColorAction = (color: Color) => {
+    dispatch(changePrimitiveColor(selectedSlideId, selectedObjectId, color))
+  }
+
   const handleFontColorChange = (selectedColor: string) => {
-    dispatch(changeFontColor({ hex: selectedColor, opacity: 1 }))
+    console.log(selectedObjectId)
+    if (selectedObjectId.length) {
+      useColor({ hex: selectedColor, opacity: 1 })
+      changePrimitiveColorAction({ hex: selectedColor, opacity: 1 })
+    } else {
+      changeColor(selectedColor)
+    }
     setShowDropdownColor(false)
   }
 
   const boldFont = () => {
-    dispatch(selectBold())
+    setBold((prevBold) => !prevBold)
   }
 
   const italicFont = () => {
-    dispatch(selectItalic())
+    setItalic((prevItalic) => !prevItalic)
   }
 
-  const incrementFontSize = () => {
-    dispatch(changeFontSize(fontSize + 1))
-  }
-
-  const decrementFontSize = () => {
-    dispatch(changeFontSize(fontSize - 1))
+  const underlineFont = () => {
+    setUnderline((prev) => !prev)
   }
 
   return (
     <div className={fonts.fontsContainer}>
       <div>
-        <button className={styles.menuButton} onClick={() => setShowDropdownFamily(!showDropdownFamily)}>
-          Выбрать шрифт
-        </button>
+        <img className={styles.menuButton} onClick={() => setShowDropdownFamily(!showDropdownFamily)} src={fontCase} />
         <div style={{ display: showDropdownFamily ? 'block' : 'none' }} className={fonts.dropdown}>
           <p onClick={() => handleFontFamilyChange('Arial')}>Arial</p>
           <p onClick={() => handleFontFamilyChange('Times New Roman')}>Times New Roman</p>
-          <p onClick={() => handleFontFamilyChange('Roboto')}>Roboto</p>
+          <p onClick={() => handleFontFamilyChange('Calibri')}>Calibri</p>
+          <p onClick={() => handleFontFamilyChange('Comic Sans MS')}>Comic Sans MS</p>
+          <p onClick={() => handleFontFamilyChange('Open Sans')}>Open Sans</p>
         </div>
       </div>
-      <button className={styles.menuButton} onClick={incrementFontSize}>
-        +
-      </button>
-      <button className={styles.menuButton} onClick={decrementFontSize}>
-        -
-      </button>
-      <img
-        src={boldFontImage}
-        className={styles.menuButton}
-        style={{ backgroundColor: bold ? '#2980b9' : '#f0f0f0' }}
-        onClick={boldFont}
-      />
-      <img
-        src={italicFontImage}
-        className={styles.menuButton}
-        style={{ backgroundColor: italic ? '#2980b9' : '#f0f0f0' }}
-        onClick={italicFont}
-      />
+      <img className={styles.menuButton} onClick={incrementFontSize} src={incFontImage} />
+      <img className={styles.menuButton} onClick={decrementFontSize} src={decFontImage} />
+      <img src={boldFontImage} className={styles.menuButton} onClick={boldFont} />
+      <img src={italicFontImage} className={styles.menuButton} onClick={italicFont} />
+      <img src={underlineFontImage} className={styles.menuButton} onClick={underlineFont} />
       <div>
-        <button className={styles.menuButton} onClick={() => setShowDropdownColor(!showDropdownColor)}>
-          Выбрать цвет шрифта
-        </button>
-        <div className={fonts.dropdown} style={{ display: showDropdownColor ? 'block' : 'none', columns: 5 }}>
+        <img className={styles.menuButton} onClick={() => setShowDropdownColor(!showDropdownColor)} src={colorImage} />
+        <div className={fonts.dropdown} style={{ display: showDropdownColor ? 'block' : 'none', columns: 3 }}>
           <p onClick={() => handleFontColorChange('black')}>⚫</p>
           <p onClick={() => handleFontColorChange('red')}>🔴</p>
           <p onClick={() => handleFontColorChange('yellow')}>🟡</p>

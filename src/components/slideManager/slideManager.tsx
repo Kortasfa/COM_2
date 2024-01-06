@@ -1,38 +1,61 @@
-import React, { useEffect, useState } from 'react'
-import { Slide, SlideObject } from '../../types/types'
+import React, { useState } from 'react'
+import { Slide } from '../../types/types'
 import { Menu } from '../Menu/Menu'
 import styles from '../../styles/App.module.css'
 import { useAppDispatch, useAppSelector } from '../../store/store'
-// import { addSlide, updateSlidleObject } from '../../store/slide/slideActions'
-import { getSlides, selectSelectedSlideId } from '../../store/slide/selector'
+import { getSlides } from '../../store/slide/selector'
 import { SideSlides } from '../SideSlides'
 import { SlideView } from '../SlideView'
-import { selectSlide } from '../../store/slide/slideActions'
+import { selectSlide, updatePresentationData } from '../../store/slide/slideActions'
 
 export const SlideManager = () => {
   const slides = useAppSelector(getSlides)
   const dispatch = useAppDispatch()
-  const initSelectedSlideId = useAppSelector(selectSelectedSlideId)
-
-  const [selectedSlideId, setSelectedSlideId] = useState<any>(initSelectedSlideId)
-
   const handleSlideClick = (slideId: string) => {
-    setSelectedSlideId(slideId)
+    dispatch(selectSlide(slideId))
   }
 
-  useEffect(() => {
-    dispatch(selectSlide(selectedSlideId))
-  }, [selectedSlideId])
+  const [draggedSlideId, setDraggedSlideId] = useState<string | null>(null)
+
+  const handleDragStart = (slideId: string) => {
+    setDraggedSlideId(slideId)
+  }
+
+  const handleDragEnd = () => {
+    setDraggedSlideId(null)
+  }
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>, dropSlideId: string) => {
+    event.preventDefault()
+    if (draggedSlideId && draggedSlideId !== dropSlideId) {
+      const newSlides = [...slides]
+      const draggedIndex = newSlides.findIndex((slide) => slide.id === draggedSlideId)
+      const dropIndex = newSlides.findIndex((slide) => slide.id === dropSlideId)
+      const [draggedSlide] = newSlides.splice(draggedIndex, 1)
+      newSlides.splice(dropIndex, 0, draggedSlide)
+
+      dispatch(updatePresentationData(newSlides))
+    }
+  }
 
   return (
     <div>
       <Menu />
-      {slides.map((slide: Slide) => (
-        <div key={slide.id} className={styles.workField}>
-          <SideSlides slide={slide} onClick={() => handleSlideClick(slide.id)} />
-          <SlideView slide={slide} />
-        </div>
-      ))}
+      <div onDragOver={(e) => e.preventDefault()} onDragEnd={handleDragEnd}>
+        {slides.map((slide: Slide) => (
+          <div key={slide.id} className={styles.workField}>
+            <div
+              key={slide.id}
+              draggable
+              onDragStart={() => handleDragStart(slide.id)}
+              onDrop={(e) => handleDrop(e, slide.id)}
+            >
+              <SideSlides slide={slide} onClick={() => handleSlideClick(slide.id)} />
+            </div>
+            <SlideView slide={slide} />
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

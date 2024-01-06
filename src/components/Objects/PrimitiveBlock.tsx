@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Figures, Primitive, SlideObject } from '../../types/types'
+import { Figures, Primitive } from '../../types/types'
 import { useDragAndDrop } from '../../hooks/useDragAndDrop'
+import styles from './Objects.module.css'
+import { useResize } from '../../hooks/useResize'
 
 interface PrimitiveBlock {
   primitiveBlockData: Primitive
@@ -8,15 +10,19 @@ interface PrimitiveBlock {
   isSelected: boolean
   onClick?: React.MouseEventHandler<SVGSVGElement> | undefined
   updateObject?: (data: Primitive) => void
+  setIsDraggingOrResizing?: (data: boolean) => void
 }
 
 export const PrimitiveBlock = (props: PrimitiveBlock) => {
-  const { primitiveType, outlineColor, fillColor, x, y, width, height } = props.primitiveBlockData
+  const { primitiveType, fillColor, x, y, width, height } = props.primitiveBlockData
   const scalePercent = props.scale / 100
   let shapeElement = null
 
   const refBlock = useRef<HTMLDivElement>(null)
-  const refSize = useRef<HTMLDivElement>(null)
+  const refSize1 = useRef<HTMLDivElement>(null)
+  const refSize2 = useRef<HTMLDivElement>(null)
+  const refSize3 = useRef<HTMLDivElement>(null)
+  const refSize4 = useRef<HTMLDivElement>(null)
 
   const [posBlock, setPosBlock] = useState({
     x: x,
@@ -28,8 +34,11 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
     y: height,
   })
 
-  const { isDragging } = useDragAndDrop(refBlock, setPosBlock, posBlock, 'pos')
-  useDragAndDrop(refSize, setPosSize, posSize, 'size')
+  const { isAction } = useDragAndDrop(refBlock, setPosBlock, posBlock)
+  const resize1 = useResize(refSize1, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: 1 })
+  const resize2 = useResize(refSize2, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: -1 })
+  const resize3 = useResize(refSize3, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: -1 })
+  const resize4 = useResize(refSize4, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: 1 })
 
   const [isEditing, setIsEditing] = useState(false)
 
@@ -52,7 +61,10 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
         height: posSize.y,
       })
     }
-  }, [posBlock, posSize])
+    if (props.setIsDraggingOrResizing) {
+      props.setIsDraggingOrResizing(isAction || resize1 || resize2 || resize3 || resize4)
+    }
+  }, [posBlock, posSize, isAction, resize1, resize2, resize3, resize4])
 
   switch (primitiveType) {
     case Figures.CIRCLE:
@@ -63,7 +75,6 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
           rx={(width / 2) * scalePercent}
           ry={(height / 2) * scalePercent}
           fill={fillColor.hex}
-          stroke={outlineColor?.hex || 'transparent'}
           strokeWidth={2 * scalePercent}
         />
       )
@@ -74,7 +85,6 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
           width={width * scalePercent}
           height={height * scalePercent}
           fill={fillColor.hex}
-          stroke={outlineColor?.hex || 'transparent'}
           strokeWidth={2 * scalePercent}
         />
       )
@@ -86,7 +96,6 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
             height * scalePercent
           }`}
           fill={fillColor.hex}
-          stroke={outlineColor?.hex || 'transparent'}
           strokeWidth={2 * scalePercent}
         />
       )
@@ -115,22 +124,45 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
             top: y * scalePercent,
             width: width * scalePercent,
             height: height * scalePercent,
-            cursor: isDragging ? 'grabbing' : 'grab',
+            cursor: isEditing && props.isSelected ? (isAction ? 'grabbing' : 'grab') : 'default',
           }}
         >
           {shapeElement}
         </svg>
       </div>
       <div
-        ref={refSize}
+        className={styles.resize}
+        ref={refSize1}
         style={{
-          position: 'absolute',
-          width: '10px',
-          height: '10px',
-          top: (posBlock.y + posSize.y) * scalePercent - 10,
-          left: (posBlock.x + posSize.x) * scalePercent - 10,
-          background: 'red',
-          cursor: 'nwse-resize',
+          top: (y + height) * scalePercent - 10,
+          left: (x + width) * scalePercent - 10,
+          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
+        }}
+      ></div>
+      <div
+        className={styles.resize}
+        ref={refSize2}
+        style={{
+          top: y * scalePercent - 2,
+          left: x * scalePercent - 2,
+          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
+        }}
+      ></div>
+      <div
+        className={styles.resize}
+        ref={refSize3}
+        style={{
+          top: y * scalePercent - 2,
+          left: (x + width) * scalePercent - 10,
+          visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
+        }}
+      ></div>
+      <div
+        className={styles.resize}
+        ref={refSize4}
+        style={{
+          top: (y + height) * scalePercent - 10,
+          left: x * scalePercent - 2,
           visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>

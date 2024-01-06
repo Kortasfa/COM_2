@@ -1,35 +1,111 @@
+.title {
+  margin-left: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  outline: none;
+  border: none;
+  font-size: 25px;
+}
+
 .menu {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    height: 100px;
-    background: rgba(241, 230, 230, 0.41);
-    border-bottom-left-radius: 50px;
-    border-bottom-right-radius: 50px;
-    padding: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 50px;
+  background: rgb(241 230 230 / 41%);
+  padding: 10px;
+  margin-bottom: 50px;
 }
 
 .image {
-    display: none;
+  display: none;
 }
 
 .menuButton {
-    margin-right: 10px;
-    background-color: #3498db;
-    border-radius: 10px;
-    color: #ffffff;
-    border: none;
-    cursor: pointer;
-    width: initial;
-    height: 40px;
+  margin-right: 10px;
+  border: none;
+  cursor: pointer;
+  width: initial;
+  height: 30px;
+}
+
+.popup button {
+  margin: 5px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .menu button:hover {
-    background-color: #2980b9;
+  background-color: #2980b9;
 }
 
-.menu input {
-    display: none; /* скрыть input по умолчанию */
+.loader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
-/* Дополнительные стили могут быть добавлены в зависимости от ваших требований */
+.importImage,
+.exportImage {
+  width: 100%;
+  height: 100%;
+  margin-right: 5px;
+}
+
+.fileLoader {
+  display: none;
+}
+
+.error {
+  position: absolute;
+  top: 2%;
+  font-size: 20px;
+  left: 70%;
+}
+
+.loaderImage {
+  display: flex;
+  flex-direction: row;
+}
+
+/* Menu.module.css */
+
+/* Стили для контейнера попапа */
+.popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 1px solid #cccccc;
+  box-shadow: 0 0 5px rgb(0 0 0 / 20%);
+  padding: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.popup button:hover {
+  background-color: #0056b3;
+}
+
+/* Стили для ввода URL */
+.popup input[type='text'] {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #cccccc;
+}
+
+/* Стили для кнопки загрузки из URL */
+.popup button.upload-button {
+  background-color: #28a745;
+}
+
+.popup button.upload-button:hover {
+  background-color: #1e7e34;
+}

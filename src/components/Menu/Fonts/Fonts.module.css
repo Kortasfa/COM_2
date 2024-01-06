@@ -7,9 +7,11 @@
 .dropdown {
   position: absolute;
   top: calc(100% + 4px);
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 20%);
   border-radius: 4px;
   overflow: hidden;
   z-index: 1000;
+  padding: 10px 10px 0;
+  cursor: pointer;
 }

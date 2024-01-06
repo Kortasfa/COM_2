@@ -10,6 +10,5 @@ export const addNewPrimitive = (primitiveType: Figures): Primitive => {
     type: ObjectType.PRIMITIVE,
     primitiveType: primitiveType,
     fillColor: { hex: 'red', opacity: 1 },
-    outlineColor: { hex: '#000000', opacity: 1 },
   }
 }
