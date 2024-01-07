@@ -2,14 +2,7 @@ import styles from './Menu.module.css'
 import React from 'react'
 import { Figures } from '../../types/types'
 import { useAppDispatch, useAppSelector } from '../../store/store'
-import {
-  addSlide,
-  deleteSlide,
-  addText,
-  addPrimitive,
-  deleteObject,
-  changeBackgroundColor,
-} from '../../store/slide/slideActions'
+import { addSlide, addText, addPrimitive, deleteObject, removeSlide } from '../../store/slide/slideActions'
 import { getSelectedObjectId, getSelectedSlideId } from '../../store/slide/selector'
 import { addNewText } from '../../hooks/menu/objectsManager/useAddText'
 import addSlideImage from '../../images/circle-plus-fill.svg'
@@ -28,7 +21,7 @@ import { useImportFileHandler } from '../../hooks/menu/presentationManager/useIm
 const Menu = () => {
   const dispatch = useAppDispatch()
   const selectedObjectId = useAppSelector(getSelectedObjectId)
-  const selectedSlideId = useAppSelector(getSelectedSlideId)
+  const selectedSlideId: string = useAppSelector(getSelectedSlideId)
   const { error, handleFileChange } = useImportFileHandler()
   // const presentationName = useAppSelector(getPresentationName)
   //
@@ -41,12 +34,13 @@ const Menu = () => {
   }
 
   const handleDeleteSlide = () => {
-    dispatch(deleteSlide(selectedSlideId))
+    dispatch(removeSlide(selectedSlideId))
   }
 
   const handleAddText = () => {
     const newText = addNewText()
     dispatch(addText(selectedSlideId, newText))
+    console.log(newText)
   }
 
   const handleAddPrimitive = (primitiveType: Figures) => {

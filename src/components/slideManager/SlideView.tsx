@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { ObjectType, Slide, SlideObject } from '../types/types'
-import { TextBlock } from './Objects/TextBlock'
-import { ImageBlock } from './Objects/ImageBlock'
+import { ObjectType, Slide, SlideObject } from '../../types/types'
+import { TextBlock } from '../Objects/TextBlock'
+import { ImageBlock } from '../Objects/ImageBlock'
 import styles from './SlideView.module.css'
-import { PrimitiveBlock } from './Objects/PrimitiveBlock'
-import { useAppSelector, useAppDispatch } from '../store/store'
-import { getSlides, getSelectedObjectId, getSelectedSlideId } from '../store/slide/selector'
-import { selectObject, updateSlideObject } from '../store/slide/slideActions'
+import { PrimitiveBlock } from '../Objects/PrimitiveBlock'
+import { useAppSelector, useAppDispatch } from '../../store/store'
+import { getSlides, getSelectedObjectId, getSelectedSlideId } from '../../store/slide/selector'
+import { selectObject, updateSlideObject } from '../../store/slide/slideActions'
 
 interface SlideViewProps {
   slide: Slide

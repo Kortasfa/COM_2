@@ -13,27 +13,13 @@ import {
   SELECT_SLIDE,
   UPDATE_PRESENTATION_DATA,
   UPDATE_SLIDE_OBJECT,
+  Action,
 } from './types'
-import { Color, Slide } from '../../types/types'
-import InitializedPresentation from '../../components/InitializedPresentation'
+import { Slide } from '../../types/types'
+import { initialState } from './initialState'
+import { createNewSlide } from './createSlide'
 
-const INITIAL_SLIDE_ID = 0
-export const initialState = {
-  presentation: InitializedPresentation,
-  selectedSlideId: InitializedPresentation.slides[INITIAL_SLIDE_ID].id,
-  selectedObjectId: InitializedPresentation.slides[INITIAL_SLIDE_ID].objects,
-}
-
-function createNewSlide(): Slide {
-  const defaultColor: Color = { hex: '#FFFFFF', opacity: 1 }
-  return {
-    id: `slide-${Math.random().toString(36).substr(2, 9)}`, // Unique ID
-    objects: [],
-    background: { color: defaultColor },
-  }
-}
-
-export const slideReducer = (state = initialState, action: any) => {
+export const presentationReducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case ADD_IMAGE: {
       const { slideId, image } = action.payload
@@ -185,7 +171,7 @@ export const slideReducer = (state = initialState, action: any) => {
     }
 
     case REMOVE_SLIDE: {
-      const slideId = action.payload
+      const slideId = action.payload.slideId
       const updatedSlides = state.presentation.slides.filter((slide: Slide) => slide.id !== slideId)
       return {
         ...state,
@@ -292,4 +278,3 @@ export const slideReducer = (state = initialState, action: any) => {
       return state
   }
 }
-

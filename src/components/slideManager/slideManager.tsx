@@ -4,8 +4,8 @@ import { Menu } from '../Menu/Menu'
 import styles from '../../styles/App.module.css'
 import { useAppDispatch, useAppSelector } from '../../store/store'
 import { getSlides } from '../../store/slide/selector'
-import { SideSlides } from '../SideSlides'
-import { SlideView } from '../SlideView'
+import { SideSlides } from './SideSlides'
+import { SlideView } from './SlideView'
 import { selectSlide, updatePresentationData } from '../../store/slide/slideActions'
 
 export const SlideManager = () => {
