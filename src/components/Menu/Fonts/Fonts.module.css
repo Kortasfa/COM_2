@@ -12,4 +12,6 @@
   border-radius: 4px;
   overflow: hidden;
   z-index: 1000;
+  padding: 10px 10px 0;
+  cursor: pointer;
 }

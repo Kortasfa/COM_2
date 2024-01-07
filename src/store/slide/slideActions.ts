@@ -12,9 +12,9 @@ import {
   IMPORT_PARSED_DATA,
   UPDATE_PRESENTATION_DATA,
   CHANGE_FONT,
+  CHANGE_PRIMITIVE_COLOR,
 } from './types'
-import { Color, Image, ObjectType, Presentation, Slide, SlideObject, Text } from '../../types/types'
-import initializedPresentation from '../../components/InitializedPresentation'
+import { Color, Image, Presentation, Slide, SlideObject } from '../../types/types'
 
 export const addSlide = () => ({
   type: ADD_SLIDE,
@@ -98,10 +98,27 @@ export const changeFont = (
   fontSize: number,
   fontWeight: string,
   fontStyle: string,
+  fontUnderline: string,
 ) => ({
   type: CHANGE_FONT,
   payload: {
-    slideId, objectId, fontFamily, color, fontSize, fontWeight, fontStyle,
+    slideId,
+    objectId,
+    fontFamily,
+    color,
+    fontSize,
+    fontWeight,
+    fontStyle,
+    fontUnderline,
+  },
+})
+
+export const changePrimitiveColor = (slideId: string, objectId: string, color: Color) => ({
+  type: CHANGE_PRIMITIVE_COLOR,
+  payload: {
+    slideId,
+    objectId,
+    color,
   },
 })
 

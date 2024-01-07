@@ -30,12 +30,12 @@ type Text = SlideObject & {
   fontFamily: string
   fontWeight: string
   fontStyle: string
+  fontUnderline: string
   type: ObjectType.TEXTBLOCK
 }
 
 type Primitive = SlideObject & {
   primitiveType: Figures
-  outlineColor?: Color
   fillColor: Color
   type: ObjectType.PRIMITIVE
 }
