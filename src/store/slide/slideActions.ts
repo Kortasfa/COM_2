@@ -65,7 +65,7 @@ export const addText = (slideId: string, text: Text) =>
     },
   }) as const
 
-export const changeBackgroundColor = (slideId: string, color: string) =>
+export const changeBackgroundColor = (slideId: string, color: Color) =>
   ({
     type: CHANGE_BACKGROUND_COLOR,
     payload: {

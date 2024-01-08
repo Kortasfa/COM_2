@@ -72,7 +72,7 @@ export const presentationReducer = (state = initialState, action: Action) => {
             ...slide,
             background: {
               ...slide.background,
-              color: { hex: color, opacity: 1 },
+              color: color,
             },
           }
         }
@@ -243,6 +243,7 @@ export const presentationReducer = (state = initialState, action: Action) => {
 
     case CHANGE_PRIMITIVE_COLOR: {
       const { slideId, objectId, color } = action.payload
+      console.log(color)
       const updatedSlides = state.presentation.slides.map((slide: Slide) => {
         if (slide.id === slideId) {
           const updatedObjects = slide.objects.map((obj) => {

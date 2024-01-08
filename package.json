@@ -13,6 +13,7 @@
     "@types/react-dom": "^18.2.14",
     "file-type": "^18.7.0",
     "react": "^18.2.0",
+    "react-color": "^2.19.3",
     "react-dom": "^18.2.0",
     "react-redux": "^9.0.4",
     "react-scripts": "^5.0.1",
@@ -49,6 +50,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-color": "^3.0.11",
     "@types/reselect": "^2.2.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",

@@ -28,7 +28,7 @@ interface AddTextPayload {
 
 interface ChangeBackgroundColorPayload {
   slideId: string
-  color: string
+  color: Color
 }
 
 interface AddPrimitivePayload {
