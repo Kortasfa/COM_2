@@ -197,10 +197,7 @@ export const presentationReducer = (state = initialState, action: Action) => {
     case IMPORT_PARSED_DATA:
       return {
         ...state,
-        presentation: {
-          ...state.presentation,
-          slides: action.payload.parsedData,
-        },
+        presentation: action.payload.parsedData,
       }
 
     case UPDATE_PRESENTATION_DATA: {
@@ -246,7 +243,6 @@ export const presentationReducer = (state = initialState, action: Action) => {
 
     case CHANGE_PRIMITIVE_COLOR: {
       const { slideId, objectId, color } = action.payload
-      console.log(color)
       const updatedSlides = state.presentation.slides.map((slide: Slide) => {
         if (slide.id === slideId) {
           const updatedObjects = slide.objects.map((obj) => {
