@@ -1,6 +1,5 @@
 import React from 'react'
 import { exportPresentation } from '../../../hooks/menu/presentationManager/exportPresentation'
-import { Presentation } from '../../../types/types'
 import importImage from '../../../images/arrow-down-to-square.svg'
 import exportImage from '../../../images/arrow-up-from-square.svg'
 import styles from '../Menu.module.css'

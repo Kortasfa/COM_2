@@ -25,16 +25,16 @@ export const TextBlock = (props: TextBlock) => {
   const refSize4 = useRef<HTMLDivElement>(null)
 
   const [posBlock, setPosBlock] = useState({
-    x: x,
-    y: y,
+    x,
+    y,
   })
 
   const [posSize, setPosSize] = useState({
-    x: width,
-    y: height,
+    width,
+    height,
   })
 
-  const { isAction } = useDragAndDrop(refBlock, setPosBlock, posBlock)
+  const isAction = useDragAndDrop(refBlock, setPosBlock, posBlock)
   const resize1 = useResize(refSize1, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: 1 })
   const resize2 = useResize(refSize2, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: -1 })
   const resize3 = useResize(refSize3, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: -1 })
@@ -63,8 +63,8 @@ export const TextBlock = (props: TextBlock) => {
         x: posBlock.x,
         y: posBlock.y,
         value: textValue,
-        width: posSize.x,
-        height: posSize.y,
+        width: posSize.width,
+        height: posSize.height,
       })
     }
     if (props.setIsDraggingOrResizing) {
@@ -77,7 +77,6 @@ export const TextBlock = (props: TextBlock) => {
       <div
         ref={refBlock}
         style={{
-          position: 'absolute',
           width: width * scalePercent + 4,
           height: height * scalePercent + 2,
           top: y * scalePercent - 4,
@@ -85,6 +84,7 @@ export const TextBlock = (props: TextBlock) => {
           outline: '2px solid red',
           cursor: isAction && props.isSelected ? 'grabbing' : 'grab',
           visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
+          position: 'absolute',
         }}
       ></div>
       <input
@@ -94,7 +94,6 @@ export const TextBlock = (props: TextBlock) => {
         suppressContentEditableWarning={true}
         value={textValue}
         style={{
-          position: 'absolute',
           color: color.hex,
           width: width * scalePercent - 5,
           height: height * scalePercent - 5,
@@ -109,6 +108,7 @@ export const TextBlock = (props: TextBlock) => {
           opacity: color.opacity,
           outline: 'none',
           border: 'none',
+          position: 'absolute',
         }}
       />
       <div
@@ -119,7 +119,7 @@ export const TextBlock = (props: TextBlock) => {
           left: (x + width) * scalePercent - 10,
           visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
-      ></div>
+      />
       <div
         className={styles.resize}
         ref={refSize2}
@@ -128,7 +128,7 @@ export const TextBlock = (props: TextBlock) => {
           left: x * scalePercent - 6,
           visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
-      ></div>
+      />
       <div
         className={styles.resize}
         ref={refSize3}
@@ -137,7 +137,7 @@ export const TextBlock = (props: TextBlock) => {
           left: (x + width) * scalePercent - 10,
           visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
-      ></div>
+      />
       <div
         className={styles.resize}
         ref={refSize4}
@@ -146,7 +146,7 @@ export const TextBlock = (props: TextBlock) => {
           left: x * scalePercent - 6,
           visibility: isEditing && props.isSelected ? 'visible' : 'hidden',
         }}
-      ></div>
+      />
     </div>
   )
 }

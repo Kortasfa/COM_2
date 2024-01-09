@@ -31,7 +31,7 @@ export const SideSlides = ({ slide, onClick }: SideSlides) => {
         }}
         onClick={onClick}
       >
-        {objects.map((object: any) => {
+        {objects.map((object) => {
           switch (object.type) {
             case ObjectType.TEXTBLOCK:
               return (

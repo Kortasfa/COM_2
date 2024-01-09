@@ -5,7 +5,7 @@ import { ImageBlock } from '../Objects/ImageBlock'
 import styles from './SlideView.module.css'
 import { PrimitiveBlock } from '../Objects/PrimitiveBlock'
 import { useAppSelector, useAppDispatch } from '../../store/store'
-import { getSlides, getSelectedObjectId, getSelectedSlideId } from '../../store/slide/selector'
+import { getSelectedObjectId, getSelectedSlideId } from '../../store/slide/selector'
 import { selectObject, updateSlideObject } from '../../store/slide/slideActions'
 
 interface SlideViewProps {
@@ -19,7 +19,7 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
   const [objectId, setObjectId] = useState<string>(selectedObjectId)
   const isSelectedSlide = slide.id === selectedSlideId
   const [isDraggingOrResizing, setIsDraggingOrResizing] = useState(false)
-  const { objects, background } = slide
+  const { background } = slide
 
   const handleBackgroundClick = () => {
     if (!isDraggingOrResizing) {
@@ -47,7 +47,7 @@ export const SlideView: React.FC<SlideViewProps> = ({ slide }) => {
           backgroundColor: background.color.hex,
         }}
       >
-        {slide.objects.map((object: any) => {
+        {slide.objects.map((object) => {
           switch (object.type) {
             case ObjectType.TEXTBLOCK:
               return (

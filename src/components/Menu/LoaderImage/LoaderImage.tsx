@@ -1,9 +1,9 @@
 import styles from '../Menu.module.css'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import addImageSrc from '../../../images/picture.svg'
 import { addNewImage } from '../../../hooks/menu/objectsManager/useAddImage'
 import { useAppDispatch, useAppSelector } from '../../../store/store'
-import { addImage, selectSlide } from '../../../store/slide/slideActions'
+import { addImage } from '../../../store/slide/slideActions'
 import { getSelectedSlideId } from '../../../store/slide/selector'
 
 const LoaderImage = () => {

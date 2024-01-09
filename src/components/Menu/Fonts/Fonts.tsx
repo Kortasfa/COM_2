@@ -13,7 +13,6 @@ import fontCase from '../../../images/font-case.svg'
 import { changeBackgroundColor, changeFont, changePrimitiveColor } from '../../../store/slide/slideActions'
 import { useAppDispatch, useAppSelector } from '../../../store/store'
 import { getSelectedObjectId, getSelectedSlideId, getSlides } from '../../../store/slide/selector'
-import { log } from 'util'
 
 export const Fonts = () => {
   const dispatch = useAppDispatch()

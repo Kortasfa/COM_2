@@ -24,16 +24,16 @@ export const ImageBlock = (props: ImageBlock) => {
   const refSize4 = useRef<HTMLDivElement>(null)
 
   const [posBlock, setPosBlock] = useState({
-    x: x,
-    y: y,
+    x,
+    y,
   })
 
   const [posSize, setPosSize] = useState({
-    x: width,
-    y: height,
+    width,
+    height,
   })
 
-  const { isAction } = useDragAndDrop(refBlock, setPosBlock, posBlock)
+  const isAction = useDragAndDrop(refBlock, setPosBlock, posBlock)
   const resize1 = useResize(refSize1, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: 1 })
   const resize2 = useResize(refSize2, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: -1 })
   const resize3 = useResize(refSize3, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: -1 })
@@ -45,8 +45,8 @@ export const ImageBlock = (props: ImageBlock) => {
         ...props.imageBlockData,
         x: posBlock.x,
         y: posBlock.y,
-        width: posSize.x,
-        height: posSize.y,
+        width: posSize.width,
+        height: posSize.height,
       })
     }
     if (props.setIsDraggingOrResizing) {
@@ -66,12 +66,12 @@ export const ImageBlock = (props: ImageBlock) => {
     <div>
       <div
         style={{
-          position: 'absolute',
           width: width * scalePercent + 4,
           height: height * scalePercent + 2,
           top: y * scalePercent - 4,
           left: x * scalePercent - 5,
           outline: '2px solid red',
+          position: 'absolute',
           visibility: props.isSelected ? 'visible' : 'hidden',
         }}
       ></div>
@@ -85,11 +85,11 @@ export const ImageBlock = (props: ImageBlock) => {
           onClick={handleClick}
           src={base64}
           style={{
-            position: 'absolute',
             width: width * scalePercent - 4,
             height: height * scalePercent - 5,
             top: y * scalePercent,
             left: x * scalePercent,
+            position: 'absolute',
           }}
           alt={'image'}
         />
