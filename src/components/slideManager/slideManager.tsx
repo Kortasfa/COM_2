@@ -42,7 +42,7 @@ export const SlideManager = () => {
   return (
     <div className={presentationTheme === 'light' ? styles.lightTheme : styles.darkTheme}>
       <Menu />
-      <div onDragOver={(e) => e.preventDefault()} onDragEnd={handleDragEnd}>
+      <div onDragOver={(e) => e.preventDefault()} onDragEnd={handleDragEnd} className={styles.slides}>
         {slides.map((slide: Slide) => (
           <div key={slide.id} className={styles.workField}>
             <div

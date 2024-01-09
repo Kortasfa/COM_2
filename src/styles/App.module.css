@@ -1,11 +1,9 @@
-.lightTheme
-{
+.lightTheme {
   background-color: #ffffff;
   height: 100vh;
 }
 
-.darkTheme
-{
+.darkTheme {
   background-color: #292929;
   height: 100vh;
 }
@@ -16,11 +14,10 @@
 
 .slides {
   display: flex;
-  position: relative;
   flex-direction: column;
   padding: 5px 10px 10px 20px;
   overflow: auto;
-  height: 80vw;
+  max-height: 40vw;
   gap: 10px;
   overflow-x: hidden;
 }
