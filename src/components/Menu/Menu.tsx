@@ -2,7 +2,15 @@ import styles from './Menu.module.css'
 import React from 'react'
 import { Figures } from '../../types/types'
 import { useAppDispatch, useAppSelector } from '../../store/store'
-import { addSlide, addText, addPrimitive, deleteObject, removeSlide } from '../../store/slide/slideActions'
+import {
+  addSlide,
+  addText,
+  addPrimitive,
+  deleteObject,
+  removeSlide,
+  undoAction,
+  redoAction,
+} from '../../store/slide/slideActions'
 import { getSelectedObjectId, getSelectedSlideId } from '../../store/slide/selector'
 import { addNewText } from '../../hooks/menu/objectsManager/useAddText'
 import addSlideImage from '../../images/circle-plus-fill.svg'
@@ -12,6 +20,8 @@ import rectangleImage from '../../images/square.svg'
 import circleImage from '../../images/circle.svg'
 import triangleImage from '../../images/triangle-up.svg'
 import textImage from '../../images/text.svg'
+import undo from '../../images/arrow-uturn-ccw-left.svg'
+import redo from '../../images/arrow-uturn-cw-right.svg'
 import deleteObjectImage from '../../images/trash-bin.svg'
 import { addNewPrimitive } from '../../hooks/menu/objectsManager/useAddPrimitive'
 import { LoaderImage } from './LoaderImage/LoaderImage'
@@ -50,6 +60,14 @@ const Menu = () => {
 
   const handleDeleteObject = () => {
     dispatch(deleteObject(selectedSlideId, selectedObjectId))
+  }
+
+  const handleUndo = () => {
+    dispatch(undoAction())
+  }
+
+  const handleRedo = () => {
+    dispatch(redoAction())
   }
 
   return (
@@ -93,6 +111,8 @@ const Menu = () => {
         <img src={deleteObjectImage} className={styles.menuButton} onClick={handleDeleteObject} alt={'delete'} />
         <Fonts />
         <Loader handleFileChange={handleFileChange} error={error} />
+        <img src={undo} className={styles.menuButton} alt={'undo'} onClick={handleUndo} />
+        <img src={redo} className={styles.menuButton} alt={'undo'} onClick={handleRedo} />
       </div>
     </div>
   )

@@ -12,6 +12,7 @@ const InitializedPresentation: Presentation = {
   id: 'presentation-id',
   name: 'New Presentation',
   slides: [defaultSlide],
+  history: [],
 }
 
 export default InitializedPresentation

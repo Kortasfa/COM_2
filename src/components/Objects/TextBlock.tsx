@@ -43,7 +43,7 @@ export const TextBlock = (props: TextBlock) => {
   const [isEditing, setIsEditing] = useState(false)
   const [textValue, setTextValue] = useState(value)
 
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleClick = (e: any) => {
     if (scalePercent === 1) {
       setIsEditing(true)
       if (props.onClick && !props.isSelected) {
@@ -87,12 +87,11 @@ export const TextBlock = (props: TextBlock) => {
           position: 'absolute',
         }}
       ></div>
-      <input
+      <textarea
         onClick={handleClick}
         contentEditable={isEditing && props.isSelected}
         onChange={handleInputChange}
-        suppressContentEditableWarning={true}
-        value={textValue}
+        value={value}
         style={{
           color: color.hex,
           width: width * scalePercent - 5,
@@ -109,7 +108,10 @@ export const TextBlock = (props: TextBlock) => {
           outline: 'none',
           border: 'none',
           position: 'absolute',
+          resize: 'none',
+          overflowY: 'hidden',
         }}
+        wrap="soft"
       />
       <div
         className={styles.resize}

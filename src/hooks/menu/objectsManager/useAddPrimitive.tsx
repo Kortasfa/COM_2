@@ -9,6 +9,6 @@ export const addNewPrimitive = (primitiveType: Figures): Primitive => {
     height: 100,
     type: ObjectType.PRIMITIVE,
     primitiveType: primitiveType,
-    fillColor: { hex: 'red', opacity: 1 },
+    fillColor: { hex: 'black', opacity: 1 },
   }
 }

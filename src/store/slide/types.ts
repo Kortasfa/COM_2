@@ -15,6 +15,8 @@ export const IMPORT_PARSED_DATA = 'IMPORT_PARSED_DATA'
 export const UPDATE_PRESENTATION_DATA = 'UPDATE_PRESENTATION_DATA'
 export const CHANGE_FONT = 'CHANGE_FONT'
 export const CHANGE_PRIMITIVE_COLOR = 'CHANGE_PRIMITIVE_COLOR'
+export const UNDO = 'UNDO'
+export const REDO = 'REDO'
 
 interface AddImagePayload {
   slideId: string
@@ -100,3 +102,5 @@ export type Action =
   | { type: typeof UPDATE_PRESENTATION_DATA; payload: UpdatePresentationDataPayload }
   | { type: typeof CHANGE_FONT; payload: ChangeFontPayload }
   | { type: typeof CHANGE_PRIMITIVE_COLOR; payload: ChangePrimitiveColorPayload }
+  | { type: typeof UNDO }
+  | { type: typeof REDO }

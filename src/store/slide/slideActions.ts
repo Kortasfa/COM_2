@@ -13,6 +13,8 @@ import {
   UPDATE_PRESENTATION_DATA,
   CHANGE_FONT,
   CHANGE_PRIMITIVE_COLOR,
+  UNDO,
+  REDO,
 } from './types'
 import { Color, Image, Presentation, Text, Primitive, Slide, SlideObject } from '../../types/types'
 
@@ -133,4 +135,14 @@ export const changePrimitiveColor = (slideId: string, objectId: string, color: C
       objectId,
       color,
     },
+  }) as const
+
+export const undoAction = () =>
+  ({
+    type: UNDO,
+  }) as const
+
+export const redoAction = () =>
+  ({
+    type: REDO,
   }) as const
