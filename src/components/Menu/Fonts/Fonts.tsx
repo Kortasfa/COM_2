@@ -204,7 +204,11 @@ export const Fonts = () => {
         </div>
       </div>
       <div>
-        <img className={styles.menuButton} onClick={() => setShowColorPicker(!showColorPicker)} src={colorImage} />
+        <img
+          className={styles.menuButton}
+          onClick={() => setShowColorPicker(!showColorPicker)}
+          src={presentationTheme === 'light' ? colorImage : colorImageDark}
+        />
         {showColorPicker && (
           <div className={fonts.colorPickerContainer}>
             <ChromePicker color={color1.rgb} onChange={handleColorPickerChange} disableAlpha={true} />

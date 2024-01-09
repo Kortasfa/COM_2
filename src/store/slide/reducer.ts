@@ -16,16 +16,7 @@ import {
   CHANGE_THEME,
   Action,
 } from './types'
-import { Color, Slide } from '../../types/types'
-import InitializedPresentation from '../../components/InitializedPresentation'
 
-const INITIAL_SLIDE_ID = 0
-export const initialState = {
-  presentation: InitializedPresentation,
-  selectedSlideId: InitializedPresentation.slides[INITIAL_SLIDE_ID].id,
-  selectedObjectId: InitializedPresentation.slides[INITIAL_SLIDE_ID].objects,
-  presentationTheme: InitializedPresentation.presentationTheme,
-}
 import { Slide } from '../../types/types'
 import { initialState } from './initialState'
 import { createNewSlide } from './createSlide'
@@ -182,7 +173,7 @@ export const presentationReducer = (state = initialState, action: Action) => {
     }
 
     case REMOVE_SLIDE: {
-      const slideId = action.payload
+      const { slideId } = action.payload
       const updatedSlides = state.presentation.slides.filter((slide: Slide) => slide.id !== slideId)
       return {
         ...state,
@@ -286,7 +277,7 @@ export const presentationReducer = (state = initialState, action: Action) => {
     }
 
     case CHANGE_THEME: {
-      const presTheme = action.payload
+      const { presTheme } = action.payload
       if (presTheme === 'light') {
         return {
           ...state,

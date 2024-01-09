@@ -136,19 +136,8 @@ export const changePrimitiveColor = (slideId: string, objectId: string, color: C
     },
   }) as const
 
-export const changeTheme = (presTheme: string) => ({
-  type: CHANGE_THEME,
-  payload: presTheme,
-})
-
-export type actions =
-  | ReturnType<typeof addSlide>
-  | ReturnType<typeof removeSlide>
-  | ReturnType<typeof updateSlideObject>
-  | ReturnType<typeof addImage>
-  | ReturnType<typeof selectSlide>
-  | ReturnType<typeof addText>
-  | ReturnType<typeof addPrimitive>
-  | ReturnType<typeof deleteObject>
-  | ReturnType<typeof changeTheme>
-
+export const changeTheme = (presTheme: string) =>
+  ({
+    type: CHANGE_THEME,
+    payload: { presTheme },
+  }) as const

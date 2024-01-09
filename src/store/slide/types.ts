@@ -86,8 +86,7 @@ interface ChangePrimitiveColorPayload {
   color: Color
 }
 
-interface ChangeThemePayload
-{
+interface ChangeThemePayload {
   presTheme: string
 }
 
