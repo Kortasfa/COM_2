@@ -13,6 +13,7 @@ const InitializedPresentation: Presentation = {
   name: 'New Presentation',
   presentationTheme: 'light',
   slides: [defaultSlide],
+  history: [],
 }
 
 export default InitializedPresentation

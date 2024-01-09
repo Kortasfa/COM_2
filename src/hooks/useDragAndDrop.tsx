@@ -59,7 +59,7 @@ const useDragAndDrop = (
     }
   }, [ref, isAction])
 
-  return { isAction }
+  return isAction
 }
 
 export { useDragAndDrop }

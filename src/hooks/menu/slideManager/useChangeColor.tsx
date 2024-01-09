@@ -1,4 +1,4 @@
-import { Background, Color, Presentation, Slide } from '../../../types/types'
+import { Background, Presentation, Slide } from '../../../types/types'
 
 export const useChangeColor = (
   presentationData: Presentation,

@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 
+interface Size {
+  width: number
+  height: number
+}
+
 interface Position {
   x: number
   y: number
@@ -7,25 +12,25 @@ interface Position {
 
 const useResize = (
   size: React.RefObject<HTMLElement>,
-  setSize: React.Dispatch<React.SetStateAction<Position>>,
-  initialPos: Position,
+  setSize: React.Dispatch<React.SetStateAction<Size>>,
+  initialPos: Size,
   ref: Position,
   setPos: React.Dispatch<React.SetStateAction<Position>>,
   move: { x: number; y: number },
 ) => {
   const [isResize, setIsResize] = useState(false)
-  const startPos = useRef<Position | null>(null)
+  const startPos = useRef<Size | null>(null)
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (isResize && startPos.current) {
         const delta = {
-          x: e.pageX - startPos.current.x,
-          y: e.pageY - startPos.current.y,
+          x: e.pageX - startPos.current?.width,
+          y: e.pageY - startPos.current?.height,
         }
         const newCoords = {
-          x: initialPos.x + move.x * delta.x,
-          y: initialPos.y + move.y * delta.y,
+          width: initialPos.width + move.x * delta.x,
+          height: initialPos.height + move.y * delta.y,
         }
 
         setSize(newCoords)
@@ -48,7 +53,7 @@ const useResize = (
 
     const handleMouseDown = (e: MouseEvent) => {
       e.preventDefault()
-      startPos.current = { x: e.pageX, y: e.pageY }
+      startPos.current = { width: e.pageX, height: e.pageY }
       setIsResize(true)
       document.addEventListener('mousemove', handleMouseMove)
       document.addEventListener('mouseup', handleMouseUp)

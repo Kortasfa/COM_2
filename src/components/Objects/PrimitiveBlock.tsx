@@ -25,16 +25,16 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
   const refSize4 = useRef<HTMLDivElement>(null)
 
   const [posBlock, setPosBlock] = useState({
-    x: x,
-    y: y,
+    x,
+    y,
   })
 
   const [posSize, setPosSize] = useState({
-    x: width,
-    y: height,
+    width,
+    height,
   })
 
-  const { isAction } = useDragAndDrop(refBlock, setPosBlock, posBlock)
+  const isAction = useDragAndDrop(refBlock, setPosBlock, posBlock)
   const resize1 = useResize(refSize1, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: 1 })
   const resize2 = useResize(refSize2, setPosSize, posSize, posBlock, setPosBlock, { x: -1, y: -1 })
   const resize3 = useResize(refSize3, setPosSize, posSize, posBlock, setPosBlock, { x: 1, y: -1 })
@@ -57,8 +57,8 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
         ...props.primitiveBlockData,
         x: posBlock.x,
         y: posBlock.y,
-        width: posSize.x,
-        height: posSize.y,
+        width: posSize.width,
+        height: posSize.height,
       })
     }
     if (props.setIsDraggingOrResizing) {
@@ -75,19 +75,11 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
           rx={(width / 2) * scalePercent}
           ry={(height / 2) * scalePercent}
           fill={fillColor.hex}
-          strokeWidth={2 * scalePercent}
         />
       )
       break
     case Figures.RECTANGLE:
-      shapeElement = (
-        <rect
-          width={width * scalePercent}
-          height={height * scalePercent}
-          fill={fillColor.hex}
-          strokeWidth={2 * scalePercent}
-        />
-      )
+      shapeElement = <rect width={width * scalePercent} height={height * scalePercent} fill={fillColor.hex} />
       break
     case Figures.TRIANGLE:
       shapeElement = (
@@ -96,7 +88,6 @@ export const PrimitiveBlock = (props: PrimitiveBlock) => {
             height * scalePercent
           }`}
           fill={fillColor.hex}
-          strokeWidth={2 * scalePercent}
         />
       )
       break

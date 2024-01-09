@@ -1,8 +1,17 @@
 import styles from './Menu.module.css'
-import React, { useState } from 'react'
+import React from 'react'
 import { Figures } from '../../types/types'
 import { useAppDispatch, useAppSelector } from '../../store/store'
-import { addSlide, addText, addPrimitive, deleteObject, removeSlide, changeTheme } from '../../store/slide/slideActions'
+import {
+  addSlide,
+  addText,
+  addPrimitive,
+  deleteObject,
+  removeSlide,
+  changeTheme,
+  undoAction,
+  redoAction,
+} from '../../store/slide/slideActions'
 import { getSelectedObjectId, getSelectedSlideId, getPresentationTheme } from '../../store/slide/selector'
 import { addNewText } from '../../hooks/menu/objectsManager/useAddText'
 import { Fonts } from './Fonts/Fonts'
@@ -12,6 +21,10 @@ import rectangleImage from '../../images/square.svg'
 import circleImage from '../../images/circle.svg'
 import triangleImage from '../../images/triangle-up.svg'
 import textImage from '../../images/text.svg'
+import undo from '../../images/arrow-uturn-ccw-left.svg'
+import redo from '../../images/arrow-uturn-cw-right.svg'
+import undoDark from '../../images/darkTheme/arrow-uturn-ccw-left.svg'
+import redoDark from '../../images/darkTheme/arrow-uturn-cw-right.svg'
 import deleteObjectImage from '../../images/trash-bin.svg'
 import addSlideImageDark from '../../images/darkTheme/circle-plus-fill.svg'
 import deleteSlideImageDark from '../../images/darkTheme/circle-minus-fill.svg'
@@ -62,6 +75,14 @@ const Menu = () => {
   }
   const handleChangeTheme = () => {
     dispatch(changeTheme(presentationTheme))
+  }
+
+  const handleUndo = () => {
+    dispatch(undoAction())
+  }
+
+  const handleRedo = () => {
+    dispatch(redoAction())
   }
 
   return (
@@ -121,6 +142,18 @@ const Menu = () => {
         />
         <Fonts />
         <Loader handleFileChange={handleFileChange} error={error} />
+        <img
+          src={presentationTheme === 'light' ? undo : undoDark}
+          className={styles.menuButton}
+          alt={'undo'}
+          onClick={handleUndo}
+        />
+        <img
+          src={presentationTheme === 'light' ? redo : redoDark}
+          className={styles.menuButton}
+          alt={'undo'}
+          onClick={handleRedo}
+        />
         <img
           src={presentationTheme === 'light' ? lightThemeImage : darkThemeImage}
           className={styles.menuButton}

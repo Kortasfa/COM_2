@@ -14,6 +14,8 @@ import {
   CHANGE_FONT,
   CHANGE_PRIMITIVE_COLOR,
   CHANGE_THEME,
+  UNDO,
+  REDO,
 } from './types'
 import { Color, Image, Presentation, Text, Primitive, Slide, SlideObject } from '../../types/types'
 
@@ -140,4 +142,14 @@ export const changeTheme = (presTheme: string) =>
   ({
     type: CHANGE_THEME,
     payload: { presTheme },
+  }) as const
+
+export const undoAction = () =>
+  ({
+    type: UNDO,
+  }) as const
+
+export const redoAction = () =>
+  ({
+    type: REDO,
   }) as const
