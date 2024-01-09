@@ -185,7 +185,6 @@ export const Fonts = () => {
         className={styles.menuButton}
         onClick={underlineFont}
       />
-      <div></div>
       <div>
         <img
           className={styles.menuButton}

@@ -30,6 +30,8 @@ import addSlideImageDark from '../../images/darkTheme/circle-plus-fill.svg'
 import deleteSlideImageDark from '../../images/darkTheme/circle-minus-fill.svg'
 import rectangleImageDark from '../../images/darkTheme/square.svg'
 import circleImageDark from '../../images/darkTheme/circle.svg'
+import documentImage from '../../images/file-arrow-down.svg'
+import documentDarkImage from '../../images/darkTheme/download.svg'
 import triangleImageDark from '../../images/darkTheme/triangle-up.svg'
 import textImageDark from '../../images/darkTheme/text.svg'
 import deleteObjectImageDark from '../../images/darkTheme/trash-bin.svg'
@@ -41,17 +43,13 @@ import lightThemeImage from '../../images/lightTheme.svg'
 import darkThemeImage from '../../images/darkTheme.svg'
 
 import { exportToPdf } from '../../hooks/menu/presentationManager/exportToPdf'
+
 const Menu = () => {
   const dispatch = useAppDispatch()
   const selectedObjectId = useAppSelector(getSelectedObjectId)
   const presentationTheme = useAppSelector(getPresentationTheme)
   const selectedSlideId: string = useAppSelector(getSelectedSlideId)
   const { error, handleFileChange } = useImportFileHandler()
-  // const presentationName = useAppSelector(getPresentationName)
-  //
-  // useEffect(() => {
-  //   document.title = presentationName
-  // }, [presentationName])
 
   const handleAddSlide = () => {
     dispatch(addSlide())
@@ -161,7 +159,11 @@ const Menu = () => {
           onClick={handleChangeTheme}
           alt={'change theme'}
         />
-        <button onClick={exportToPdf}>Export to PDF</button>
+        <img
+          src={presentationTheme === 'light' ? documentImage : documentDarkImage}
+          className={styles.menuButton}
+          onClick={exportToPdf}
+        />
       </div>
     </div>
   )

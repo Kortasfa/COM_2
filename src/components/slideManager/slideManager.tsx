@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { Slide } from '../../types/types'
 import { Menu } from '../Menu/Menu'
 import styles from '../../styles/App.module.css'
@@ -10,6 +10,7 @@ import { selectSlide, updatePresentationData } from '../../store/slide/slideActi
 
 export const SlideManager = () => {
   const slides = useAppSelector(getSlides)
+  console.log(slides)
   const presentationTheme = useAppSelector(getPresentationTheme)
   const dispatch = useAppDispatch()
   const handleSlideClick = (slideId: string) => {

@@ -24,19 +24,19 @@ const useResize = (
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (isResize && startPos.current) {
-        const delta = {
+        const res = {
           x: e.pageX - startPos.current?.width,
           y: e.pageY - startPos.current?.height,
         }
         const newCoords = {
-          width: initialPos.width + move.x * delta.x,
-          height: initialPos.height + move.y * delta.y,
+          width: initialPos.width + move.x * res.x,
+          height: initialPos.height + move.y * res.y,
         }
 
         setSize(newCoords)
         const position = {
-          x: ref.x + (move.x < 0 ? delta.x : 0),
-          y: ref.y + (move.y < 0 ? delta.y : 0),
+          x: ref.x + (move.x < 0 ? res.x : 0),
+          y: ref.y + (move.y < 0 ? res.y : 0),
         }
         setPos(position)
       }
@@ -60,14 +60,14 @@ const useResize = (
     }
 
     if (size.current) {
-      size.current.addEventListener('mousedown', handleMouseDown)
-      document.addEventListener('mouseup', handleMouseUp)
       document.addEventListener('mousemove', handleMouseMove)
-    }
+      document.addEventListener('mouseup', handleMouseUp)
+      size.current.addEventListener('mousedown', handleMouseDown)
 
-    return () => {
-      if (size.current) {
-        size.current.removeEventListener('mousedown', handleMouseDown)
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove)
+        document.removeEventListener('mouseup', handleMouseUp)
+        size.current?.removeEventListener('mousedown', handleMouseDown)
       }
     }
   }, [size, isResize])

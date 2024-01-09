@@ -92,6 +92,7 @@ export const TextBlock = (props: TextBlock) => {
         contentEditable={isEditing && props.isSelected}
         onChange={handleInputChange}
         value={value}
+        suppressContentEditableWarning={true}
         style={{
           color: color.hex,
           width: width * scalePercent - 5,

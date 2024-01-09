@@ -10,56 +10,52 @@ const useDragAndDrop = (
   setPos: React.Dispatch<React.SetStateAction<Position>>,
   initialPos: Position,
 ) => {
-  const [isAction, setIsAction] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
   const startPos = useRef<Position | null>(null)
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (isAction && startPos.current) {
-        const delta = {
-          x: e.pageX - startPos.current.x,
-          y: e.pageY - startPos.current.y,
-        }
-        const newCoords = {
-          x: initialPos.x + delta.x,
-          y: initialPos.y + delta.y,
-        }
+      if (!isDragging || !startPos.current) return
 
-        setPos(newCoords)
+      const drag = {
+        x: e.pageX - startPos.current.x,
+        y: e.pageY - startPos.current.y,
       }
+      const newCoords = {
+        x: initialPos.x + drag.x,
+        y: initialPos.y + drag.y,
+      }
+
+      setPos(newCoords)
     }
 
     const handleMouseUp = () => {
-      if (isAction) {
+      if (isDragging) {
         startPos.current = null
-        document.removeEventListener('mousemove', handleMouseMove)
-        document.removeEventListener('mouseup', handleMouseUp)
-        setIsAction(false)
+        setIsDragging(false)
       }
     }
 
     const handleMouseDown = (e: MouseEvent) => {
       e.preventDefault()
       startPos.current = { x: e.pageX, y: e.pageY }
-      setIsAction(true)
-      document.addEventListener('mousemove', handleMouseMove)
-      document.addEventListener('mouseup', handleMouseUp)
+      setIsDragging(true)
     }
 
     if (ref.current) {
-      ref.current.addEventListener('mousedown', handleMouseDown)
-      document.addEventListener('mouseup', handleMouseUp)
       document.addEventListener('mousemove', handleMouseMove)
-    }
+      document.addEventListener('mouseup', handleMouseUp)
+      ref.current.addEventListener('mousedown', handleMouseDown)
 
-    return () => {
-      if (ref.current) {
-        ref.current.removeEventListener('mousedown', handleMouseDown)
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove)
+        document.removeEventListener('mouseup', handleMouseUp)
+        ref.current?.removeEventListener('mousedown', handleMouseDown)
       }
     }
-  }, [ref, isAction])
+  }, [ref, isDragging])
 
-  return isAction
+  return isDragging
 }
 
 export { useDragAndDrop }
