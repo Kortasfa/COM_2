@@ -22,7 +22,6 @@ import {
 import { ActionTypes, Image, Primitive, Slide, Text } from '../../types/types'
 import { initialState } from './initialState'
 import { createNewSlide } from './createSlide'
-import { log } from 'util'
 
 export const presentationReducer = (state = initialState, action: Action) => {
   switch (action.type) {
@@ -255,7 +254,7 @@ export const presentationReducer = (state = initialState, action: Action) => {
         ...state,
         presentation: {
           ...state.presentation,
-          slides: action.payload.parsedData,
+          slides: action.payload.parsedData.slides,
         },
       }
 
