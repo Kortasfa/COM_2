@@ -26,8 +26,8 @@ export const initialState = {
   presentationTheme: InitializedPresentation.presentationTheme,
 }
 
-function createNewSlide(presTheme: string): Slide {
-  const defaultColor: Color = { hex: presTheme === 'light' ? '#FFFFFF' : '#292929', opacity: 1 }
+function createNewSlide(): Slide {
+  const defaultColor: Color = { hex: '#FFFFFF', opacity: 1 }
   return {
     id: `slide-${Math.random().toString(36).substr(2, 9)}`, // Unique ID
     objects: [],
@@ -176,8 +176,7 @@ export const slideReducer = (state = initialState, action: any) => {
     }
 
     case ADD_SLIDE: {
-      const presTheme = action.payload
-      const newSlide = createNewSlide(presTheme)
+      const newSlide = createNewSlide()
       return {
         ...state,
         presentation: {

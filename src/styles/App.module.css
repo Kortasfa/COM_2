@@ -1,6 +1,13 @@
-body
+.lightTheme
 {
-  background-color: #FFFFFF; /* #292929 */
+  background-color: #ffffff;
+  height: 100vh;
+}
+
+.darkTheme
+{
+  background-color: #292929;
+  height: 100vh;
 }
 
 .presentationName {

@@ -48,7 +48,7 @@ const Menu = () => {
   // }, [presentationName])
 
   const handleAddSlide = () => {
-    dispatch(addSlide(presentationTheme))
+    dispatch(addSlide())
   }
 
   const handleDeleteSlide = () => {

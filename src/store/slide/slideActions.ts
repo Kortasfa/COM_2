@@ -18,9 +18,8 @@ import {
 import { Color, Image, Presentation, Slide, SlideObject } from '../../types/types'
 import theme from '../../components/Menu/Theme/Theme'
 
-export const addSlide = (presTheme: string) => ({
+export const addSlide = () => ({
   type: ADD_SLIDE,
-  payload: presTheme,
 })
 
 export const deleteSlide = (slideId: string) => ({

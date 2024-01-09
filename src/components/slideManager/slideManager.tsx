@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Slide } from '../../types/types'
 import { Menu } from '../Menu/Menu'
 import styles from '../../styles/App.module.css'
@@ -7,60 +7,6 @@ import { getPresentationTheme, getSlides } from '../../store/slide/selector'
 import { SideSlides } from '../SideSlides'
 import { SlideView } from '../SlideView'
 import { selectSlide, updatePresentationData } from '../../store/slide/slideActions'
-
-type SlideShowProps = {
-  slides: Slide[]
-  onClose: () => void
-}
-
-const SlideShow: React.FC<SlideShowProps> = ({ slides, onClose }) => {
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
-
-  const handleNextSlide = () => {
-    setCurrentSlideIndex((prevIndex) => (prevIndex < slides.length - 1 ? prevIndex + 1 : prevIndex))
-  }
-
-  const handlePrevSlide = () => {
-    setCurrentSlideIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : prevIndex))
-  }
-
-  const handleKeyDown = (event: KeyboardEvent) => {
-    switch (event.key) {
-      case 'ArrowLeft':
-        handlePrevSlide()
-        break
-      case 'ArrowRight':
-        handleNextSlide()
-        break
-      case 'Escape':
-        onClose() // Закрытие слайд-шоу при нажатии "Escape"
-        break
-      default:
-        break
-    }
-  }
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [currentSlideIndex])
-
-  useEffect(() => {
-    // Reset slide index when the component mounts
-    setCurrentSlideIndex(0)
-  }, [])
-
-  return (
-    <div className={styles.slideShow}>
-      <div className={styles.slideShowContent}>
-        <SlideView slide={slides[currentSlideIndex]} />
-      </div>
-    </div>
-  )
-}
 
 export const SlideManager = () => {
   const slides = useAppSelector(getSlides)
@@ -93,18 +39,8 @@ export const SlideManager = () => {
     }
   }
 
-  const [fullScreenSlideShow, setFullScreenSlideShow] = useState(false)
-
-  const openFullScreenSlideShow = () => {
-    setFullScreenSlideShow(true)
-  }
-
-  const closeFullScreenSlideShow = () => {
-    setFullScreenSlideShow(false)
-  }
-
   return (
-    <div>
+    <div className={presentationTheme === 'light' ? styles.lightTheme : styles.darkTheme}>
       <Menu />
       <div onDragOver={(e) => e.preventDefault()} onDragEnd={handleDragEnd}>
         {slides.map((slide: Slide) => (
@@ -120,10 +56,6 @@ export const SlideManager = () => {
             <SlideView slide={slide} />
           </div>
         ))}
-        {fullScreenSlideShow && <SlideShow slides={slides} onClose={closeFullScreenSlideShow} />}
-      </div>
-      <div className="start-slide-show-button" onClick={openFullScreenSlideShow}>
-        Start Slide Show
       </div>
     </div>
   )
