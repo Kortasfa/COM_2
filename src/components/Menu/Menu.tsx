@@ -1,5 +1,5 @@
 import styles from './Menu.module.css'
-import React, { useState } from 'react'
+import React from 'react'
 import { Figures } from '../../types/types'
 import { useAppDispatch, useAppSelector } from '../../store/store'
 import { addSlide, addText, addPrimitive, deleteObject, removeSlide, changeTheme } from '../../store/slide/slideActions'

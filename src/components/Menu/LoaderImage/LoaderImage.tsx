@@ -1,13 +1,11 @@
 import styles from '../Menu.module.css'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import addImageSrc from '../../../images/picture.svg'
 import addImageSrcDark from '../../../images/darkTheme/picture.svg'
 import { addNewImage } from '../../../hooks/menu/objectsManager/useAddImage'
 import { useAppDispatch, useAppSelector } from '../../../store/store'
-import { addImage, changeTheme, selectSlide } from '../../../store/slide/slideActions'
+import { addImage } from '../../../store/slide/slideActions'
 import { getPresentationTheme, getSelectedSlideId } from '../../../store/slide/selector'
-import rectangleImage from '../../../images/square.svg'
-import rectangleImageDark from '../../../images/darkTheme/square.svg'
 
 const LoaderImage = () => {
   const dispatch = useAppDispatch()

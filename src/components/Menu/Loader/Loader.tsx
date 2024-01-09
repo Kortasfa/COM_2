@@ -1,6 +1,5 @@
 import React from 'react'
 import { exportPresentation } from '../../../hooks/menu/presentationManager/exportPresentation'
-import { Presentation } from '../../../types/types'
 import importImage from '../../../images/arrow-down-to-square.svg'
 import exportImage from '../../../images/arrow-up-from-square.svg'
 import importImageDark from '../../../images/darkTheme/arrow-down-to-square.svg'
@@ -8,8 +7,6 @@ import exportImageDark from '../../../images/darkTheme/arrow-up-from-square.svg'
 import styles from '../Menu.module.css'
 import { useAppSelector } from '../../../store/store'
 import { getPresentationData, getPresentationTheme } from '../../../store/slide/selector'
-import underlineFontImage from '../../../images/underline.svg'
-import underlineFontImageDark from '../../../images/darkTheme/underline.svg'
 
 interface LoaderProps {
   handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void
