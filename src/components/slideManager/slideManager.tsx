@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef } from 'react'
 import { Slide } from '../../types/types'
 import { Menu } from '../Menu/Menu'
 import styles from '../../styles/App.module.css'
@@ -16,7 +16,7 @@ export const SlideManager = () => {
     dispatch(selectSlide(slideId))
   }
 
-  const [draggedSlideId, setDraggedSlideId] = useState<string | null>(null)
+  const [draggedSlideId, setDraggedSlideId] = React.useState<string | null>(null)
 
   const handleDragStart = (slideId: string) => {
     setDraggedSlideId(slideId)
@@ -42,9 +42,9 @@ export const SlideManager = () => {
   return (
     <div className={presentationTheme === 'light' ? styles.lightTheme : styles.darkTheme}>
       <Menu />
-      <div onDragOver={(e) => e.preventDefault()} onDragEnd={handleDragEnd} className={styles.slides}>
+      <div id="pdf-export" onDragOver={(e) => e.preventDefault()} onDragEnd={handleDragEnd}>
         {slides.map((slide: Slide) => (
-          <div key={slide.id} className={styles.workField}>
+          <div id="workfield" key={slide.id} className={styles.workField}>
             <div
               key={slide.id}
               draggable

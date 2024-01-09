@@ -14,10 +14,11 @@
 
 .slides {
   display: flex;
+  position: relative;
   flex-direction: column;
   padding: 5px 10px 10px 20px;
   overflow: auto;
-  max-height: 40vw;
+  height: 80vw;
   gap: 10px;
   overflow-x: hidden;
 }

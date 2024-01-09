@@ -39,7 +39,7 @@ export const Fonts = () => {
   const [fontStyleValue, setFontStyleValue] = useState<string>('normal')
   const [fontUnderlineValue, setFontUnderlineValue] = useState<string>('none')
   const [color1, useColor1] = useState<ColorResult>({
-    hex: 'black',
+    hex: 'white',
     rgb: { r: 0, g: 0, b: 0, a: 1 },
     hsl: { h: 0, s: 0, l: 0, a: 1 },
   })
@@ -138,8 +138,6 @@ export const Fonts = () => {
     // TODO Переделать реализацию, сейчас dispatch всегда при использовании colorPicker, а это плохо, dispatch должен быть только после смены objectId
     useColor1(selectedColor)
     useColor({ hex: selectedColor.hex, opacity: 1 })
-    console.log(selectedObjectId)
-    console.log(!selectedObjectId)
     if (!selectedObjectId) {
       changeColor({ hex: selectedColor.hex, opacity: 1 })
     }
@@ -187,22 +185,7 @@ export const Fonts = () => {
         className={styles.menuButton}
         onClick={underlineFont}
       />
-      <div>
-        <img
-          className={styles.menuButton}
-          onClick={() => setShowDropdownColor(!showDropdownColor)}
-          src={presentationTheme === 'light' ? colorImage : colorImageDark}
-        />
-        <div className={fonts.dropdown} style={{ display: showDropdownColor ? 'block' : 'none', columns: 3 }}>
-          <p onClick={() => handleFontColorChange('black')}>⚫</p>
-          <p onClick={() => handleFontColorChange('red')}>🔴</p>
-          <p onClick={() => handleFontColorChange('yellow')}>🟡</p>
-          <p onClick={() => handleFontColorChange('brown')}>🟤</p>
-          <p onClick={() => handleFontColorChange('green')}>🟢</p>
-          <p onClick={() => handleFontColorChange('purple')}>🟣</p>
-          <p onClick={() => handleFontColorChange('orange')}>🟠</p>
-        </div>
-      </div>
+      <div></div>
       <div>
         <img
           className={styles.menuButton}

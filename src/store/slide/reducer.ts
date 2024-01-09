@@ -22,6 +22,7 @@ import {
 import { ActionTypes, Image, Primitive, Slide, Text } from '../../types/types'
 import { initialState } from './initialState'
 import { createNewSlide } from './createSlide'
+import { log } from 'util'
 
 export const presentationReducer = (state = initialState, action: Action) => {
   switch (action.type) {

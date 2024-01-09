@@ -1,5 +1,5 @@
 import React from 'react'
-import { ObjectType, Slide } from '../../types/types'
+import { Image, ObjectType, Primitive, Slide, SlideObject, Text } from '../../types/types'
 import { TextBlock } from '../Objects/TextBlock'
 import { ImageBlock } from '../Objects/ImageBlock'
 import styles from './SlideView.module.css'
@@ -31,7 +31,7 @@ export const SideSlides = ({ slide, onClick }: SideSlides) => {
         }}
         onClick={onClick}
       >
-        {objects.map((object) => {
+        {objects.map((object: Text | Primitive | Image) => {
           switch (object.type) {
             case ObjectType.TEXTBLOCK:
               return (

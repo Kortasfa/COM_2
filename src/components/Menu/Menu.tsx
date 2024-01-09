@@ -14,9 +14,9 @@ import {
 } from '../../store/slide/slideActions'
 import { getSelectedObjectId, getSelectedSlideId, getPresentationTheme } from '../../store/slide/selector'
 import { addNewText } from '../../hooks/menu/objectsManager/useAddText'
-import { Fonts } from './Fonts/Fonts'
 import addSlideImage from '../../images/circle-plus-fill.svg'
 import deleteSlideImage from '../../images/circle-minus-fill.svg'
+import { Fonts } from './Fonts/Fonts'
 import rectangleImage from '../../images/square.svg'
 import circleImage from '../../images/circle.svg'
 import triangleImage from '../../images/triangle-up.svg'
@@ -40,6 +40,7 @@ import { useImportFileHandler } from '../../hooks/menu/presentationManager/useIm
 import lightThemeImage from '../../images/lightTheme.svg'
 import darkThemeImage from '../../images/darkTheme.svg'
 
+import { exportToPdf } from '../../hooks/menu/presentationManager/exportToPdf'
 const Menu = () => {
   const dispatch = useAppDispatch()
   const selectedObjectId = useAppSelector(getSelectedObjectId)
@@ -160,6 +161,7 @@ const Menu = () => {
           onClick={handleChangeTheme}
           alt={'change theme'}
         />
+        <button onClick={exportToPdf}>Export to PDF</button>
       </div>
     </div>
   )
