@@ -13,11 +13,14 @@ import {
   UPDATE_PRESENTATION_DATA,
   CHANGE_FONT,
   CHANGE_PRIMITIVE_COLOR,
+  CHANGE_THEME,
 } from './types'
 import { Color, Image, Presentation, Slide, SlideObject } from '../../types/types'
+import theme from '../../components/Menu/Theme/Theme'
 
-export const addSlide = () => ({
+export const addSlide = (presTheme: string) => ({
   type: ADD_SLIDE,
+  payload: presTheme,
 })
 
 export const deleteSlide = (slideId: string) => ({
@@ -122,6 +125,11 @@ export const changePrimitiveColor = (slideId: string, objectId: string, color: C
   },
 })
 
+export const changeTheme = (presTheme: string) => ({
+  type: CHANGE_THEME,
+  payload: presTheme,
+})
+
 export type actions =
   | ReturnType<typeof addSlide>
   | ReturnType<typeof deleteSlide>
@@ -131,3 +139,4 @@ export type actions =
   | ReturnType<typeof addText>
   | ReturnType<typeof addPrimitive>
   | ReturnType<typeof deleteObject>
+  | ReturnType<typeof changeTheme>

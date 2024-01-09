@@ -13,6 +13,7 @@ import {
   SELECT_SLIDE,
   UPDATE_PRESENTATION_DATA,
   UPDATE_SLIDE_OBJECT,
+  CHANGE_THEME,
 } from './types'
 import { Color, Slide } from '../../types/types'
 import InitializedPresentation from '../../components/InitializedPresentation'
@@ -22,10 +23,11 @@ export const initialState = {
   presentation: InitializedPresentation,
   selectedSlideId: InitializedPresentation.slides[INITIAL_SLIDE_ID].id,
   selectedObjectId: InitializedPresentation.slides[INITIAL_SLIDE_ID].objects,
+  presentationTheme: InitializedPresentation.presentationTheme,
 }
 
-function createNewSlide(): Slide {
-  const defaultColor: Color = { hex: '#FFFFFF', opacity: 1 }
+function createNewSlide(presTheme: string): Slide {
+  const defaultColor: Color = { hex: presTheme === 'light' ? '#FFFFFF' : '#292929', opacity: 1 }
   return {
     id: `slide-${Math.random().toString(36).substr(2, 9)}`, // Unique ID
     objects: [],
@@ -174,7 +176,8 @@ export const slideReducer = (state = initialState, action: any) => {
     }
 
     case ADD_SLIDE: {
-      const newSlide = createNewSlide()
+      const presTheme = action.payload
+      const newSlide = createNewSlide(presTheme)
       return {
         ...state,
         presentation: {
@@ -288,6 +291,26 @@ export const slideReducer = (state = initialState, action: any) => {
       }
     }
 
+    case CHANGE_THEME: {
+      const presTheme = action.payload
+      if (presTheme === 'light') {
+        return {
+          ...state,
+          presentationTheme: 'dark',
+          presentation: {
+            ...state.presentation,
+          },
+        }
+      } else {
+        return {
+          ...state,
+          presentationTheme: 'light',
+          presentation: {
+            ...state.presentation,
+          },
+        }
+      }
+    }
     default:
       return state
   }

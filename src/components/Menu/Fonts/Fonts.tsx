@@ -9,14 +9,24 @@ import incFontImage from '../../../images/arrow-shape-up.svg'
 import decFontImage from '../../../images/arrow-shape-down.svg'
 import colorImage from '../../../images/palette.svg'
 import fontCase from '../../../images/font-case.svg'
+import boldFontImageDark from '../../../images/darkTheme/bold.svg'
+import italicFontImageDark from '../../../images/darkTheme/italic.svg'
+import underlineFontImageDark from '../../../images/darkTheme/underline.svg'
+import incFontImageDark from '../../../images/darkTheme/arrow-shape-up.svg'
+import decFontImageDark from '../../../images/darkTheme/arrow-shape-down.svg'
+import colorImageDark from '../../../images/darkTheme/palette.svg'
+import fontCaseDark from '../../../images/darkTheme/font-case.svg'
 import { changeBackgroundColor, changeFont, changePrimitiveColor } from '../../../store/slide/slideActions'
 import { useAppDispatch, useAppSelector } from '../../../store/store'
-import { getSelectedObjectId, getSelectedSlideId, getSlides } from '../../../store/slide/selector'
+import { getPresentationTheme, getSelectedObjectId, getSelectedSlideId, getSlides } from '../../../store/slide/selector'
+import addImageSrc from '../../../images/picture.svg'
+import addImageSrcDark from '../../../images/darkTheme/picture.svg'
 
 export const Fonts = () => {
   const dispatch = useAppDispatch()
   const selectedSlideId = useAppSelector(getSelectedSlideId)
   const selectedObjectId = useAppSelector(getSelectedObjectId)
+  const presentationTheme = useAppSelector(getPresentationTheme)
   const slides = useAppSelector(getSlides)
   const slide = slides.find((slide: Slide) => slide.id === selectedSlideId)
   const textData = slide?.objects.find((obj: SlideObject) => obj.id === selectedObjectId)
@@ -94,7 +104,11 @@ export const Fonts = () => {
   return (
     <div className={fonts.fontsContainer}>
       <div>
-        <img className={styles.menuButton} onClick={() => setShowDropdownFamily(!showDropdownFamily)} src={fontCase} />
+        <img
+          className={styles.menuButton}
+          onClick={() => setShowDropdownFamily(!showDropdownFamily)}
+          src={presentationTheme === 'light' ? fontCase : fontCaseDark}
+        />
         <div style={{ display: showDropdownFamily ? 'block' : 'none' }} className={fonts.dropdown}>
           <p onClick={() => handleFontFamilyChange('Arial')}>Arial</p>
           <p onClick={() => handleFontFamilyChange('Times New Roman')}>Times New Roman</p>
@@ -103,13 +117,37 @@ export const Fonts = () => {
           <p onClick={() => handleFontFamilyChange('Open Sans')}>Open Sans</p>
         </div>
       </div>
-      <img className={styles.menuButton} onClick={incrementFontSize} src={incFontImage} />
-      <img className={styles.menuButton} onClick={decrementFontSize} src={decFontImage} />
-      <img src={boldFontImage} className={styles.menuButton} onClick={boldFont} />
-      <img src={italicFontImage} className={styles.menuButton} onClick={italicFont} />
-      <img src={underlineFontImage} className={styles.menuButton} onClick={underlineFont} />
+      <img
+        className={styles.menuButton}
+        onClick={incrementFontSize}
+        src={presentationTheme === 'light' ? incFontImage : incFontImageDark}
+      />
+      <img
+        className={styles.menuButton}
+        onClick={decrementFontSize}
+        src={presentationTheme === 'light' ? decFontImage : decFontImageDark}
+      />
+      <img
+        src={presentationTheme === 'light' ? boldFontImage : boldFontImageDark}
+        className={styles.menuButton}
+        onClick={boldFont}
+      />
+      <img
+        src={presentationTheme === 'light' ? italicFontImage : italicFontImageDark}
+        className={styles.menuButton}
+        onClick={italicFont}
+      />
+      <img
+        src={presentationTheme === 'light' ? underlineFontImage : underlineFontImageDark}
+        className={styles.menuButton}
+        onClick={underlineFont}
+      />
       <div>
-        <img className={styles.menuButton} onClick={() => setShowDropdownColor(!showDropdownColor)} src={colorImage} />
+        <img
+          className={styles.menuButton}
+          onClick={() => setShowDropdownColor(!showDropdownColor)}
+          src={presentationTheme === 'light' ? colorImage : colorImageDark}
+        />
         <div className={fonts.dropdown} style={{ display: showDropdownColor ? 'block' : 'none', columns: 3 }}>
           <p onClick={() => handleFontColorChange('black')}>⚫</p>
           <p onClick={() => handleFontColorChange('red')}>🔴</p>

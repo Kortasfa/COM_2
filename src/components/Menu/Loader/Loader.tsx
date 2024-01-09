@@ -3,9 +3,13 @@ import { exportPresentation } from '../../../hooks/menu/presentationManager/expo
 import { Presentation } from '../../../types/types'
 import importImage from '../../../images/arrow-down-to-square.svg'
 import exportImage from '../../../images/arrow-up-from-square.svg'
+import importImageDark from '../../../images/darkTheme/arrow-down-to-square.svg'
+import exportImageDark from '../../../images/darkTheme/arrow-up-from-square.svg'
 import styles from '../Menu.module.css'
 import { useAppSelector } from '../../../store/store'
-import { getPresentationData } from '../../../store/slide/selector'
+import { getPresentationData, getPresentationTheme } from '../../../store/slide/selector'
+import underlineFontImage from '../../../images/underline.svg'
+import underlineFontImageDark from '../../../images/darkTheme/underline.svg'
 
 interface LoaderProps {
   handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -17,12 +21,18 @@ const Loader = ({ handleFileChange, error }: LoaderProps) => {
     document.getElementById('fileInputImport')?.click()
   }
   const presentationData = useAppSelector(getPresentationData)
+  const presentationTheme = useAppSelector(getPresentationTheme)
   return (
     <div className={styles.loader}>
       <input className={styles.fileLoader} id="fileInputImport" type="file" onChange={handleFileChange} />
-      <img src={importImage} alt="Import" className={styles.menuButton} onClick={handleImportButton} />
       <img
-        src={exportImage}
+        src={presentationTheme === 'light' ? importImage : importImageDark}
+        alt="Import"
+        className={styles.menuButton}
+        onClick={handleImportButton}
+      />
+      <img
+        src={presentationTheme === 'light' ? exportImage : exportImageDark}
         alt="Export"
         className={styles.menuButton}
         onClick={() => exportPresentation(presentationData)}

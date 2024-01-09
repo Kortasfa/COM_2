@@ -1,14 +1,18 @@
 import styles from '../Menu.module.css'
 import React, { useEffect, useRef, useState } from 'react'
 import addImageSrc from '../../../images/picture.svg'
+import addImageSrcDark from '../../../images/darkTheme/picture.svg'
 import { addNewImage } from '../../../hooks/menu/objectsManager/useAddImage'
 import { useAppDispatch, useAppSelector } from '../../../store/store'
-import { addImage, selectSlide } from '../../../store/slide/slideActions'
-import { getSelectedSlideId } from '../../../store/slide/selector'
+import { addImage, changeTheme, selectSlide } from '../../../store/slide/slideActions'
+import { getPresentationTheme, getSelectedSlideId } from '../../../store/slide/selector'
+import rectangleImage from '../../../images/square.svg'
+import rectangleImageDark from '../../../images/darkTheme/square.svg'
 
 const LoaderImage = () => {
   const dispatch = useAppDispatch()
   const selectSlideId = useAppSelector(getSelectedSlideId)
+  const presentationTheme = useAppSelector(getPresentationTheme)
   const handleImageLoader = (base64Data: string, width: number, height: number) => {
     const newImage = addNewImage(base64Data, width, height)
     console.log(newImage)
@@ -73,7 +77,11 @@ const LoaderImage = () => {
   return (
     <div className={styles.loaderImage}>
       <input className={styles.image} type="file" ref={fileInputRef} onChange={handleFileLoader} accept=".png" />
-      <img src={addImageSrc} className={styles.menuButton} onClick={handleClick} />
+      <img
+        src={presentationTheme === 'light' ? addImageSrc : addImageSrcDark}
+        className={styles.menuButton}
+        onClick={handleClick}
+      />
 
       {showPopup && (
         <div className={styles.popup}>

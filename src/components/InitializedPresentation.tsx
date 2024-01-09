@@ -11,6 +11,7 @@ const defaultSlide: Slide = {
 const InitializedPresentation: Presentation = {
   id: 'presentation-id',
   name: 'New Presentation',
+  presentationTheme: 'light',
   slides: [defaultSlide],
 }
 

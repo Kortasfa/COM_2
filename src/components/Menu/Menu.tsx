@@ -1,5 +1,5 @@
 import styles from './Menu.module.css'
-import React from 'react'
+import React, { useState } from 'react'
 import { Figures } from '../../types/types'
 import { useAppDispatch, useAppSelector } from '../../store/store'
 import {
@@ -9,26 +9,37 @@ import {
   addPrimitive,
   deleteObject,
   changeBackgroundColor,
+  changeTheme,
 } from '../../store/slide/slideActions'
-import { getSelectedObjectId, getSelectedSlideId } from '../../store/slide/selector'
+import { getSelectedObjectId, getSelectedSlideId, getPresentationTheme } from '../../store/slide/selector'
 import { addNewText } from '../../hooks/menu/objectsManager/useAddText'
+import { Fonts } from './Fonts/Fonts'
 import addSlideImage from '../../images/circle-plus-fill.svg'
 import deleteSlideImage from '../../images/circle-minus-fill.svg'
-import { Fonts } from './Fonts/Fonts'
 import rectangleImage from '../../images/square.svg'
 import circleImage from '../../images/circle.svg'
 import triangleImage from '../../images/triangle-up.svg'
 import textImage from '../../images/text.svg'
 import deleteObjectImage from '../../images/trash-bin.svg'
+import addSlideImageDark from '../../images/darkTheme/circle-plus-fill.svg'
+import deleteSlideImageDark from '../../images/darkTheme/circle-minus-fill.svg'
+import rectangleImageDark from '../../images/darkTheme/square.svg'
+import circleImageDark from '../../images/darkTheme/circle.svg'
+import triangleImageDark from '../../images/darkTheme/triangle-up.svg'
+import textImageDark from '../../images/darkTheme/text.svg'
+import deleteObjectImageDark from '../../images/darkTheme/trash-bin.svg'
 import { addNewPrimitive } from '../../hooks/menu/objectsManager/useAddPrimitive'
 import { LoaderImage } from './LoaderImage/LoaderImage'
 import { Loader } from './Loader/Loader'
 import { useImportFileHandler } from '../../hooks/menu/presentationManager/useImportFileHandler'
+import lightThemeImage from '../../images/lightTheme.svg'
+import darkThemeImage from '../../images/darkTheme.svg'
 
 const Menu = () => {
   const dispatch = useAppDispatch()
   const selectedObjectId = useAppSelector(getSelectedObjectId)
   const selectedSlideId = useAppSelector(getSelectedSlideId)
+  const presentationTheme = useAppSelector(getPresentationTheme)
   const { error, handleFileChange } = useImportFileHandler()
   // const presentationName = useAppSelector(getPresentationName)
   //
@@ -37,7 +48,7 @@ const Menu = () => {
   // }, [presentationName])
 
   const handleAddSlide = () => {
-    dispatch(addSlide())
+    dispatch(addSlide(presentationTheme))
   }
 
   const handleDeleteSlide = () => {
@@ -57,22 +68,36 @@ const Menu = () => {
   const handleDeleteObject = () => {
     dispatch(deleteObject(selectedSlideId, selectedObjectId))
   }
+  const handleChangeTheme = () => {
+    dispatch(changeTheme(presentationTheme))
+  }
 
   return (
     <div>
       {/*<input value={title} type={'text'} className={styles.title} onChange={handleInputChange} />*/}
-      <div className={styles.menu}>
-        <img className={styles.menuButton} onClick={handleAddSlide} src={addSlideImage} />
-        <img className={styles.menuButton} onClick={handleDeleteSlide} src={deleteSlideImage} />
+      <div
+        className={styles.menu}
+        style={{ background: presentationTheme === 'light' ? 'rgb(241 230 230 / 41%)' : '#3b3b3b' }}
+      >
         <img
-          src={textImage}
+          className={styles.menuButton}
+          onClick={handleAddSlide}
+          src={presentationTheme === 'light' ? addSlideImage : addSlideImageDark}
+        />
+        <img
+          className={styles.menuButton}
+          onClick={handleDeleteSlide}
+          src={presentationTheme === 'light' ? deleteSlideImage : deleteSlideImageDark}
+        />
+        <img
+          src={presentationTheme === 'light' ? textImage : textImageDark}
           className={styles.menuButton}
           onClick={() => {
             handleAddText()
           }}
         />
         <img
-          src={rectangleImage}
+          src={presentationTheme === 'light' ? rectangleImage : rectangleImageDark}
           className={styles.menuButton}
           onClick={() => {
             handleAddPrimitive(Figures.RECTANGLE)
@@ -80,7 +105,7 @@ const Menu = () => {
           alt={'primitive'}
         />
         <img
-          src={circleImage}
+          src={presentationTheme === 'light' ? circleImage : circleImageDark}
           className={styles.menuButton}
           onClick={() => {
             handleAddPrimitive(Figures.CIRCLE)
@@ -88,7 +113,7 @@ const Menu = () => {
           alt={'primitive'}
         />
         <img
-          src={triangleImage}
+          src={presentationTheme === 'light' ? triangleImage : triangleImageDark}
           className={styles.menuButton}
           onClick={() => {
             handleAddPrimitive(Figures.TRIANGLE)
@@ -96,9 +121,20 @@ const Menu = () => {
           alt={'primitive'}
         />
         <LoaderImage />
-        <img src={deleteObjectImage} className={styles.menuButton} onClick={handleDeleteObject} alt={'delete'} />
+        <img
+          src={presentationTheme === 'light' ? deleteObjectImage : deleteObjectImageDark}
+          className={styles.menuButton}
+          onClick={handleDeleteObject}
+          alt={'delete'}
+        />
         <Fonts />
         <Loader handleFileChange={handleFileChange} error={error} />
+        <img
+          src={presentationTheme === 'light' ? lightThemeImage : darkThemeImage}
+          className={styles.menuButton}
+          onClick={handleChangeTheme}
+          alt={'change theme'}
+        />
       </div>
     </div>
   )

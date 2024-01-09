@@ -1,3 +1,17 @@
 body {
   margin: 0;
 }
+
+html[data-theme='dark'] {
+  --background-color: #292929; /* #021221 */
+  --menu-background-color: #292929;
+  --menu-border-color: #ffffff;
+  --slide-border: #ffffff;
+}
+
+html[data-theme='light'] {
+  --background-color: #ffffff;
+  --menu-background-color: rgb(241 230 230 / 41%);
+  --menu-border-color: #000000;
+  --slide-border: #3498db;
+}

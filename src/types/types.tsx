@@ -62,6 +62,7 @@ type Presentation = {
   slides: Array<Slide>
   selectedSlideId?: string
   selectedObjectId?: string
+  presentationTheme: string
 }
 
 export { Figures, ObjectType }
