@@ -15,3 +15,20 @@
   padding: 10px 10px 0;
   cursor: pointer;
 }
+
+.colorPickerContainer {
+  position: fixed;
+  top: 20%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+.colorPickerContainer .chrome-picker {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.otherComponents {
+  position: relative;
+  z-index: 1;
+}
+

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Color, ObjectType, Slide, SlideObject } from '../../../types/types'
+import { ChromePicker, ColorResult } from 'react-color'
+import { Color, Slide, SlideObject } from '../../../types/types'
 import fonts from './Fonts.module.css'
 import styles from '../Menu.module.css'
 import boldFontImage from '../../../images/bold.svg'
@@ -18,9 +19,7 @@ import colorImageDark from '../../../images/darkTheme/palette.svg'
 import fontCaseDark from '../../../images/darkTheme/font-case.svg'
 import { changeBackgroundColor, changeFont, changePrimitiveColor } from '../../../store/slide/slideActions'
 import { useAppDispatch, useAppSelector } from '../../../store/store'
-import { getPresentationTheme, getSelectedObjectId, getSelectedSlideId, getSlides } from '../../../store/slide/selector'
-import addImageSrc from '../../../images/picture.svg'
-import addImageSrcDark from '../../../images/darkTheme/picture.svg'
+import { getSelectedObjectId, getSelectedSlideId, getSlides, getPresentationTheme } from '../../../store/slide/selector'
 
 export const Fonts = () => {
   const dispatch = useAppDispatch()
@@ -35,14 +34,28 @@ export const Fonts = () => {
   const [color, useColor] = useState<Color>({ hex: 'black', opacity: 1 })
   const [showDropdownFamily, setShowDropdownFamily] = useState(false)
   const [showDropdownColor, setShowDropdownColor] = useState(false)
-  const [bold, setBold] = useState(false)
-  const [italic, setItalic] = useState(false)
-  const [underline, setUnderline] = useState(false)
+  const [showColorPicker, setShowColorPicker] = useState(false)
+  const [fontWeightValue, setFontWeightValue] = useState<string>('normal')
+  const [fontStyleValue, setFontStyleValue] = useState<string>('normal')
+  const [fontUnderlineValue, setFontUnderlineValue] = useState<string>('none')
+  const [color1, useColor1] = useState<ColorResult>({
+    hex: 'black',
+    rgb: { r: 0, g: 0, b: 0, a: 1 },
+    hsl: { h: 0, s: 0, l: 0, a: 1 },
+  })
 
   useEffect(() => {
-    const fontWeightValue = bold ? 'bold' : 'normal'
-    const fontStyleValue = italic ? 'italic' : 'normal'
-    const fontUnderlineValue = underline ? 'underline' : 'none'
+    if (textData) {
+      setFontWeightValue(textData.fontWeight)
+      setFontUnderlineValue(textData.fontUnderline)
+      setFontStyleValue(textData.fontStyle)
+      useFontSize(textData.fontSize)
+      useFontFamily(textData.fontFamily)
+      useColor(textData.color)
+    }
+  }, [selectedObjectId])
+
+  useEffect(() => {
     dispatch(
       changeFont(
         selectedSlideId,
@@ -55,14 +68,18 @@ export const Fonts = () => {
         fontUnderlineValue,
       ),
     )
-  }, [fontFamily, fontSize, color, bold, italic, underline])
+  }, [fontFamily, fontSize, color, fontWeightValue, fontStyleValue, fontUnderlineValue])
 
   const incrementFontSize = () => {
-    useFontSize(fontSize + 1)
+    if (textData) {
+      useFontSize(textData?.fontSize + 1)
+    }
   }
 
   const decrementFontSize = () => {
-    useFontSize(fontSize - 1)
+    if (textData) {
+      useFontSize(textData?.fontSize - 1)
+    }
   }
 
   const handleFontFamilyChange = (selectedFont: string) => {
@@ -70,7 +87,7 @@ export const Fonts = () => {
     setShowDropdownFamily(false)
   }
 
-  const changeColor = (color: string) => {
+  const changeColor = (color: Color) => {
     dispatch(changeBackgroundColor(selectedSlideId, color))
   }
 
@@ -79,26 +96,54 @@ export const Fonts = () => {
   }
 
   const handleFontColorChange = (selectedColor: string) => {
-    console.log(selectedObjectId)
     if (selectedObjectId.length) {
       useColor({ hex: selectedColor, opacity: 1 })
       changePrimitiveColorAction({ hex: selectedColor, opacity: 1 })
     } else {
-      changeColor(selectedColor)
+      changeColor({ hex: selectedColor, opacity: 1 })
     }
     setShowDropdownColor(false)
   }
 
   const boldFont = () => {
-    setBold((prevBold) => !prevBold)
+    if (textData) {
+      if (textData.fontWeight === 'bold') {
+        setFontWeightValue('normal')
+      } else {
+        setFontWeightValue('bold')
+      }
+    }
   }
 
   const italicFont = () => {
-    setItalic((prevItalic) => !prevItalic)
+    if (textData) {
+      if (textData.fontStyle === 'italic') {
+        setFontStyleValue('normal')
+      } else {
+        setFontStyleValue('italic')
+      }
+    }
   }
 
   const underlineFont = () => {
-    setUnderline((prev) => !prev)
+    if (textData) {
+      if (textData.fontUnderline === 'underline') {
+        setFontUnderlineValue('none')
+      } else {
+        setFontUnderlineValue('underline')
+      }
+    }
+  }
+  const handleColorPickerChange = (selectedColor: ColorResult) => {
+    // TODO Переделать реализацию, сейчас dispatch всегда при использовании colorPicker, а это плохо, dispatch должен быть только после смены objectId
+    useColor1(selectedColor)
+    useColor({ hex: selectedColor.hex, opacity: 1 })
+    console.log(selectedObjectId)
+    console.log(!selectedObjectId)
+    if (!selectedObjectId) {
+      changeColor({ hex: selectedColor.hex, opacity: 1 })
+    }
+    changePrimitiveColorAction({ hex: selectedColor.hex, opacity: 1 })
   }
 
   return (
@@ -157,6 +202,14 @@ export const Fonts = () => {
           <p onClick={() => handleFontColorChange('purple')}>🟣</p>
           <p onClick={() => handleFontColorChange('orange')}>🟠</p>
         </div>
+      </div>
+      <div>
+        <img className={styles.menuButton} onClick={() => setShowColorPicker(!showColorPicker)} src={colorImage} />
+        {showColorPicker && (
+          <div className={fonts.colorPickerContainer}>
+            <ChromePicker color={color1.rgb} onChange={handleColorPickerChange} disableAlpha={true} />
+          </div>
+        )}
       </div>
     </div>
   )

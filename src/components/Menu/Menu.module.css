@@ -72,9 +72,6 @@
   flex-direction: row;
 }
 
-/* Menu.module.css */
-
-/* Стили для контейнера попапа */
 .popup {
   position: absolute;
   top: 50%;
@@ -94,14 +91,12 @@
   background-color: #0056b3;
 }
 
-/* Стили для ввода URL */
 .popup input[type='text'] {
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #cccccc;
 }
 
-/* Стили для кнопки загрузки из URL */
 .popup button.upload-button {
   background-color: #28a745;
 }

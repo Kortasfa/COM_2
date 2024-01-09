@@ -14,6 +14,7 @@ import {
   UPDATE_PRESENTATION_DATA,
   UPDATE_SLIDE_OBJECT,
   CHANGE_THEME,
+  Action,
 } from './types'
 import { Color, Slide } from '../../types/types'
 import InitializedPresentation from '../../components/InitializedPresentation'
@@ -25,17 +26,11 @@ export const initialState = {
   selectedObjectId: InitializedPresentation.slides[INITIAL_SLIDE_ID].objects,
   presentationTheme: InitializedPresentation.presentationTheme,
 }
+import { Slide } from '../../types/types'
+import { initialState } from './initialState'
+import { createNewSlide } from './createSlide'
 
-function createNewSlide(): Slide {
-  const defaultColor: Color = { hex: '#FFFFFF', opacity: 1 }
-  return {
-    id: `slide-${Math.random().toString(36).substr(2, 9)}`, // Unique ID
-    objects: [],
-    background: { color: defaultColor },
-  }
-}
-
-export const slideReducer = (state = initialState, action: any) => {
+export const presentationReducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case ADD_IMAGE: {
       const { slideId, image } = action.payload
@@ -88,7 +83,7 @@ export const slideReducer = (state = initialState, action: any) => {
             ...slide,
             background: {
               ...slide.background,
-              color: { hex: color, opacity: 1 },
+              color: color,
             },
           }
         }

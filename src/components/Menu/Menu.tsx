@@ -2,15 +2,7 @@ import styles from './Menu.module.css'
 import React, { useState } from 'react'
 import { Figures } from '../../types/types'
 import { useAppDispatch, useAppSelector } from '../../store/store'
-import {
-  addSlide,
-  deleteSlide,
-  addText,
-  addPrimitive,
-  deleteObject,
-  changeBackgroundColor,
-  changeTheme,
-} from '../../store/slide/slideActions'
+import { addSlide, addText, addPrimitive, deleteObject, removeSlide, changeTheme } from '../../store/slide/slideActions'
 import { getSelectedObjectId, getSelectedSlideId, getPresentationTheme } from '../../store/slide/selector'
 import { addNewText } from '../../hooks/menu/objectsManager/useAddText'
 import { Fonts } from './Fonts/Fonts'
@@ -38,8 +30,8 @@ import darkThemeImage from '../../images/darkTheme.svg'
 const Menu = () => {
   const dispatch = useAppDispatch()
   const selectedObjectId = useAppSelector(getSelectedObjectId)
-  const selectedSlideId = useAppSelector(getSelectedSlideId)
   const presentationTheme = useAppSelector(getPresentationTheme)
+  const selectedSlideId: string = useAppSelector(getSelectedSlideId)
   const { error, handleFileChange } = useImportFileHandler()
   // const presentationName = useAppSelector(getPresentationName)
   //
@@ -52,7 +44,7 @@ const Menu = () => {
   }
 
   const handleDeleteSlide = () => {
-    dispatch(deleteSlide(selectedSlideId))
+    dispatch(removeSlide(selectedSlideId))
   }
 
   const handleAddText = () => {

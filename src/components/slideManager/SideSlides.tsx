@@ -1,11 +1,11 @@
 import React from 'react'
-import { ObjectType, Slide } from '../types/types'
-import { TextBlock } from './Objects/TextBlock'
-import { ImageBlock } from './Objects/ImageBlock'
+import { ObjectType, Slide } from '../../types/types'
+import { TextBlock } from '../Objects/TextBlock'
+import { ImageBlock } from '../Objects/ImageBlock'
 import styles from './SlideView.module.css'
-import { PrimitiveBlock } from './Objects/PrimitiveBlock'
-import { useAppSelector } from '../store/store'
-import { getSelectedObjectId, getSelectedSlideId } from '../store/slide/selector'
+import { PrimitiveBlock } from '../Objects/PrimitiveBlock'
+import { useAppSelector } from '../../store/store'
+import { getSelectedObjectId, getSelectedSlideId } from '../../store/slide/selector'
 
 interface SideSlides {
   slide: Slide
